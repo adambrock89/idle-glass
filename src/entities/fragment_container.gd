@@ -13,7 +13,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# Track container speed
 	last_speed = linear_velocity.length()
 

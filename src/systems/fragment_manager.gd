@@ -287,7 +287,7 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 	inner.set_meta("base_color", cp.get_color_code())
 
 	var mat := ShaderMaterial.new()
-	mat.shader = preload("res://glass_fragment.gdshader")
+	mat.shader = preload("res://assets/shaders/glass_fragment.gdshader")
 	mat.set_shader_parameter("tint_color", cp.get_color_code())
 	mat.set_shader_parameter("object_rotation", inner.rotation)
 
@@ -304,7 +304,7 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 	collision.position = centroid
 	parent_container.add_child(collision)
 
-	create_border(centered_points, inner, parent_container)
+	create_border(centered_points, inner)
 
 func compute_push_out_offset(fragment_centroid: Vector2, container_center: Vector2, border_scale: float) -> Vector2:
 	var outward_dir := (fragment_centroid - container_center).normalized()
@@ -327,7 +327,7 @@ func _on_toggle_generation_pressed():
 	generation_enabled = enabled
 	set_generation_enabled(enabled)
 
-func create_border(centered_points: PackedVector2Array, inner: Node2D, parent_container: Node) -> MeshInstance2D:
+func create_border(centered_points: PackedVector2Array, inner: Node2D) -> MeshInstance2D:
 	var thickness := 8.0
 
 	var global_pts := PackedVector2Array()
@@ -349,7 +349,7 @@ func create_border(centered_points: PackedVector2Array, inner: Node2D, parent_co
 	border_mesh.scale = Vector2.ONE
 
 	var mat := ShaderMaterial.new()
-	mat.shader = preload("res://solder.gdshader")
+	mat.shader = preload("res://assets/shaders/solder.gdshader")
 	mat.set("shader_parameter/metal_type", get_random_metal_type())
 	mat.set("shader_parameter/bevel_mode", 0)
 	mat.set("shader_parameter/motion_factor", 0.0)
@@ -388,11 +388,11 @@ func create_border_mesh_from_polygon(points: PackedVector2Array, thickness: floa
 		var angle := acos(clamp(v1.dot(v2), -1.0, 1.0))
 		var half_angle := angle * 0.5
 		var raw_scale = thickness / max(sin(half_angle), 0.001)
-		var scale = min(raw_scale, max_bevel)
+		var final_scale = min(raw_scale, max_bevel)
 		var outward := Vector2(-bisector.y, bisector.x)
 
-		inner.append(p - outward * scale * 0.5)
-		outer.append(p + outward * scale * 0.5)
+		inner.append(p - outward * final_scale * 0.5)
+		outer.append(p + outward * final_scale * 0.5)
 
 	for i in range(count):
 		var i0 := i

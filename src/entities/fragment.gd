@@ -99,23 +99,23 @@ static func get_mesh_from_polygon_points(points: PackedVector2Array) -> ArrayMes
 		return null
 
 	# --- 2. Compute bounding box for UV mapping ---
-	var min := Vector2(INF, INF)
-	var max := Vector2(-INF, -INF)
+	var uv_min := Vector2(INF, INF)
+	var uv_max := Vector2(-INF, -INF)
 
 	for p in points:
-		min.x = min(min.x, p.x)
-		min.y = min(min.y, p.y)
-		max.x = max(max.x, p.x)
-		max.y = max(max.y, p.y)
+		uv_min.x = min(uv_min.x, p.x)
+		uv_min.y = min(uv_min.y, p.y)
+		uv_max.x = max(uv_max.x, p.x)
+		uv_max.y = max(uv_max.y, p.y)
 
-	var size := max - min
+	var size := uv_max - uv_min
 	if size.x == 0 or size.y == 0:
 		size = Vector2(1, 1)  # Avoid division by zero
 
 	# --- 3. Generate UVs ---
 	var uvs := PackedVector2Array()
 	for p in points:
-		var uv := (p - min) / size
+		var uv := (p - uv_min) / size
 		uvs.append(uv)
 
 	# --- 4. Build mesh arrays ---
