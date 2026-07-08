@@ -1,0 +1,1390 @@
+[
+    {
+        "id":  "red_value",
+        "name":  "Red Value",
+        "description":  "Increase red score value per fragment",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "red":  10
+                                    },
+                           "effect_text":  "Red value x1.4",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "red_value",
+                                          "multiplier":  1.4
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "red":  25
+                                    },
+                           "effect_text":  "Red value x1.9",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "red_value",
+                                          "multiplier":  1.9
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "red":  55
+                                    },
+                           "effect_text":  "Red value x2.6",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "red_value",
+                                          "multiplier":  2.6
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "red":  120
+                                    },
+                           "effect_text":  "Red value x3.5",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "red_value",
+                                          "multiplier":  3.5
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "orange_value",
+        "name":  "Orange Value",
+        "description":  "Increase orange score value per fragment",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "orange":  10
+                                    },
+                           "effect_text":  "Orange value x1.4",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "orange_value",
+                                          "multiplier":  1.4
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "orange":  25
+                                    },
+                           "effect_text":  "Orange value x1.9",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "orange_value",
+                                          "multiplier":  1.9
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "orange":  55
+                                    },
+                           "effect_text":  "Orange value x2.6",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "orange_value",
+                                          "multiplier":  2.6
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "orange":  120
+                                    },
+                           "effect_text":  "Orange value x3.5",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "orange_value",
+                                          "multiplier":  3.5
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "yellow_value",
+        "name":  "Yellow Value",
+        "description":  "Increase yellow score value per fragment",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "yellow":  10
+                                    },
+                           "effect_text":  "Yellow value x1.4",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "yellow_value",
+                                          "multiplier":  1.4
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "yellow":  25
+                                    },
+                           "effect_text":  "Yellow value x1.9",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "yellow_value",
+                                          "multiplier":  1.9
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "yellow":  55
+                                    },
+                           "effect_text":  "Yellow value x2.6",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "yellow_value",
+                                          "multiplier":  2.6
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "yellow":  120
+                                    },
+                           "effect_text":  "Yellow value x3.5",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "yellow_value",
+                                          "multiplier":  3.5
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "green_value",
+        "name":  "Green Value",
+        "description":  "Increase green score value per fragment",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "green":  10
+                                    },
+                           "effect_text":  "Green value x1.4",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "green_value",
+                                          "multiplier":  1.4
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "green":  25
+                                    },
+                           "effect_text":  "Green value x1.9",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "green_value",
+                                          "multiplier":  1.9
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "green":  55
+                                    },
+                           "effect_text":  "Green value x2.6",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "green_value",
+                                          "multiplier":  2.6
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "green":  120
+                                    },
+                           "effect_text":  "Green value x3.5",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "green_value",
+                                          "multiplier":  3.5
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "blue_value",
+        "name":  "Blue Value",
+        "description":  "Increase blue score value per fragment",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "blue":  10
+                                    },
+                           "effect_text":  "Blue value x1.4",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "blue_value",
+                                          "multiplier":  1.4
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "blue":  25
+                                    },
+                           "effect_text":  "Blue value x1.9",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "blue_value",
+                                          "multiplier":  1.9
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "blue":  55
+                                    },
+                           "effect_text":  "Blue value x2.6",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "blue_value",
+                                          "multiplier":  2.6
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "blue":  120
+                                    },
+                           "effect_text":  "Blue value x3.5",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "blue_value",
+                                          "multiplier":  3.5
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "purple_value",
+        "name":  "Purple Value",
+        "description":  "Increase purple score value per fragment",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "purple":  10
+                                    },
+                           "effect_text":  "Purple value x1.4",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "purple_value",
+                                          "multiplier":  1.4
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "purple":  25
+                                    },
+                           "effect_text":  "Purple value x1.9",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "purple_value",
+                                          "multiplier":  1.9
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "purple":  55
+                                    },
+                           "effect_text":  "Purple value x2.6",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "purple_value",
+                                          "multiplier":  2.6
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "purple":  120
+                                    },
+                           "effect_text":  "Purple value x3.5",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "purple_value",
+                                          "multiplier":  3.5
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "red_strength",
+        "name":  "Red Strength",
+        "description":  "Increase red geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "red":  13
+                                    },
+                           "effect_text":  "Red strength 8.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  8.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "red":  32
+                                    },
+                           "effect_text":  "Red strength 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "red":  70
+                                    },
+                           "effect_text":  "Red strength 11.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  11.5
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "red":  150
+                                    },
+                           "effect_text":  "Red strength 14.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  14.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "orange_strength",
+        "name":  "Orange Strength",
+        "description":  "Increase orange geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "orange":  13
+                                    },
+                           "effect_text":  "Orange strength 8.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  8.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "orange":  32
+                                    },
+                           "effect_text":  "Orange strength 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "orange":  70
+                                    },
+                           "effect_text":  "Orange strength 11.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  11.5
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "orange":  150
+                                    },
+                           "effect_text":  "Orange strength 14.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  14.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "yellow_strength",
+        "name":  "Yellow Strength",
+        "description":  "Increase yellow geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "yellow":  13
+                                    },
+                           "effect_text":  "Yellow strength 8.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  8.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "yellow":  32
+                                    },
+                           "effect_text":  "Yellow strength 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "yellow":  70
+                                    },
+                           "effect_text":  "Yellow strength 11.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  11.5
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "yellow":  150
+                                    },
+                           "effect_text":  "Yellow strength 14.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  14.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "green_strength",
+        "name":  "Green Strength",
+        "description":  "Increase green geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "green":  13
+                                    },
+                           "effect_text":  "Green strength 8.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  8.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "green":  32
+                                    },
+                           "effect_text":  "Green strength 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "green":  70
+                                    },
+                           "effect_text":  "Green strength 11.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  11.5
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "green":  150
+                                    },
+                           "effect_text":  "Green strength 14.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  14.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "blue_strength",
+        "name":  "Blue Strength",
+        "description":  "Increase blue geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "blue":  13
+                                    },
+                           "effect_text":  "Blue strength 8.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  8.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "blue":  32
+                                    },
+                           "effect_text":  "Blue strength 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "blue":  70
+                                    },
+                           "effect_text":  "Blue strength 11.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  11.5
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "blue":  150
+                                    },
+                           "effect_text":  "Blue strength 14.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  14.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "purple_strength",
+        "name":  "Purple Strength",
+        "description":  "Increase purple geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "purple":  13
+                                    },
+                           "effect_text":  "Purple strength 8.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_purple",
+                                          "value":  8.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "purple":  32
+                                    },
+                           "effect_text":  "Purple strength 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_purple",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "purple":  70
+                                    },
+                           "effect_text":  "Purple strength 11.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_purple",
+                                          "value":  11.5
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "purple":  150
+                                    },
+                           "effect_text":  "Purple strength 14.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_purple",
+                                          "value":  14.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "red_spawn_speed",
+        "name":  "Cluster Throughput",
+        "description":  "Spawn clusters faster",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "red":  20
+                                    },
+                           "effect_text":  "Spawn speed x1.2",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "spawn_speed",
+                                          "value":  1.2
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "red":  47
+                                    },
+                           "effect_text":  "Spawn speed x1.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "spawn_speed",
+                                          "value":  1.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "red":  103
+                                    },
+                           "effect_text":  "Spawn speed x1.9",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "spawn_speed",
+                                          "value":  1.9
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "red":  217
+                                    },
+                           "effect_text":  "Spawn speed x2.4",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "spawn_speed",
+                                          "value":  2.4
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "yellow_hatch_speed",
+        "name":  "Hatch Servo",
+        "description":  "Speed up hatch sequence timing",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "yellow":  20
+                                    },
+                           "effect_text":  "Hatch speed x1.25",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_speed",
+                                          "value":  1.25
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "yellow":  47
+                                    },
+                           "effect_text":  "Hatch speed x1.6",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_speed",
+                                          "value":  1.6
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "yellow":  103
+                                    },
+                           "effect_text":  "Hatch speed x2.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_speed",
+                                          "value":  2.0
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "yellow":  217
+                                    },
+                           "effect_text":  "Hatch speed x2.6",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_speed",
+                                          "value":  2.6
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "blue_hatch_width",
+        "name":  "Hatch Span",
+        "description":  "Widen hatch/platform length",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "blue":  22
+                                    },
+                           "effect_text":  "Platform length 230",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "platform_length",
+                                          "value":  230.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "blue":  50
+                                    },
+                           "effect_text":  "Platform length 260",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "platform_length",
+                                          "value":  260.0
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "blue":  110
+                                    },
+                           "effect_text":  "Platform length 300",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "platform_length",
+                                          "value":  300.0
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "blue":  233
+                                    },
+                           "effect_text":  "Platform length 350",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "platform_length",
+                                          "value":  350.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "rgb_tier_unlock",
+        "name":  "Prismatic Fusion",
+        "description":  "Unlock tier-2 generation and randomize tiers",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "red":  150,
+                                        "yellow":  150,
+                                        "blue":  150
+                                    },
+                           "effect_text":  "Max tier 2 + random tier selection",
+                           "effect":  {
+                                          "type":  "multi",
+                                          "effects":  [
+                                                          {
+                                                              "type":  "set",
+                                                              "target":  "max_tier",
+                                                              "value":  2
+                                                          },
+                                                          {
+                                                              "type":  "set",
+                                                              "target":  "tier_random_enabled",
+                                                              "value":  true
+                                                          }
+                                                      ]
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "red":  433,
+                                        "yellow":  433,
+                                        "blue":  433
+                                    },
+                           "effect_text":  "Max tier 3",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "max_tier",
+                                          "value":  3
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "orange_pull_strength",
+        "name":  "Magnetic Pull",
+        "description":  "Increase pull force while holding fragments",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "orange":  15
+                                    },
+                           "effect_text":  "Pull strength x1.25",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "pull_strength_multiplier",
+                                          "value":  1.25
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "orange":  37
+                                    },
+                           "effect_text":  "Pull strength x1.6",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "pull_strength_multiplier",
+                                          "value":  1.6
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "orange":  80
+                                    },
+                           "effect_text":  "Pull strength x2.1",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "pull_strength_multiplier",
+                                          "value":  2.1
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "orange":  167
+                                    },
+                           "effect_text":  "Pull strength x2.8",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "pull_strength_multiplier",
+                                          "value":  2.8
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "orange_grab_radius",
+        "name":  "Magnetic Radius",
+        "description":  "Unlock and expand radial grab area",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "orange":  25
+                                    },
+                           "effect_text":  "Unlock grab radius (70)",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "grab_radius",
+                                          "value":  70.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "orange":  67
+                                    },
+                           "effect_text":  "Grab radius 100",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "grab_radius",
+                                          "value":  100.0
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "orange":  150
+                                    },
+                           "effect_text":  "Grab radius 140",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "grab_radius",
+                                          "value":  140.0
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "orange":  300
+                                    },
+                           "effect_text":  "Grab radius 190",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "grab_radius",
+                                          "value":  190.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "green_lots_shapes_modifier",
+        "name":  "Crowd Bonus",
+        "description":  "Increase score based on shapes in the same scoring batch",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "green":  23
+                                    },
+                           "effect_text":  "+2% per extra shape",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_lots_shapes_per_shape",
+                                          "value":  0.02
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "green":  57
+                                    },
+                           "effect_text":  "+4% per extra shape",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_lots_shapes_per_shape",
+                                          "value":  0.04
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "green":  130
+                                    },
+                           "effect_text":  "+6% per extra shape",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_lots_shapes_per_shape",
+                                          "value":  0.06
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "green":  283
+                                    },
+                           "effect_text":  "+9% per extra shape",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_lots_shapes_per_shape",
+                                          "value":  0.09
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "green_same_color_modifier",
+        "name":  "Monochrome Theory",
+        "description":  "Bonus when all scored fragments are one color",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "green":  27
+                                    },
+                           "effect_text":  "Same-color x1.15",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_all_same_color_mult",
+                                          "value":  1.15
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "green":  63
+                                    },
+                           "effect_text":  "Same-color x1.35",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_all_same_color_mult",
+                                          "value":  1.35
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "green":  143
+                                    },
+                           "effect_text":  "Same-color x1.65",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_all_same_color_mult",
+                                          "value":  1.65
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "green":  317
+                                    },
+                           "effect_text":  "Same-color x2.0",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_all_same_color_mult",
+                                          "value":  2.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "green_rainbow_modifier",
+        "name":  "Spectrum Concord",
+        "description":  "Bonus when red/orange/yellow/green/blue/purple all appear",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "green":  37
+                                    },
+                           "effect_text":  "Rainbow x1.25",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_rainbow_mult",
+                                          "value":  1.25
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "green":  87
+                                    },
+                           "effect_text":  "Rainbow x1.6",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_rainbow_mult",
+                                          "value":  1.6
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "green":  192
+                                    },
+                           "effect_text":  "Rainbow x2.1",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_rainbow_mult",
+                                          "value":  2.1
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "green":  400
+                                    },
+                           "effect_text":  "Rainbow x2.8",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "modifier_rainbow_mult",
+                                          "value":  2.8
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "purple_border_distribution",
+        "name":  "Metallurgy",
+        "description":  "Increase odds of rare border metals",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "purple":  67
+                                    },
+                           "effect_text":  "Weights: 1 / 0.10 / 0.01 / 0.001",
+                           "effect":  {
+                                          "type":  "set_weights",
+                                          "weights":  {
+                                                          "copper":  1.0,
+                                                          "silver":  0.1,
+                                                          "gold":  0.01,
+                                                          "crystal":  0.001
+                                                      }
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "purple":  167
+                                    },
+                           "effect_text":  "Weights: 1 / 0.20 / 0.02 / 0.002",
+                           "effect":  {
+                                          "type":  "set_weights",
+                                          "weights":  {
+                                                          "copper":  1.0,
+                                                          "silver":  0.2,
+                                                          "gold":  0.02,
+                                                          "crystal":  0.002
+                                                      }
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "purple":  367
+                                    },
+                           "effect_text":  "Weights: 1 / 0.35 / 0.035 / 0.0035",
+                           "effect":  {
+                                          "type":  "set_weights",
+                                          "weights":  {
+                                                          "copper":  1.0,
+                                                          "silver":  0.35,
+                                                          "gold":  0.035,
+                                                          "crystal":  0.0035
+                                                      }
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "purple":  833
+                                    },
+                           "effect_text":  "Weights: 1 / 0.5 / 0.05 / 0.005",
+                           "effect":  {
+                                          "type":  "set_weights",
+                                          "weights":  {
+                                                          "copper":  1.0,
+                                                          "silver":  0.5,
+                                                          "gold":  0.05,
+                                                          "crystal":  0.005
+                                                      }
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "purple_copper_value",
+        "name":  "Copper Assay",
+        "description":  "Increase copper border fragment value",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "purple":  42
+                                    },
+                           "effect_text":  "Copper x1.5",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_copper_value",
+                                          "multiplier":  1.5
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "purple":  108
+                                    },
+                           "effect_text":  "Copper x2.2",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_copper_value",
+                                          "multiplier":  2.2
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "purple":  250
+                                    },
+                           "effect_text":  "Copper x3.2",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_copper_value",
+                                          "multiplier":  3.2
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "purple_silver_value",
+        "name":  "Silver Assay",
+        "description":  "Increase silver border fragment value",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "purple":  150
+                                    },
+                           "effect_text":  "Silver x14",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_silver_value",
+                                          "multiplier":  14.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "purple":  367
+                                    },
+                           "effect_text":  "Silver x20",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_silver_value",
+                                          "multiplier":  20.0
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "purple":  867
+                                    },
+                           "effect_text":  "Silver x30",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_silver_value",
+                                          "multiplier":  30.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "purple_gold_value",
+        "name":  "Gold Assay",
+        "description":  "Increase gold border fragment value",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "purple":  500
+                                    },
+                           "effect_text":  "Gold x140",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_gold_value",
+                                          "multiplier":  140.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "purple":  1200
+                                    },
+                           "effect_text":  "Gold x220",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_gold_value",
+                                          "multiplier":  220.0
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "purple":  2667
+                                    },
+                           "effect_text":  "Gold x320",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_gold_value",
+                                          "multiplier":  320.0
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "purple_crystal_value",
+        "name":  "Crystal Assay",
+        "description":  "Increase crystal border fragment value",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "purple":  1667
+                                    },
+                           "effect_text":  "Crystal x1400",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_crystal_value",
+                                          "multiplier":  1400.0
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "purple":  3667
+                                    },
+                           "effect_text":  "Crystal x2200",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_crystal_value",
+                                          "multiplier":  2200.0
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "purple":  8000
+                                    },
+                           "effect_text":  "Crystal x3200",
+                           "effect":  {
+                                          "type":  "mult",
+                                          "target":  "metal_crystal_value",
+                                          "multiplier":  3200.0
+                                      }
+                       }
+                   ]
+    }
+]

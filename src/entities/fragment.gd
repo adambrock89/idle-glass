@@ -16,15 +16,25 @@ var inner_mesh: MeshInstance2D
 
 @export var pull_strength: float = 5
 @export var max_velocity: float = 2500.0
+@export var surface_friction: float = 0.2
+@export var surface_bounce: float = 0.2
 
 func _ready():
 	_cache_meshes()
+	_configure_physics_material()
 	collision_layer = 1
 	collision_mask = 1
 	contact_monitor = true
 	max_contacts_reported = 4
 	input_pickable = false
 	can_sleep = false
+
+func _configure_physics_material() -> void:
+	var mat := PhysicsMaterial.new()
+	mat.friction = clamp(surface_friction, 0.0, 1.0)
+	mat.bounce = clamp(surface_bounce, 0.0, 1.0)
+	mat.rough = false
+	physics_material_override = mat
 
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
