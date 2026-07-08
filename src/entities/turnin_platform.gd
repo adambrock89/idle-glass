@@ -366,7 +366,7 @@ func create_scoring_zone() -> Area2D:
 	zone.name = "ScoreZone"
 
 	# Attach script BEFORE adding to scene
-	zone.set_script(load("res://score_zone.gd"))
+	zone.set_script(load("res://src/entities/score_zone.gd"))
 
 	# --- Collision Shape Setup ---
 	var colpoly := CollisionPolygon2D.new()

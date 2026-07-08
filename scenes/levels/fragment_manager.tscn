@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://dt00mwv1c6iv7"]
 
 [ext_resource type="Script" uid="uid://c44lkg4323ht7" path="res://src/systems/fragment_manager.gd" id="1_qpyrk"]
-[ext_resource type="Shader" uid="uid://b8ep8qhcwkum3" path="res://assets/shaders/glass_fragment.gdshader" id="2_srsae"]
+[ext_resource type="Shader" uid="uid://djx2fgbjj2431" path="res://assets/shaders/glass_fragment.gdshader" id="2_srsae"]
 [ext_resource type="PackedScene" uid="uid://rdykjwiqqe5d" path="res://scenes/prefabs/turnin_platform.tscn" id="3_7051s"]
 [ext_resource type="Script" uid="uid://30l0kyqowhp5" path="res://src/entities/turnin_platform.gd" id="4_l78gl"]
 [ext_resource type="PackedScene" uid="uid://y7uofinlt53n" path="res://scenes/ui/scoreboard.tscn" id="5_41nyt"]
-[ext_resource type="Shader" uid="uid://bn7nwvtnuiq51" path="res://assets/shaders/sunset_background.gdshader" id="6_6ke61"]
+[ext_resource type="Shader" uid="uid://kbpueo5fiw7y" path="res://assets/shaders/sunset_background.gdshader" id="6_6ke61"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hwl8a"]
 shader = ExtResource("2_srsae")
