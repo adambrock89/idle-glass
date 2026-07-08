@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://y7uofinlt53n"]
+
+[ext_resource type="Script" uid="uid://bhrrw3cocf4ij" path="res://src/entities/scoreboard.gd" id="1_jeshg"]
+
+[node name="Scoreboard" type="CanvasLayer"]
+script = ExtResource("1_jeshg")

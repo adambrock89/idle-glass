@@ -1,0 +1,12 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# ignore local temp/metadata
+*.tmp
+
+# ignore local temp/metadata
+*.uid
+
+# ignore local temp/metadata
+.claude/
