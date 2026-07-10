@@ -288,11 +288,11 @@ func get_poly_points(color: ColorProfile.ColorName, tier: int, first_strength: V
 			elif color in secondary_colors:
 				var point_a := Vector2.UP.rotated(deg_to_rad(starting_angle - 60)) * first_strength_value
 				var point_b := Vector2.UP.rotated(deg_to_rad(starting_angle)) * zero_strength
-				var intersection_ccw := point_a.lerp(point_b, 4.0 / 5.0)
+				var intersection_ccw := point_a.lerp(point_b, 3.5 / 5.0)
 
 				var point_c := Vector2.UP.rotated(deg_to_rad(starting_angle + 60)) * third_strength_value
 				var point_d := Vector2.UP.rotated(deg_to_rad(starting_angle)) * zero_strength
-				var intersection_cw := point_c.lerp(point_d, 4.0 / 5.0)
+				var intersection_cw := point_c.lerp(point_d, 3.5 / 5.0)
 
 				poly_points = [
 					Vector2.UP.rotated(deg_to_rad(starting_angle)) * zero_strength,

@@ -8,6 +8,7 @@ const BREAK_LEVELS: Array[float] = [0.3, 0.65, 1.0]
 
 static var _impact_stream_cache: Dictionary = {}
 static var _break_stream_cache: Dictionary = {}
+static var _ui_click_stream: AudioStreamWAV = null
 static var _is_primed: bool = false
 
 static func prime_cache(color_count: int = 12) -> void:
@@ -22,6 +23,8 @@ static func prime_cache(color_count: int = 12) -> void:
 	for level in BREAK_LEVELS:
 		var break_key := _make_break_key(level)
 		_break_stream_cache[break_key] = create_container_break_stream(level)
+
+	_ui_click_stream = create_ui_click_stream()
 
 	_is_primed = true
 
@@ -38,6 +41,11 @@ static func get_container_break_stream(impact_strength: float = 1.0) -> AudioStr
 	var level: float = _closest_level(impact_strength, BREAK_LEVELS)
 	var break_key := _make_break_key(level)
 	return _break_stream_cache[break_key]
+
+static func get_ui_click_stream() -> AudioStreamWAV:
+	if not _is_primed:
+		prime_cache()
+	return _ui_click_stream
 
 static func create_fragment_impact_stream(color_name: int, impact_strength: float = 0.5) -> AudioStreamWAV:
 	var duration: float = lerpf(0.07, 0.13, clampf(impact_strength, 0.0, 1.0))
@@ -79,6 +87,24 @@ static func create_container_break_stream(impact_strength: float = 1.0) -> Audio
 		var glass := sin(TAU * 910.0 * t + 0.8)
 		var burst: float = (randf() * 2.0 - 1.0) * (0.24 + strength * 0.18) * exp(-18.0 * t)
 		var sample: float = ((low * 0.34) + (mid * 0.26) + (glass * 0.12) + burst) * envelope
+		_write_pcm16_sample(data, i * 2, sample)
+
+	return _build_stream(data)
+
+static func create_ui_click_stream() -> AudioStreamWAV:
+	var duration: float = 0.08
+	var sample_count := int(float(SAMPLE_RATE) * duration)
+	var data := PackedByteArray()
+	data.resize(sample_count * 2)
+
+	for i in range(sample_count):
+		var t := float(i) / float(SAMPLE_RATE)
+		var attack: float = minf(t * 280.0, 1.0)
+		var envelope: float = attack * exp(-30.0 * t) * 0.36
+		var body: float = sin(TAU * 660.0 * t)
+		var bell: float = sin(TAU * 990.0 * t + 0.3)
+		var warmth: float = sin(TAU * 440.0 * t + 0.15)
+		var sample: float = ((body * 0.54) + (bell * 0.18) + (warmth * 0.28)) * envelope
 		_write_pcm16_sample(data, i * 2, sample)
 
 	return _build_stream(data)
