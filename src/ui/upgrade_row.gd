@@ -2,14 +2,26 @@ extends HBoxContainer
 
 signal purchase_requested(series_id)
 
+const COST_COLOR_ORDER: Array[String] = ["red", "orange", "yellow", "green", "blue", "purple"]
+
 var series_id: String
 var level_index: int = 0
+var color_profile: ColorProfile = ColorProfile.new()
+
+var cost_color_map: Dictionary = {
+    "red": ColorProfile.ColorName.RED,
+    "orange": ColorProfile.ColorName.ORANGE,
+    "yellow": ColorProfile.ColorName.YELLOW,
+    "green": ColorProfile.ColorName.GREEN,
+    "blue": ColorProfile.ColorName.BLUE,
+    "purple": ColorProfile.ColorName.PURPLE
+}
 
 @onready var name_label: Label = get_node("LeftCol/Name") as Label
 @onready var description_label: Label = get_node("LeftCol/Description") as Label
 @onready var level_label: Label = get_node("MidCol/Level") as Label
 @onready var effect_label: Label = get_node("MidCol/Effect") as Label
-@onready var cost_label: Label = get_node("RightCol/Cost") as Label
+@onready var cost_row: HBoxContainer = get_node("RightCol/CostRow") as HBoxContainer
 @onready var buy_button: BaseButton = get_node("RightCol/Buy") as BaseButton
 
 func set_data(series: Dictionary, level_idx: int) -> void:
@@ -32,15 +44,42 @@ func set_data(series: Dictionary, level_idx: int) -> void:
     description_label.modulate = Color(0.86, 0.88, 0.92)
     level_label.modulate = Color(0.72, 0.92, 1)
     effect_label.modulate = Color(1, 1, 1)
-    cost_label.modulate = Color(1, 0.95, 0.72)
 
-    var cost_strs: Array[String] = []
-    var costs: Dictionary = level_data.get("cost", {}) as Dictionary
+    _render_costs(level_data.get("cost", {}) as Dictionary)
+
+func _render_costs(costs: Dictionary) -> void:
+    for child in cost_row.get_children():
+        child.queue_free()
+
+    var ordered_colors: Array[String] = []
+    for color_name in COST_COLOR_ORDER:
+        if costs.has(color_name):
+            ordered_colors.append(color_name)
+
     for raw_color_name in costs.keys():
         var color_name: String = String(raw_color_name)
-        var amount: int = int(costs[color_name])
-        cost_strs.append("%d %s" % [amount, color_name.capitalize()])
-    cost_label.text = "Cost: " + ", ".join(cost_strs)
+        if not ordered_colors.has(color_name):
+            ordered_colors.append(color_name)
+
+    if ordered_colors.is_empty():
+        var free_label := Label.new()
+        free_label.text = "Free"
+        free_label.modulate = Color(0.8, 0.9, 0.8)
+        cost_row.add_child(free_label)
+        return
+
+    for color_name in ordered_colors:
+        var amount: int = int(costs.get(color_name, 0))
+        var cost_chunk := Label.new()
+        cost_chunk.text = "\u25CF%d" % amount
+        cost_chunk.modulate = _get_cost_color(color_name)
+        cost_chunk.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+        cost_chunk.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+        cost_row.add_child(cost_chunk)
+
+func _get_cost_color(color_name: String) -> Color:
+    var enum_value: int = int(cost_color_map.get(color_name, ColorProfile.ColorName.RED))
+    return color_profile.rgb_values[enum_value]
 
 func _on_Buy_pressed() -> void:
     emit_signal("purchase_requested", series_id)

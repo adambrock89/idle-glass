@@ -41,11 +41,10 @@ clip_text = true
 custom_minimum_size = Vector2(160, 0)
 theme_override_constants/separation = 4
 
-[node name="Cost" type="Label" parent="RightCol"]
-text = "Cost"
-horizontal_alignment = 2
-autowrap_mode = 0
-clip_text = true
+[node name="CostRow" type="HBoxContainer" parent="RightCol"]
+size_flags_horizontal = 3
+alignment = 2
+theme_override_constants/separation = 8
 
 [node name="Buy" type="Button" parent="RightCol"]
 text = "Buy"

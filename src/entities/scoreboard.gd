@@ -2,8 +2,8 @@ extends CanvasLayer
 
 signal shop_toggled
 
-const SCORE_BALANCE_DIVISOR: float = 95.0
-const MASS_VALUE_EXPONENT: float = 2.6
+const SCORE_BALANCE_DIVISOR: float = 110.0
+const MASS_VALUE_EXPONENT: float = 2.2
 const METAL_ID_TO_NAME: Dictionary = {
 	0: "copper",
 	1: "silver",
@@ -48,7 +48,7 @@ var metal_value_multiplier: Dictionary = {
 }
 
 var modifier_lots_shapes_per_shape: float = 0.0
-var modifier_all_same_color_mult: float = 1.0
+var modifier_all_same_color_mult: float = 0.0
 var modifier_rainbow_mult: float = 1.0
 
 var entries: Dictionary = {}
@@ -205,8 +205,9 @@ func process_batch(fragments: Array) -> void:
 	var count: int = valid_fragments.size()
 	var batch_mult: float = 1.0 + max(0, count - 1) * modifier_lots_shapes_per_shape
 
-	if unique_colors.size() == 1:
-		batch_mult *= modifier_all_same_color_mult
+	if unique_colors.size() == 1 and count > 1:
+		var same_color_batch_bonus: float = 1.0 + float(count - 1) * modifier_all_same_color_mult
+		batch_mult += same_color_batch_bonus
 
 	if unique_colors.has("red") and unique_colors.has("orange") and unique_colors.has("yellow") and unique_colors.has("green") and unique_colors.has("blue") and unique_colors.has("purple"):
 		batch_mult *= modifier_rainbow_mult

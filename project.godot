@@ -14,6 +14,10 @@ config/name="Idle Colors"
 run/main_scene="uid://dt00mwv1c6iv7"
 config/features=PackedStringArray("4.4", "Mobile")
 
+[autoload]
+
+GlobalUIFont="*res://src/autoload/global_ui_font.gd"
+
 [display]
 
 window/size/viewport_width=1920

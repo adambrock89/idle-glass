@@ -18,16 +18,34 @@ var inner_mesh: MeshInstance2D
 @export var max_velocity: float = 2500.0
 @export var surface_friction: float = 0.2
 @export var surface_bounce: float = 0.2
+@export var impact_sound_threshold: float = 140.0
+@export var impact_cooldown_seconds: float = 0.08
+@export var max_sound_speed: float = 900.0
+
+var impact_player: AudioStreamPlayer2D
+var impact_cooldown_remaining: float = 0.0
 
 func _ready():
 	_cache_meshes()
 	_configure_physics_material()
+	_configure_audio()
 	collision_layer = 1
 	collision_mask = 1
 	contact_monitor = true
 	max_contacts_reported = 4
 	input_pickable = false
 	can_sleep = false
+	body_entered.connect(_on_body_entered)
+
+func _physics_process(delta: float) -> void:
+	if impact_cooldown_remaining > 0.0:
+		impact_cooldown_remaining = max(0.0, impact_cooldown_remaining - delta)
+
+func _configure_audio() -> void:
+	impact_player = AudioStreamPlayer2D.new()
+	impact_player.max_polyphony = 1
+	impact_player.volume_db = -10.0
+	add_child(impact_player)
 
 func _configure_physics_material() -> void:
 	var mat := PhysicsMaterial.new()
@@ -155,3 +173,20 @@ func _cache_meshes():
 			border_mesh = child
 		elif child is MeshInstance2D and child.name.begins_with("InnerMeshInstance_"):
 			inner_mesh = child
+
+func _on_body_entered(_body: Node) -> void:
+	if impact_player == null or impact_cooldown_remaining > 0.0:
+		return
+
+	var impact_speed := linear_velocity.length()
+	if impact_speed < impact_sound_threshold:
+		return
+
+	var capped_speed: float = minf(impact_speed, max_sound_speed)
+	var intensity: float = clampf(inverse_lerp(impact_sound_threshold, max_sound_speed, capped_speed), 0.18, 1.0)
+	impact_cooldown_remaining = impact_cooldown_seconds
+	impact_player.stop()
+	impact_player.volume_db = lerpf(-16.0, -7.0, intensity)
+	impact_player.pitch_scale = lerpf(0.98, 1.03, intensity)
+	impact_player.stream = ProceduralSfx.get_fragment_impact_stream(int(color_name), intensity)
+	impact_player.play()

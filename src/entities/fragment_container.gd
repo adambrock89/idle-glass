@@ -46,6 +46,13 @@ func break_apart() -> void:
 		
 		return
 
+	var scene_root := get_tree().current_scene
+	var break_intensity: float = clampf(last_speed / maxf(break_speed_threshold * 3.0, 1.0), 0.2, 1.0)
+	ProceduralSfx.play_break_at(scene_root, global_position, break_intensity)
+
+	var container_linear_velocity := linear_velocity
+	var container_angular_velocity := angular_velocity
+
 	var collisions: Array[CollisionPolygon2D] = []
 	var borders: Array[MeshInstance2D] = []
 	var inners: Array[MeshInstance2D] = []
@@ -78,7 +85,9 @@ func break_apart() -> void:
 			inner,
 			border,
 			container_global_pos,
-			fragment_collection
+			fragment_collection,
+			container_linear_velocity,
+			container_angular_velocity
 		)
 
 	queue_free()
@@ -107,7 +116,9 @@ func _spawn_fragment_from_parts(
 	inner: MeshInstance2D,
 	border: MeshInstance2D,
 	container_global_pos: Vector2,
-	fragment_collection: Node
+	fragment_collection: Node,
+	container_linear_velocity: Vector2,
+	container_angular_velocity: float
 ) -> void:
 	var frag := Fragment.new()
 	frag.name = "Fragment_%s" % key
@@ -138,7 +149,12 @@ func _spawn_fragment_from_parts(
 	if border != null:
 		frag.set_meta("border_mesh", border)
 
-	_apply_outward_impulse(frag, container_global_pos)
+	_inherit_container_motion(
+		frag,
+		container_global_pos,
+		container_linear_velocity,
+		container_angular_velocity
+	)
 
 func _assign_fragment_mass_from_polygon(frag: Fragment, col: CollisionPolygon2D) -> void:
 	var inner_points := PackedVector2Array()
@@ -161,14 +177,16 @@ func _copy_fragment_metadata_from_inner(frag: Fragment, inner: MeshInstance2D) -
 	frag.visual = inner
 
 
-func _apply_outward_impulse(frag: Fragment, container_global_pos: Vector2) -> void:
-	var outward_direction := (frag.global_position - container_global_pos).normalized()
-	if outward_direction == Vector2.ZERO:
-		outward_direction = Vector2.UP
-
-	var impulse_strength := randf_range(50.0, 250.0)
-	var impulse_vector := outward_direction * impulse_strength
-	frag.apply_central_impulse(impulse_vector)
+func _inherit_container_motion(
+	frag: Fragment,
+	container_global_pos: Vector2,
+	container_linear_velocity: Vector2,
+	container_angular_velocity: float
+) -> void:
+	var offset := frag.global_position - container_global_pos
+	var tangential_velocity := Vector2(-offset.y, offset.x) * container_angular_velocity
+	frag.linear_velocity = container_linear_velocity + tangential_velocity
+	frag.angular_velocity = container_angular_velocity
 
 
 func generate_convex_hull_collision() -> void:

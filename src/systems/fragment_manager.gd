@@ -69,6 +69,8 @@ var held_fragments: Array[Fragment] = []
 var grab_indicator: GrabRadiusIndicator = null
 
 func _ready():
+	ProceduralSfx.prime_cache(ColorProfile.ColorName.size())
+
 	Red = ColorProfile.new()
 	Red.color_name = ColorProfile.ColorName.RED
 
