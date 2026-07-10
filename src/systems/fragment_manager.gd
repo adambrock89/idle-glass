@@ -312,7 +312,7 @@ func get_poly_points(color: ColorProfile.ColorName, tier: int, first_strength: V
 					intersection_ccw
 				]
 		3:
-			zero_strength = 7.0
+			zero_strength = 6.5
 			if color in primary_colors:
 				poly_points = [
 					Vector2.UP.rotated(deg_to_rad(starting_angle + 30)) * zero_strength,
@@ -379,12 +379,11 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 
 	var mat := ShaderMaterial.new()
 	mat.shader = preload("res://assets/shaders/glass_fragment.gdshader")
-	var tint_color := cp.get_color_code()
-	tint_color.a = 0.35
-	mat.set_shader_parameter("tint_color", tint_color)
-	mat.set_shader_parameter("face_count", float(points.size()))
+	mat.set_shader_parameter("tint_color", cp.get_color_code())
+	mat.set_shader_parameter("object_rotation", inner.rotation)
 
 	inner.material = mat
+
 	var collision := CollisionPolygon2D.new()
 	collision.name = "CollisionPolygon2D_%s" % str(color_name)
 
