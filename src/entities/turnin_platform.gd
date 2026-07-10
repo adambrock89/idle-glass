@@ -1,5 +1,8 @@
 extends Node2D
 
+const PROCEDURAL_SFX_PATH := "res://src/utils/procedural_sfx.gd"
+var procedural_sfx_script: Script = load(PROCEDURAL_SFX_PATH) as Script
+
 var platform_length := 200.0
 var hatch_height := 5.0
 var hatch_offset := 40.0
@@ -11,6 +14,7 @@ var top_right_hatch: Node2D
 var bottom_left_hatch: Node2D
 var bottom_right_hatch: Node2D
 var bottom_hatch_y: float
+var hatch_height_delta: float = 0.0
 
 var base_top_left_global: PackedVector2Array
 var base_top_right_global: PackedVector2Array
@@ -21,6 +25,8 @@ var leg_top_y: float = 0.0
 
 var rest_y: float
 var button_initialized := false
+var button_was_pressed: bool = false
+var button_sfx_player: AudioStreamPlayer2D = null
 var scoring_zone: Area2D
 var pull_zone: Area2D
 var hatch_speed_multiplier: float = 1.0
@@ -44,7 +50,7 @@ func _ready() -> void:
 
     var leg_height := max_y - min_y
     var top_hatch_y := min_y + leg_height * 0.125
-    bottom_hatch_y = min_y + leg_height * 0.875
+    bottom_hatch_y = min_y + leg_height * 0.875 + hatch_height_delta
     leg_top_y = min_y
 
     var far_leg: StaticBody2D = leg.duplicate() as StaticBody2D
@@ -122,6 +128,11 @@ func _ready() -> void:
     bottom_left_hatch.name = "BottomLeftHatch"
     bottom_right_hatch = build_hatch(false, bottom_hatch_y)
     bottom_right_hatch.name = "BottomRightHatch"
+
+    button_sfx_player = AudioStreamPlayer2D.new()
+    button_sfx_player.name = "ButtonSfxPlayer"
+    button_sfx_player.volume_db = -9.5
+    add_child(button_sfx_player)
 
     scoring_zone = create_scoring_zone()
     scoring_zone.monitoring = false
@@ -237,7 +248,14 @@ func _physics_process(delta: float) -> void:
     var rest_x: float = float(button.get_meta("rest_x"))
     button.position = Vector2(rest_x, new_y)
 
-    if is_button_pressed() and not animating:
+    var pressed_now: bool = is_button_pressed()
+    if pressed_now and not button_was_pressed:
+        _play_button_click_down()
+    elif not pressed_now and button_was_pressed:
+        _play_button_click_up()
+    button_was_pressed = pressed_now
+
+    if pressed_now and not animating:
         toggle_all_hatches()
 
     var active_pull_zone: Area2D = get_node("PullZone") as Area2D
@@ -249,6 +267,28 @@ func _physics_process(delta: float) -> void:
 func is_button_pressed() -> bool:
     var button: AnimatableBody2D = get_node("ButtonShaft") as AnimatableBody2D
     return button.position.y > rest_y + 1
+
+
+func _sfx_call(method_name: String, args: Array) -> Variant:
+    if procedural_sfx_script == null:
+        return null
+    return procedural_sfx_script.callv(method_name, args)
+
+
+func _play_button_click_down() -> void:
+    if button_sfx_player == null:
+        return
+    button_sfx_player.global_position = (get_node("ButtonShaft") as Node2D).global_position
+    button_sfx_player.stream = _sfx_call("get_ui_click_down_stream", []) as AudioStream
+    button_sfx_player.play()
+
+
+func _play_button_click_up() -> void:
+    if button_sfx_player == null:
+        return
+    button_sfx_player.global_position = (get_node("ButtonShaft") as Node2D).global_position
+    button_sfx_player.stream = _sfx_call("get_ui_click_up_stream", []) as AudioStream
+    button_sfx_player.play()
 
 
 func build_hatch(is_left: bool, y_offset: float) -> Node2D:
@@ -314,6 +354,7 @@ func toggle_all_hatches() -> void:
         return
     animating = true
 
+    _play_hatch_group_sfx([top_left_hatch, top_right_hatch], false)
     await tween_hatches_parallel(
         [top_left_hatch, top_right_hatch],
         [true, false],
@@ -322,6 +363,7 @@ func toggle_all_hatches() -> void:
         0.5
     )
 
+    _play_hatch_group_sfx([bottom_left_hatch, bottom_right_hatch], true)
     await tween_hatches_parallel(
         [bottom_left_hatch, bottom_right_hatch],
         [true, false],
@@ -333,6 +375,7 @@ func toggle_all_hatches() -> void:
     scoring_zone.monitoring = true
     await get_tree().create_timer(2.0 / max(hatch_speed_multiplier, 0.1)).timeout
 
+    _play_hatch_group_sfx([bottom_left_hatch, bottom_right_hatch], false)
     await tween_hatches_parallel(
         [bottom_left_hatch, bottom_right_hatch],
         [true, false],
@@ -344,6 +387,7 @@ func toggle_all_hatches() -> void:
     scoring_zone.monitoring = false
     update_scoreboard()
 
+    _play_hatch_group_sfx([top_left_hatch, top_right_hatch], true)
     await tween_hatches_parallel(
         [top_left_hatch, top_right_hatch],
         [true, false],
@@ -354,6 +398,12 @@ func toggle_all_hatches() -> void:
 
     await get_tree().create_timer(2.0 / max(hatch_speed_multiplier, 0.1)).timeout
     animating = false
+
+
+func _play_hatch_group_sfx(hatches: Array, opening: bool) -> void:
+    for hatch in hatches:
+        if hatch is Node2D:
+            _sfx_call("play_hatch_motion_at", [self, (hatch as Node2D).global_position, opening])
 
 
 func animate_hatch(progress: float, hatch_node: Node2D, is_left: bool, opening: bool, base: PackedVector2Array) -> void:
@@ -458,3 +508,19 @@ func set_platform_length(length_value: float) -> void:
     update()
 
 
+
+
+func set_hatch_height_delta(delta_value: float) -> void:
+    hatch_height_delta = max(0.0, delta_value)
+    var leg: StaticBody2D = %Leg
+    var leg_col: CollisionPolygon2D = leg.get_node("CollisionPolygon2D") as CollisionPolygon2D
+
+    var min_y := INF
+    var max_y := -INF
+    for point in leg_col.polygon:
+        min_y = min(min_y, point.y)
+        max_y = max(max_y, point.y)
+
+    var leg_height := max_y - min_y
+    bottom_hatch_y = min_y + leg_height * 0.875 + hatch_height_delta
+    update()

@@ -41,6 +41,9 @@ func _physics_process(delta: float) -> void:
 	if impact_cooldown_remaining > 0.0:
 		impact_cooldown_remaining = max(0.0, impact_cooldown_remaining - delta)
 
+	_sync_meshes()
+	_update_shader_parameters()
+
 func _configure_audio() -> void:
 	impact_player = AudioStreamPlayer2D.new()
 	impact_player.max_polyphony = 1
@@ -54,6 +57,26 @@ func _configure_physics_material() -> void:
 	mat.rough = false
 	physics_material_override = mat
 
+func _sync_meshes() -> void:
+	for child in get_children():
+		if child is MeshInstance2D and child.name.begins_with("InnerMeshInstance_"):
+			inner_mesh = child
+		elif child is MeshInstance2D and child.name.begins_with("BorderMeshInstance_"):
+			border_mesh = child
+
+func _update_shader_parameters() -> void:
+	var speed: float = linear_velocity.length()
+	var motion_factor: float = clampf(speed / 4000.0, 0.0, 0.25)
+	var screen_light_dir := Vector2(1, 1).normalized()
+
+	if border_mesh and border_mesh.material is ShaderMaterial:
+		var bmat := border_mesh.material as ShaderMaterial
+		bmat.set_shader_parameter("motion_factor", motion_factor)
+		bmat.set_shader_parameter("light_dir", screen_light_dir.rotated(-border_mesh.global_rotation))
+
+	if inner_mesh and inner_mesh.material is ShaderMaterial:
+		var mat := inner_mesh.material as ShaderMaterial
+		mat.set_shader_parameter("light_dir", screen_light_dir.rotated(-inner_mesh.global_rotation))
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if is_being_held:
@@ -75,29 +98,6 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		angular_damp_mode = RigidBody2D.DAMP_MODE_COMBINE
 		linear_damp = 0.1
 		angular_damp = 0.1
-	
-	var speed := linear_velocity.length()
-	var motion_factor = clamp(speed / 4000.0, 0.0, 0.25)
-	
-	for child in get_children():
-		if child is MeshInstance2D and child.name.begins_with("InnerMeshInstance_"):
-			inner_mesh = child
-		elif child is MeshInstance2D and child.name.begins_with("BorderMeshInstance_"):
-			border_mesh = child
-	if border_mesh and border_mesh.material is ShaderMaterial:
-		var bmat := border_mesh.material as ShaderMaterial
-		bmat.set_shader_parameter("motion_factor", motion_factor)
-		bmat.set_shader_parameter("light_dir", Vector2(1, -1).normalized())
-		
-	if inner_mesh and inner_mesh.material is ShaderMaterial:
-		var mat := inner_mesh.material as ShaderMaterial
-		var canvas_xform := get_viewport().get_canvas_transform()
-		var screen_pos := canvas_xform * inner_mesh.global_position
-		var vp_size: Vector2 = get_viewport().size
-		var screen_uv := screen_pos / vp_size
-		mat.set_shader_parameter("object_screen_pos", screen_uv)
-
-
 func get_color_profile() -> ColorProfile:
 	return color_profile
 
@@ -190,3 +190,4 @@ func _on_body_entered(_body: Node) -> void:
 	impact_player.pitch_scale = lerpf(0.98, 1.03, intensity)
 	impact_player.stream = ProceduralSfx.get_fragment_impact_stream(int(color_name), intensity)
 	impact_player.play()
+

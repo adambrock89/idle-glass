@@ -18,14 +18,14 @@ func _physics_process(_delta: float) -> void:
 	last_speed = linear_velocity.length()
 
 	var motion_factor = clamp(last_speed / 4000.0, 0.0, 0.25)
-	var light := Vector2(1, -1).normalized()
+	var screen_light_dir := Vector2(1, 1).normalized()
 
 	for child in get_children():
 		if child is MeshInstance2D and child.name.begins_with("BorderMeshInstance_"):
 			var mat := child.material as ShaderMaterial
 			if mat:
 				mat.set_shader_parameter("motion_factor", motion_factor)
-				mat.set_shader_parameter("light_dir", light)
+				mat.set_shader_parameter("light_dir", screen_light_dir.rotated(-child.global_rotation))
 
 
 

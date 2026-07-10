@@ -32,12 +32,12 @@ var scoreboard_colors: Dictionary = {
 }
 
 var scores: Dictionary = {
-	"red": 2000.0,
-	"orange": 2000.0,
-	"yellow": 2000.0,
-	"green": 2000.0,
-	"blue": 2000.0,
-	"purple": 2000.0
+	"red": 200.0,
+	"orange": 200.0,
+	"yellow": 200.0,
+	"green": 200.0,
+	"blue": 200.0,
+	"purple": 200.0
 }
 
 var value_multiplier: Dictionary = {
@@ -371,28 +371,34 @@ func _apply_set_effect(target: String, value: Variant) -> void:
 
 	match target:
 		"spawn_speed":
-			if fragment_manager != null and fragment_manager.has_method("set_spawn_speed_multiplier"):
+			if fragment_manager != null and fragment_manager.has_method("set_spawn_speed_multiplier"):	
 				fragment_manager.call("set_spawn_speed_multiplier", float(value))
 		"hatch_speed":
-			if platform != null and platform.has_method("set_hatch_speed_multiplier"):
+			if platform != null and platform.has_method("set_hatch_speed_multiplier"):	
 				platform.call("set_hatch_speed_multiplier", float(value))
+		"hatch_height_delta":
+			if platform != null and platform.has_method("set_hatch_height_delta"):	
+				platform.call("set_hatch_height_delta", float(value))
 		"platform_length":
-			if platform != null and platform.has_method("set_platform_length"):
+			if platform != null and platform.has_method("set_platform_length"):	
 				platform.call("set_platform_length", float(value))
 		"max_tier":
-			if fragment_manager != null and fragment_manager.has_method("set_max_tier"):
+			if fragment_manager != null and fragment_manager.has_method("set_max_tier"):	
 				fragment_manager.call("set_max_tier", int(value))
 			tier_two_unlocked = tier_two_unlocked or int(value) >= 2
 			_update_tier_two_entry_visibility()
 		"tier_random_enabled":
-			if fragment_manager != null and fragment_manager.has_method("set_tier_randomization"):
+			if fragment_manager != null and fragment_manager.has_method("set_tier_randomization"):	
 				fragment_manager.call("set_tier_randomization", bool(value))
 		"pull_strength_multiplier":
-			if fragment_manager != null and fragment_manager.has_method("set_pull_strength_multiplier"):
+			if fragment_manager != null and fragment_manager.has_method("set_pull_strength_multiplier"):	
 				fragment_manager.call("set_pull_strength_multiplier", float(value))
 		"grab_radius":
-			if fragment_manager != null and fragment_manager.has_method("set_grab_radius"):
+			if fragment_manager != null and fragment_manager.has_method("set_grab_radius"):	
 				fragment_manager.call("set_grab_radius", float(value))
+		"tier_two_probability":
+			if fragment_manager != null and fragment_manager.has_method("set_tier_two_probability"):	
+				fragment_manager.call("set_tier_two_probability", float(value))
 		"modifier_lots_shapes_per_shape":
 			modifier_lots_shapes_per_shape = float(value)
 		"modifier_all_same_color_mult":
@@ -400,7 +406,7 @@ func _apply_set_effect(target: String, value: Variant) -> void:
 		"modifier_rainbow_mult":
 			modifier_rainbow_mult = float(value)
 		_:
-			if target.begins_with("strength_") and fragment_manager != null and fragment_manager.has_method("set_color_strength"):
+			if target.begins_with("strength_") and fragment_manager != null and fragment_manager.has_method("set_color_strength"):	
 				var color_name: String = target.replace("strength_", "")
 				fragment_manager.call("set_color_strength", color_name, float(value))
 

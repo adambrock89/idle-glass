@@ -9,6 +9,10 @@ const BREAK_LEVELS: Array[float] = [0.3, 0.65, 1.0]
 static var _impact_stream_cache: Dictionary = {}
 static var _break_stream_cache: Dictionary = {}
 static var _ui_click_stream: AudioStreamWAV = null
+static var _ui_click_down_stream: AudioStreamWAV = null
+static var _ui_click_up_stream: AudioStreamWAV = null
+static var _hatch_open_stream: AudioStreamWAV = null
+static var _hatch_close_stream: AudioStreamWAV = null
 static var _is_primed: bool = false
 
 static func prime_cache(color_count: int = 12) -> void:
@@ -24,7 +28,11 @@ static func prime_cache(color_count: int = 12) -> void:
 		var break_key := _make_break_key(level)
 		_break_stream_cache[break_key] = create_container_break_stream(level)
 
-	_ui_click_stream = create_ui_click_stream()
+	_ui_click_down_stream = create_ui_click_down_stream()
+	_ui_click_up_stream = create_ui_click_up_stream()
+	_ui_click_stream = _ui_click_up_stream
+	_hatch_open_stream = create_hatch_open_stream()
+	_hatch_close_stream = create_hatch_close_stream()
 
 	_is_primed = true
 
@@ -46,6 +54,26 @@ static func get_ui_click_stream() -> AudioStreamWAV:
 	if not _is_primed:
 		prime_cache()
 	return _ui_click_stream
+
+static func get_ui_click_down_stream() -> AudioStreamWAV:
+	if not _is_primed:
+		prime_cache()
+	return _ui_click_down_stream
+
+static func get_ui_click_up_stream() -> AudioStreamWAV:
+	if not _is_primed:
+		prime_cache()
+	return _ui_click_up_stream
+
+static func get_hatch_open_stream() -> AudioStreamWAV:
+	if not _is_primed:
+		prime_cache()
+	return _hatch_open_stream
+
+static func get_hatch_close_stream() -> AudioStreamWAV:
+	if not _is_primed:
+		prime_cache()
+	return _hatch_close_stream
 
 static func create_fragment_impact_stream(color_name: int, impact_strength: float = 0.5) -> AudioStreamWAV:
 	var duration: float = lerpf(0.07, 0.13, clampf(impact_strength, 0.0, 1.0))
@@ -92,7 +120,28 @@ static func create_container_break_stream(impact_strength: float = 1.0) -> Audio
 	return _build_stream(data)
 
 static func create_ui_click_stream() -> AudioStreamWAV:
-	var duration: float = 0.08
+	return create_ui_click_up_stream()
+
+static func create_ui_click_down_stream() -> AudioStreamWAV:
+	var duration: float = 0.06
+	var sample_count := int(float(SAMPLE_RATE) * duration)
+	var data := PackedByteArray()
+	data.resize(sample_count * 2)
+
+	for i in range(sample_count):
+		var t := float(i) / float(SAMPLE_RATE)
+		var attack: float = minf(t * 360.0, 1.0)
+		var envelope: float = attack * exp(-44.0 * t) * 0.42
+		var thunk: float = sin(TAU * 190.0 * t)
+		var click: float = sin(TAU * 380.0 * t + 0.2)
+		var texture: float = (randf() * 2.0 - 1.0) * 0.02 * exp(-64.0 * t)
+		var sample: float = ((thunk * 0.62) + (click * 0.28) + texture) * envelope
+		_write_pcm16_sample(data, i * 2, sample)
+
+	return _build_stream(data)
+
+static func create_ui_click_up_stream() -> AudioStreamWAV:
+	var duration: float = 0.09
 	var sample_count := int(float(SAMPLE_RATE) * duration)
 	var data := PackedByteArray()
 	data.resize(sample_count * 2)
@@ -109,6 +158,41 @@ static func create_ui_click_stream() -> AudioStreamWAV:
 
 	return _build_stream(data)
 
+static func create_hatch_open_stream() -> AudioStreamWAV:
+	var duration: float = 0.14
+	var sample_count := int(float(SAMPLE_RATE) * duration)
+	var data := PackedByteArray()
+	data.resize(sample_count * 2)
+
+	for i in range(sample_count):
+		var t := float(i) / float(SAMPLE_RATE)
+		var attack: float = minf(t * 140.0, 1.0)
+		var envelope: float = attack * exp(-12.0 * t) * 0.34
+		var scrape: float = sin(TAU * 240.0 * t)
+		var ring: float = sin(TAU * 520.0 * t + 0.18)
+		var air: float = (randf() * 2.0 - 1.0) * 0.03 * exp(-20.0 * t)
+		var sample: float = ((scrape * 0.58) + (ring * 0.22) + air) * envelope
+		_write_pcm16_sample(data, i * 2, sample)
+
+	return _build_stream(data)
+
+static func create_hatch_close_stream() -> AudioStreamWAV:
+	var duration: float = 0.12
+	var sample_count := int(float(SAMPLE_RATE) * duration)
+	var data := PackedByteArray()
+	data.resize(sample_count * 2)
+
+	for i in range(sample_count):
+		var t := float(i) / float(SAMPLE_RATE)
+		var attack: float = minf(t * 300.0, 1.0)
+		var envelope: float = attack * exp(-20.0 * t) * 0.36
+		var thud: float = sin(TAU * 160.0 * t)
+		var click: float = sin(TAU * 780.0 * t + 0.31)
+		var sample: float = ((thud * 0.64) + (click * 0.2)) * envelope
+		_write_pcm16_sample(data, i * 2, sample)
+
+	return _build_stream(data)
+
 static func play_break_at(root: Node, position: Vector2, impact_strength: float = 1.0) -> void:
 	if root == null:
 		return
@@ -117,6 +201,18 @@ static func play_break_at(root: Node, position: Vector2, impact_strength: float 
 	player.stream = get_container_break_stream(impact_strength)
 	player.global_position = position
 	player.volume_db = lerpf(-12.0, -6.0, clampf(impact_strength, 0.0, 1.0))
+	root.add_child(player)
+	player.finished.connect(player.queue_free)
+	player.play()
+
+static func play_hatch_motion_at(root: Node, position: Vector2, opening: bool) -> void:
+	if root == null:
+		return
+
+	var player := AudioStreamPlayer2D.new()
+	player.stream = get_hatch_open_stream() if opening else get_hatch_close_stream()
+	player.global_position = position
+	player.volume_db = -13.0 if opening else -11.5
 	root.add_child(player)
 	player.finished.connect(player.queue_free)
 	player.play()

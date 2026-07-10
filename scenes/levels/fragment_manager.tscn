@@ -10,9 +10,13 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hwl8a"]
 shader = ExtResource("2_srsae")
-shader_parameter/tint_color = Vector4(1, 1, 1, 0.35)
+shader_parameter/tint_color = Vector4(1, 1, 1, 0.75)
+shader_parameter/tint_intensity = 3.2
+shader_parameter/opacity_multiplier = 1.35
+shader_parameter/glare_intensity = 2.6
 shader_parameter/light_dir = Vector2(1, -1)
-shader_parameter/object_screen_pos = Vector2(0, 0)
+shader_parameter/face_count = 6.0
+shader_parameter/bevel_width = 0.3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qxbly"]
 shader = ExtResource("6_6ke61")
@@ -107,3 +111,6 @@ mouse_filter = 2
 position = Vector2(959, 538)
 
 [node name="Shop" parent="." instance=ExtResource("7_srsae")]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(601, 362, 533, 492, 714, 520, 784, 367)

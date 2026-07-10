@@ -303,8 +303,8 @@ func _get_base_value_text(effect: Dictionary) -> String:
                 return "x1"
             return "x1"
         "set":
-            if target.begins_with("strength_"):
-                return "7.0"
+            if target.begins_with("strength_"): 
+                return "6.5"
             match target:
                 "spawn_speed":
                     return "x1"

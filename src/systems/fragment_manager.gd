@@ -13,10 +13,13 @@ var spawn_timer: Timer
 var generation_enabled: bool = true
 var max_tier: int = 1
 var randomize_tier: bool = false
+var tier_two_probability: float = 0.2
 
 var base_pull_strength: float = 5.0
 var pull_strength_multiplier: float = 1.0
 var grab_radius: float = 0.0
+var unlocked_grab_radii: Array[float] = [0.0]
+var active_grab_radius_index: int = 0
 
 var METAL_TYPES := {
 	"copper": 0,
@@ -52,16 +55,16 @@ var tertiary_colors: Array[ColorProfile.ColorName] = [
 	ColorProfile.ColorName.PURPLE_RED
 ]
 
-const BASE_COLOR_STRENGTH: float = 7.0
+const BASE_COLOR_STRENGTH: float = 6.5
 const STRENGTH_VISIBILITY_MULTIPLIER: float = 0.75
 
 var color_strength: Dictionary = {
-	"red": 7.0,
-	"orange": 7.0,
-	"yellow": 7.0,
-	"green": 7.0,
-	"blue": 7.0,
-	"purple": 7.0
+	"red": BASE_COLOR_STRENGTH,
+	"orange": BASE_COLOR_STRENGTH,
+	"yellow": BASE_COLOR_STRENGTH,
+	"green": BASE_COLOR_STRENGTH,
+	"blue": BASE_COLOR_STRENGTH,
+	"purple": BASE_COLOR_STRENGTH
 }
 
 var held_object: Fragment = null
@@ -134,6 +137,14 @@ func _update_spawn_timer_wait_time() -> void:
 		spawn_timer.wait_time = max(0.1, effective)
 
 func _unhandled_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			_adjust_grab_radius_selection(1)
+			return
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			_adjust_grab_radius_selection(-1)
+			return
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		_begin_grab(get_global_mouse_position())
 
@@ -213,7 +224,7 @@ func build_clusters() -> void:
 	var angle_offset := 0
 	var tier: int = max_tier
 	if randomize_tier and max_tier > 1:
-		tier = randi_range(1, max_tier)
+		tier = _roll_random_tier()
 
 	for color in color_list:
 		if color in primary_colors:
@@ -368,11 +379,12 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 
 	var mat := ShaderMaterial.new()
 	mat.shader = preload("res://assets/shaders/glass_fragment.gdshader")
-	mat.set_shader_parameter("tint_color", cp.get_color_code())
-	mat.set_shader_parameter("object_rotation", inner.rotation)
+	var tint_color := cp.get_color_code()
+	tint_color.a = 0.35
+	mat.set_shader_parameter("tint_color", tint_color)
+	mat.set_shader_parameter("face_count", float(points.size()))
 
 	inner.material = mat
-
 	var collision := CollisionPolygon2D.new()
 	collision.name = "CollisionPolygon2D_%s" % str(color_name)
 
@@ -564,7 +576,47 @@ func set_pull_strength_multiplier(multiplier: float) -> void:
 	pull_strength_multiplier = max(0.1, multiplier)
 
 func set_grab_radius(radius: float) -> void:
-	grab_radius = max(0.0, radius)
+	var clamped_radius: float = max(0.0, radius)
+	var already_unlocked := false
+	for unlocked in unlocked_grab_radii:
+		if is_equal_approx(unlocked, clamped_radius):
+			already_unlocked = true
+			break
+	if not already_unlocked:
+		unlocked_grab_radii.append(clamped_radius)
+
+	active_grab_radius_index = unlocked_grab_radii.size() - 1
+	_apply_active_grab_radius()
+
+func set_tier_two_probability(probability: float) -> void:
+	tier_two_probability = clamp(probability, 0.0, 1.0)
+
+func _roll_random_tier() -> int:
+	if max_tier <= 1:
+		return 1
+
+	if randf() <= tier_two_probability:
+		return 2
+
+	if max_tier == 2:
+		return 1
+
+	var fallback_tiers: Array[int] = [1, 3]
+	return fallback_tiers[randi() % fallback_tiers.size()]
+
+func _adjust_grab_radius_selection(direction: int) -> void:
+	if unlocked_grab_radii.size() <= 1:
+		return
+
+	active_grab_radius_index = clamp(active_grab_radius_index + direction, 0, unlocked_grab_radii.size() - 1)
+	_apply_active_grab_radius()
+
+func _apply_active_grab_radius() -> void:
+	if unlocked_grab_radii.is_empty():
+		unlocked_grab_radii = [0.0]
+		active_grab_radius_index = 0
+
+	grab_radius = max(0.0, unlocked_grab_radii[active_grab_radius_index])
 	if grab_indicator != null:
 		grab_indicator.radius = grab_radius
 		grab_indicator.queue_redraw()

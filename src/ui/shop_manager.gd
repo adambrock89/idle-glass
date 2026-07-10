@@ -153,6 +153,9 @@ func refresh_list() -> void:
 
 		var level_data: Dictionary = levels[lvl_idx] as Dictionary
 
+		if bool(series.get("requires_tier_two", false)) and (scoreboard == null or not bool(scoreboard.tier_two_unlocked)):
+			continue
+
 		# Unlock rules: if cost contains secondary color and player has none, skip
 		var costs: Dictionary = level_data.get("cost", {}) as Dictionary
 		var locked: bool = false

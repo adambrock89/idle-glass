@@ -1,37 +1,69 @@
 shader_type canvas_item;
 
-uniform vec4 tint_color = vec4(1.0, 1.0, 1.0, 0.75);
+uniform vec4 tint_color = vec4(1.0, 1.0, 1.0, 0.9);
+uniform float tint_intensity = 4.8;
+uniform float opacity_multiplier = 1.35;
+uniform float glare_intensity = 9.0;
 uniform vec2 light_dir = vec2(1.0, -1.0);
 uniform sampler2D screen_tex : hint_screen_texture;
+uniform float face_count = 6.0;
+uniform float bevel_width = 0.30;
 
-// Object center in SCREEN_UV space (set from GDScript)
-uniform vec2 object_screen_pos; // e.g. (0..1, 0..1)
+float hash11(float x) {
+    return fract(sin(x * 57.31) * 43758.5453);
+}
 
 void fragment() {
+    vec4 polygon_color = COLOR;
+    vec3 dynamic_tint = polygon_color.rgb * tint_color.rgb;
+
+    float base_alpha = tint_color.a * polygon_color.a;
+    float glass_alpha = clamp(base_alpha * opacity_multiplier, 0.0, 1.0);
+    float tint_strength = max(tint_intensity, 0.0);
+    float glare_strength = max(glare_intensity, 0.0);
+
     vec3 bg = texture(screen_tex, SCREEN_UV).rgb;
-    vec3 col = mix(bg, tint_color.rgb, tint_color.a);
+    float tint_blend = clamp(glass_alpha * (1.7 + tint_strength), 0.0, 1.0);
+    vec3 col = mix(bg, dynamic_tint, tint_blend);
 
-    // Position relative to object center, in screen space
-    vec2 rel = SCREEN_UV - object_screen_pos;
+    vec2 local = UV * 2.0 - 1.0;
+    float radius = clamp(length(local), 0.0, 1.0);
 
-    // Rim lighting around object center
-    float fresnel = pow(1.0 - clamp(length(rel) * 2.0, 0.0, 1.0), 3.0);
+    float safe_faces = max(face_count, 3.0);
+    float face_step = TAU / safe_faces;
+    float angle = atan(local.y, local.x);
+    float sector = floor((angle + PI) / face_step);
+    float face_angle = (sector + 0.5) * face_step - PI;
 
-    // Fixed glare: top-right relative to screen
-    vec2 glare_offset = vec2(0.2, -0.2); // tweak for taste
-    vec2 glare_vec = normalize(rel - glare_offset);
-    float glare = dot(glare_vec, normalize(light_dir));
-    glare = pow(max(glare, 0.0), 6.0);
+    vec2 face_dir = vec2(cos(face_angle), sin(face_angle));
+    float ndl = dot(normalize(light_dir), face_dir) * 0.5 + 0.5;
 
-    // Chromatic edge shift
-    float edge = fresnel * 0.4;
-    col.r += edge * 0.15;
-    col.g += edge * 0.10;
-    col.b += edge * 0.20;
+    float face_tint = mix(0.85, 1.24, ndl);
+    face_tint *= mix(0.94, 1.08, hash11(sector + 1.0));
 
-    // Combine
-    col += glare * 0.4;
-    col += fresnel * 0.2;
+    float inner = clamp(1.0 - bevel_width, 0.0, 0.98);
+    float bevel_mask = smoothstep(inner, 1.0, radius);
+    col *= mix(1.0, face_tint, bevel_mask);
 
-    COLOR = vec4(col, tint_color.a);
+    float fresnel = pow(radius, 2.2);
+    float spec = pow(ndl, 24.0) * bevel_mask;
+    float glare_core = pow(ndl, 48.0) * bevel_mask;
+
+    float edge = fresnel * bevel_mask * 0.55;
+    col.r += edge * 0.18;
+    col.g += edge * 0.12;
+    col.b += edge * 0.24;
+
+    float highlight_tint = 0.26 + tint_strength * 0.26;
+    float fresnel_tint = 0.18 + tint_strength * 0.18;
+    col += spec * (vec3(0.12) + dynamic_tint * highlight_tint) * glare_strength;
+    col += fresnel * (vec3(0.04) + dynamic_tint * fresnel_tint) * (0.55 + glare_strength * 0.45);
+
+    // Strong white-hot glare lobe to push that glass sparkle.
+    col += vec3(1.0) * glare_core * (0.22 + glare_strength * 0.28);
+
+    float reinject = clamp(glass_alpha * (0.55 + tint_strength * 0.28), 0.0, 1.0);
+    col = mix(col, dynamic_tint, reinject);
+
+    COLOR = vec4(col, glass_alpha);
 }

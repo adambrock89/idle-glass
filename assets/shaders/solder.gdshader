@@ -7,7 +7,7 @@ uniform int metal_type = 0;
 uniform int bevel_mode = 0;
 
 // Fixed top-right light in screen/world space
-uniform vec2 light_dir = vec2(1.0, -1.0);
+uniform vec2 light_dir = vec2(-1.0, 1.0);
 
 // Motion factor (0..0.25), used for animation only
 uniform float motion_factor = 0.0;
@@ -113,24 +113,36 @@ void fragment() {
     vec3 base_color = get_metal_color(metal_type, fresnel, motion_factor, uv);
     float sparkle_strength = get_sparkle_strength(metal_type);
 
-    float bevel = get_bevel_factor(uv.y, bevel_mode);
+    // Distance from center line of the strip: 0 at center, 1 at inner/outer edges.
+    float edge_t = clamp(abs(uv.y - 0.5) * 2.0, 0.0, 1.0);
+    float bevel = get_bevel_factor(edge_t, bevel_mode);
 
     vec2 dir = normalize(light_dir);
 
-    vec2 bevel_normal = normalize(NORMAL.xy + vec2(0.0, bevel * 0.3));
+    // Use the perimeter U as ring angle so each side of the fragment gets its own facing.
+    float angle = uv.x * TAU;
+    vec2 ring_normal = vec2(cos(angle), sin(angle));
 
-    float ndl = dot(bevel_normal, dir);
-    ndl = clamp(ndl, 0.0, 0.45);
+    // Inner and outer bevel faces point in opposite directions.
+    float side_sign = (uv.y < 0.5) ? -1.0 : 1.0;
+    vec2 bevel_normal = normalize(ring_normal * side_sign);
 
-    float spec = ndl * 0.7;
+    float ndl_signed = dot(bevel_normal, dir);
+    float ndl_lit = max(ndl_signed, 0.0);
+    float ndl_shadow = max(-ndl_signed, 0.0);
+
+    float spec = pow(ndl_lit, 7.0) * bevel;
+    float shadow = ndl_shadow * bevel;
 
     float sparkle = microfacet(uv, motion_factor);
     float aniso = anisotropic(uv, dir);
 
     vec3 color = base_color;
 
-    color *= 0.85 + bevel * 0.15;
-    color += spec * 0.8;
+    color *= 0.80 + bevel * 0.12;
+    color *= 1.0 + (ndl_signed * bevel) * 0.30;
+    color += spec * 0.75;
+    color -= shadow * 0.10;
     color += aniso * 0.10;
     color = mix(color, color + sparkle, sparkle_strength * 0.12);
 

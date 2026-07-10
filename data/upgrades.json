@@ -19,7 +19,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "red":  23
+                                        "red":  29
                                     },
                            "effect_text":  "Red Value x1.44",
                            "effect":  {
@@ -31,7 +31,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "red":  53
+                                        "red":  78
                                     },
                            "effect_text":  "Red Value x1.73",
                            "effect":  {
@@ -43,7 +43,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "red":  120
+                                        "red":  195
                                     },
                            "effect_text":  "Red Value x2.07",
                            "effect":  {
@@ -55,7 +55,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "red":  275
+                                        "red":  483
                                     },
                            "effect_text":  "Red Value x2.49",
                            "effect":  {
@@ -67,7 +67,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "red":  629
+                                        "red":  1178
                                     },
                            "effect_text":  "Red Value x2.99",
                            "effect":  {
@@ -79,7 +79,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "red":  1440
+                                        "red":  2845
                                     },
                            "effect_text":  "Red Value x3.58",
                            "effect":  {
@@ -91,13 +91,116 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "red":  3297
+                                        "red":  6827
                                     },
                            "effect_text":  "Red Value x4.3",
                            "effect":  {
                                           "type":  "mult",
                                           "target":  "red_value",
                                           "multiplier":  4.3
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "red_strength",
+        "name":  "Red Strength",
+        "description":  "Increase red geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "red":  13
+                                    },
+                           "effect_text":  "Red Area 7",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  7
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "red":  49
+                                    },
+                           "effect_text":  "Red Area 7.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  7.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "red":  136
+                                    },
+                           "effect_text":  "Red Area 8",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  8
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "red":  345
+                                    },
+                           "effect_text":  "Red Area 8.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  8.5
+                                      }
+                       },
+                       {
+                           "level":  5,
+                           "cost":  {
+                                        "red":  846
+                                    },
+                           "effect_text":  "Red Area 9",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  9
+                                      }
+                       },
+                       {
+                           "level":  6,
+                           "cost":  {
+                                        "red":  2028
+                                    },
+                           "effect_text":  "Red Area 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  7,
+                           "cost":  {
+                                        "red":  4782
+                                    },
+                           "effect_text":  "Red Area 10",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  10
+                                      }
+                       },
+                       {
+                           "level":  8,
+                           "cost":  {
+                                        "red":  11144
+                                    },
+                           "effect_text":  "Red Area 10.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_red",
+                                          "value":  10.5
                                       }
                        }
                    ]
@@ -122,7 +225,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "orange":  23
+                                        "orange":  29
                                     },
                            "effect_text":  "Orange Value x1.44",
                            "effect":  {
@@ -134,7 +237,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "orange":  53
+                                        "orange":  78
                                     },
                            "effect_text":  "Orange Value x1.73",
                            "effect":  {
@@ -146,7 +249,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "orange":  120
+                                        "orange":  195
                                     },
                            "effect_text":  "Orange Value x2.07",
                            "effect":  {
@@ -158,7 +261,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "orange":  275
+                                        "orange":  483
                                     },
                            "effect_text":  "Orange Value x2.49",
                            "effect":  {
@@ -170,7 +273,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "orange":  629
+                                        "orange":  1178
                                     },
                            "effect_text":  "Orange Value x2.99",
                            "effect":  {
@@ -182,7 +285,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "orange":  1440
+                                        "orange":  2845
                                     },
                            "effect_text":  "Orange Value x3.58",
                            "effect":  {
@@ -194,13 +297,116 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "orange":  3297
+                                        "orange":  6827
                                     },
                            "effect_text":  "Orange Value x4.3",
                            "effect":  {
                                           "type":  "mult",
                                           "target":  "orange_value",
                                           "multiplier":  4.3
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "orange_strength",
+        "name":  "Orange Strength",
+        "description":  "Increase orange geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "orange":  13
+                                    },
+                           "effect_text":  "Orange Area 7",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  7
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "orange":  49
+                                    },
+                           "effect_text":  "Orange Area 7.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  7.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "orange":  136
+                                    },
+                           "effect_text":  "Orange Area 8",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  8
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "orange":  345
+                                    },
+                           "effect_text":  "Orange Area 8.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  8.5
+                                      }
+                       },
+                       {
+                           "level":  5,
+                           "cost":  {
+                                        "orange":  846
+                                    },
+                           "effect_text":  "Orange Area 9",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  9
+                                      }
+                       },
+                       {
+                           "level":  6,
+                           "cost":  {
+                                        "orange":  2028
+                                    },
+                           "effect_text":  "Orange Area 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  7,
+                           "cost":  {
+                                        "orange":  4782
+                                    },
+                           "effect_text":  "Orange Area 10",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  10
+                                      }
+                       },
+                       {
+                           "level":  8,
+                           "cost":  {
+                                        "orange":  11144
+                                    },
+                           "effect_text":  "Orange Area 10.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_orange",
+                                          "value":  10.5
                                       }
                        }
                    ]
@@ -225,7 +431,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "yellow":  23
+                                        "yellow":  29
                                     },
                            "effect_text":  "Yellow Value x1.44",
                            "effect":  {
@@ -237,7 +443,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "yellow":  53
+                                        "yellow":  78
                                     },
                            "effect_text":  "Yellow Value x1.73",
                            "effect":  {
@@ -249,7 +455,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "yellow":  120
+                                        "yellow":  195
                                     },
                            "effect_text":  "Yellow Value x2.07",
                            "effect":  {
@@ -261,7 +467,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "yellow":  275
+                                        "yellow":  483
                                     },
                            "effect_text":  "Yellow Value x2.49",
                            "effect":  {
@@ -273,7 +479,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "yellow":  629
+                                        "yellow":  1178
                                     },
                            "effect_text":  "Yellow Value x2.99",
                            "effect":  {
@@ -285,7 +491,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "yellow":  1440
+                                        "yellow":  2845
                                     },
                            "effect_text":  "Yellow Value x3.58",
                            "effect":  {
@@ -297,13 +503,116 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "yellow":  3297
+                                        "yellow":  6827
                                     },
                            "effect_text":  "Yellow Value x4.3",
                            "effect":  {
                                           "type":  "mult",
                                           "target":  "yellow_value",
                                           "multiplier":  4.3
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "yellow_strength",
+        "name":  "Yellow Strength",
+        "description":  "Increase yellow geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "yellow":  13
+                                    },
+                           "effect_text":  "Yellow Area 7",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  7
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "yellow":  49
+                                    },
+                           "effect_text":  "Yellow Area 7.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  7.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "yellow":  136
+                                    },
+                           "effect_text":  "Yellow Area 8",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  8
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "yellow":  345
+                                    },
+                           "effect_text":  "Yellow Area 8.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  8.5
+                                      }
+                       },
+                       {
+                           "level":  5,
+                           "cost":  {
+                                        "yellow":  846
+                                    },
+                           "effect_text":  "Yellow Area 9",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  9
+                                      }
+                       },
+                       {
+                           "level":  6,
+                           "cost":  {
+                                        "yellow":  2028
+                                    },
+                           "effect_text":  "Yellow Area 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  7,
+                           "cost":  {
+                                        "yellow":  4782
+                                    },
+                           "effect_text":  "Yellow Area 10",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  10
+                                      }
+                       },
+                       {
+                           "level":  8,
+                           "cost":  {
+                                        "yellow":  11144
+                                    },
+                           "effect_text":  "Yellow Area 10.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_yellow",
+                                          "value":  10.5
                                       }
                        }
                    ]
@@ -328,7 +637,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "green":  23
+                                        "green":  29
                                     },
                            "effect_text":  "Green Value x1.44",
                            "effect":  {
@@ -340,7 +649,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "green":  53
+                                        "green":  78
                                     },
                            "effect_text":  "Green Value x1.73",
                            "effect":  {
@@ -352,7 +661,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "green":  120
+                                        "green":  195
                                     },
                            "effect_text":  "Green Value x2.07",
                            "effect":  {
@@ -364,7 +673,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "green":  275
+                                        "green":  483
                                     },
                            "effect_text":  "Green Value x2.49",
                            "effect":  {
@@ -376,7 +685,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "green":  629
+                                        "green":  1178
                                     },
                            "effect_text":  "Green Value x2.99",
                            "effect":  {
@@ -388,7 +697,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "green":  1440
+                                        "green":  2845
                                     },
                            "effect_text":  "Green Value x3.58",
                            "effect":  {
@@ -400,13 +709,116 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "green":  3297
+                                        "green":  6827
                                     },
                            "effect_text":  "Green Value x4.3",
                            "effect":  {
                                           "type":  "mult",
                                           "target":  "green_value",
                                           "multiplier":  4.3
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "green_strength",
+        "name":  "Green Strength",
+        "description":  "Increase green geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "green":  13
+                                    },
+                           "effect_text":  "Green Area 7",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  7
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "green":  49
+                                    },
+                           "effect_text":  "Green Area 7.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  7.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "green":  136
+                                    },
+                           "effect_text":  "Green Area 8",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  8
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "green":  345
+                                    },
+                           "effect_text":  "Green Area 8.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  8.5
+                                      }
+                       },
+                       {
+                           "level":  5,
+                           "cost":  {
+                                        "green":  846
+                                    },
+                           "effect_text":  "Green Area 9",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  9
+                                      }
+                       },
+                       {
+                           "level":  6,
+                           "cost":  {
+                                        "green":  2028
+                                    },
+                           "effect_text":  "Green Area 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  7,
+                           "cost":  {
+                                        "green":  4782
+                                    },
+                           "effect_text":  "Green Area 10",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  10
+                                      }
+                       },
+                       {
+                           "level":  8,
+                           "cost":  {
+                                        "green":  11144
+                                    },
+                           "effect_text":  "Green Area 10.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_green",
+                                          "value":  10.5
                                       }
                        }
                    ]
@@ -431,7 +843,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "blue":  23
+                                        "blue":  29
                                     },
                            "effect_text":  "Blue Value x1.44",
                            "effect":  {
@@ -443,7 +855,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "blue":  53
+                                        "blue":  78
                                     },
                            "effect_text":  "Blue Value x1.73",
                            "effect":  {
@@ -455,7 +867,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "blue":  120
+                                        "blue":  195
                                     },
                            "effect_text":  "Blue Value x2.07",
                            "effect":  {
@@ -467,7 +879,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "blue":  275
+                                        "blue":  483
                                     },
                            "effect_text":  "Blue Value x2.49",
                            "effect":  {
@@ -479,7 +891,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "blue":  629
+                                        "blue":  1178
                                     },
                            "effect_text":  "Blue Value x2.99",
                            "effect":  {
@@ -491,7 +903,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "blue":  1440
+                                        "blue":  2845
                                     },
                            "effect_text":  "Blue Value x3.58",
                            "effect":  {
@@ -503,13 +915,116 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "blue":  3297
+                                        "blue":  6827
                                     },
                            "effect_text":  "Blue Value x4.3",
                            "effect":  {
                                           "type":  "mult",
                                           "target":  "blue_value",
                                           "multiplier":  4.3
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "blue_strength",
+        "name":  "Blue Strength",
+        "description":  "Increase blue geometry strength",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "blue":  13
+                                    },
+                           "effect_text":  "Blue Area 7",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  7
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "blue":  49
+                                    },
+                           "effect_text":  "Blue Area 7.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  7.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "blue":  136
+                                    },
+                           "effect_text":  "Blue Area 8",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  8
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "blue":  345
+                                    },
+                           "effect_text":  "Blue Area 8.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  8.5
+                                      }
+                       },
+                       {
+                           "level":  5,
+                           "cost":  {
+                                        "blue":  846
+                                    },
+                           "effect_text":  "Blue Area 9",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  9
+                                      }
+                       },
+                       {
+                           "level":  6,
+                           "cost":  {
+                                        "blue":  2028
+                                    },
+                           "effect_text":  "Blue Area 9.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  9.5
+                                      }
+                       },
+                       {
+                           "level":  7,
+                           "cost":  {
+                                        "blue":  4782
+                                    },
+                           "effect_text":  "Blue Area 10",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  10
+                                      }
+                       },
+                       {
+                           "level":  8,
+                           "cost":  {
+                                        "blue":  11144
+                                    },
+                           "effect_text":  "Blue Area 10.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_blue",
+                                          "value":  10.5
                                       }
                        }
                    ]
@@ -534,7 +1049,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "purple":  23
+                                        "purple":  29
                                     },
                            "effect_text":  "Purple Value x1.44",
                            "effect":  {
@@ -546,7 +1061,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "purple":  53
+                                        "purple":  78
                                     },
                            "effect_text":  "Purple Value x1.73",
                            "effect":  {
@@ -558,7 +1073,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "purple":  120
+                                        "purple":  195
                                     },
                            "effect_text":  "Purple Value x2.07",
                            "effect":  {
@@ -570,7 +1085,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "purple":  275
+                                        "purple":  483
                                     },
                            "effect_text":  "Purple Value x2.49",
                            "effect":  {
@@ -582,7 +1097,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "purple":  629
+                                        "purple":  1178
                                     },
                            "effect_text":  "Purple Value x2.99",
                            "effect":  {
@@ -594,7 +1109,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "purple":  1440
+                                        "purple":  2845
                                     },
                            "effect_text":  "Purple Value x3.58",
                            "effect":  {
@@ -606,528 +1121,13 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "purple":  3297
+                                        "purple":  6827
                                     },
                            "effect_text":  "Purple Value x4.3",
                            "effect":  {
                                           "type":  "mult",
                                           "target":  "purple_value",
                                           "multiplier":  4.3
-                                      }
-                       }
-                   ]
-    },
-    {
-        "id":  "red_strength",
-        "name":  "Red Strength",
-        "description":  "Increase red geometry strength",
-        "levels":  [
-                       {
-                           "level":  1,
-                           "cost":  {
-                                        "red":  13
-                                    },
-                           "effect_text":  "Red strength 8.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_red",
-                                          "value":  8.0
-                                      }
-                       },
-                       {
-                           "level":  2,
-                           "cost":  {
-                                        "red":  32
-                                    },
-                           "effect_text":  "Red strength 9.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_red",
-                                          "value":  9.5
-                                      }
-                       },
-                       {
-                           "level":  3,
-                           "cost":  {
-                                        "red":  70
-                                    },
-                           "effect_text":  "Red strength 11.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_red",
-                                          "value":  11.5
-                                      }
-                       },
-                       {
-                           "level":  4,
-                           "cost":  {
-                                        "red":  150
-                                    },
-                           "effect_text":  "Red strength 14.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_red",
-                                          "value":  14.0
-                                      }
-                       },
-                       {
-                           "level":  5,
-                           "cost":  {
-                                        "red":  322
-                                    },
-                           "effect_text":  "Red strength 17.04",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_red",
-                                          "value":  17.043
-                                      }
-                       },
-                       {
-                           "level":  6,
-                           "cost":  {
-                                        "red":  692
-                                    },
-                           "effect_text":  "Red strength 20.75",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_red",
-                                          "value":  20.747
-                                      }
-                       },
-                       {
-                           "level":  7,
-                           "cost":  {
-                                        "red":  1488
-                                    },
-                           "effect_text":  "Red strength 25.26",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_red",
-                                          "value":  25.256
-                                      }
-                       },
-                       {
-                           "level":  8,
-                           "cost":  {
-                                        "red":  3200
-                                    },
-                           "effect_text":  "Red strength 30.74",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_red",
-                                          "value":  30.745
-                                      }
-                       }
-                   ]
-    },
-    {
-        "id":  "orange_strength",
-        "name":  "Orange Strength",
-        "description":  "Increase orange geometry strength",
-        "levels":  [
-                       {
-                           "level":  1,
-                           "cost":  {
-                                        "orange":  13
-                                    },
-                           "effect_text":  "Orange strength 8.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_orange",
-                                          "value":  8.0
-                                      }
-                       },
-                       {
-                           "level":  2,
-                           "cost":  {
-                                        "orange":  32
-                                    },
-                           "effect_text":  "Orange strength 9.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_orange",
-                                          "value":  9.5
-                                      }
-                       },
-                       {
-                           "level":  3,
-                           "cost":  {
-                                        "orange":  70
-                                    },
-                           "effect_text":  "Orange strength 11.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_orange",
-                                          "value":  11.5
-                                      }
-                       },
-                       {
-                           "level":  4,
-                           "cost":  {
-                                        "orange":  150
-                                    },
-                           "effect_text":  "Orange strength 14.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_orange",
-                                          "value":  14.0
-                                      }
-                       },
-                       {
-                           "level":  5,
-                           "cost":  {
-                                        "orange":  322
-                                    },
-                           "effect_text":  "Orange strength 17.04",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_orange",
-                                          "value":  17.043
-                                      }
-                       },
-                       {
-                           "level":  6,
-                           "cost":  {
-                                        "orange":  692
-                                    },
-                           "effect_text":  "Orange strength 20.75",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_orange",
-                                          "value":  20.747
-                                      }
-                       },
-                       {
-                           "level":  7,
-                           "cost":  {
-                                        "orange":  1488
-                                    },
-                           "effect_text":  "Orange strength 25.26",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_orange",
-                                          "value":  25.256
-                                      }
-                       },
-                       {
-                           "level":  8,
-                           "cost":  {
-                                        "orange":  3200
-                                    },
-                           "effect_text":  "Orange strength 30.74",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_orange",
-                                          "value":  30.745
-                                      }
-                       }
-                   ]
-    },
-    {
-        "id":  "yellow_strength",
-        "name":  "Yellow Strength",
-        "description":  "Increase yellow geometry strength",
-        "levels":  [
-                       {
-                           "level":  1,
-                           "cost":  {
-                                        "yellow":  13
-                                    },
-                           "effect_text":  "Yellow strength 8.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_yellow",
-                                          "value":  8.0
-                                      }
-                       },
-                       {
-                           "level":  2,
-                           "cost":  {
-                                        "yellow":  32
-                                    },
-                           "effect_text":  "Yellow strength 9.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_yellow",
-                                          "value":  9.5
-                                      }
-                       },
-                       {
-                           "level":  3,
-                           "cost":  {
-                                        "yellow":  70
-                                    },
-                           "effect_text":  "Yellow strength 11.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_yellow",
-                                          "value":  11.5
-                                      }
-                       },
-                       {
-                           "level":  4,
-                           "cost":  {
-                                        "yellow":  150
-                                    },
-                           "effect_text":  "Yellow strength 14.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_yellow",
-                                          "value":  14.0
-                                      }
-                       },
-                       {
-                           "level":  5,
-                           "cost":  {
-                                        "yellow":  322
-                                    },
-                           "effect_text":  "Yellow strength 17.04",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_yellow",
-                                          "value":  17.043
-                                      }
-                       },
-                       {
-                           "level":  6,
-                           "cost":  {
-                                        "yellow":  692
-                                    },
-                           "effect_text":  "Yellow strength 20.75",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_yellow",
-                                          "value":  20.747
-                                      }
-                       },
-                       {
-                           "level":  7,
-                           "cost":  {
-                                        "yellow":  1488
-                                    },
-                           "effect_text":  "Yellow strength 25.26",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_yellow",
-                                          "value":  25.256
-                                      }
-                       },
-                       {
-                           "level":  8,
-                           "cost":  {
-                                        "yellow":  3200
-                                    },
-                           "effect_text":  "Yellow strength 30.74",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_yellow",
-                                          "value":  30.745
-                                      }
-                       }
-                   ]
-    },
-    {
-        "id":  "green_strength",
-        "name":  "Green Strength",
-        "description":  "Increase green geometry strength",
-        "levels":  [
-                       {
-                           "level":  1,
-                           "cost":  {
-                                        "green":  13
-                                    },
-                           "effect_text":  "Green strength 8.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_green",
-                                          "value":  8.0
-                                      }
-                       },
-                       {
-                           "level":  2,
-                           "cost":  {
-                                        "green":  32
-                                    },
-                           "effect_text":  "Green strength 9.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_green",
-                                          "value":  9.5
-                                      }
-                       },
-                       {
-                           "level":  3,
-                           "cost":  {
-                                        "green":  70
-                                    },
-                           "effect_text":  "Green strength 11.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_green",
-                                          "value":  11.5
-                                      }
-                       },
-                       {
-                           "level":  4,
-                           "cost":  {
-                                        "green":  150
-                                    },
-                           "effect_text":  "Green strength 14.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_green",
-                                          "value":  14.0
-                                      }
-                       },
-                       {
-                           "level":  5,
-                           "cost":  {
-                                        "green":  322
-                                    },
-                           "effect_text":  "Green strength 17.04",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_green",
-                                          "value":  17.043
-                                      }
-                       },
-                       {
-                           "level":  6,
-                           "cost":  {
-                                        "green":  692
-                                    },
-                           "effect_text":  "Green strength 20.75",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_green",
-                                          "value":  20.747
-                                      }
-                       },
-                       {
-                           "level":  7,
-                           "cost":  {
-                                        "green":  1488
-                                    },
-                           "effect_text":  "Green strength 25.26",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_green",
-                                          "value":  25.256
-                                      }
-                       },
-                       {
-                           "level":  8,
-                           "cost":  {
-                                        "green":  3200
-                                    },
-                           "effect_text":  "Green strength 30.74",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_green",
-                                          "value":  30.745
-                                      }
-                       }
-                   ]
-    },
-    {
-        "id":  "blue_strength",
-        "name":  "Blue Strength",
-        "description":  "Increase blue geometry strength",
-        "levels":  [
-                       {
-                           "level":  1,
-                           "cost":  {
-                                        "blue":  13
-                                    },
-                           "effect_text":  "Blue strength 8.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_blue",
-                                          "value":  8.0
-                                      }
-                       },
-                       {
-                           "level":  2,
-                           "cost":  {
-                                        "blue":  32
-                                    },
-                           "effect_text":  "Blue strength 9.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_blue",
-                                          "value":  9.5
-                                      }
-                       },
-                       {
-                           "level":  3,
-                           "cost":  {
-                                        "blue":  70
-                                    },
-                           "effect_text":  "Blue strength 11.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_blue",
-                                          "value":  11.5
-                                      }
-                       },
-                       {
-                           "level":  4,
-                           "cost":  {
-                                        "blue":  150
-                                    },
-                           "effect_text":  "Blue strength 14.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_blue",
-                                          "value":  14.0
-                                      }
-                       },
-                       {
-                           "level":  5,
-                           "cost":  {
-                                        "blue":  322
-                                    },
-                           "effect_text":  "Blue strength 17.04",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_blue",
-                                          "value":  17.043
-                                      }
-                       },
-                       {
-                           "level":  6,
-                           "cost":  {
-                                        "blue":  692
-                                    },
-                           "effect_text":  "Blue strength 20.75",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_blue",
-                                          "value":  20.747
-                                      }
-                       },
-                       {
-                           "level":  7,
-                           "cost":  {
-                                        "blue":  1488
-                                    },
-                           "effect_text":  "Blue strength 25.26",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_blue",
-                                          "value":  25.256
-                                      }
-                       },
-                       {
-                           "level":  8,
-                           "cost":  {
-                                        "blue":  3200
-                                    },
-                           "effect_text":  "Blue strength 30.74",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_blue",
-                                          "value":  30.745
                                       }
                        }
                    ]
@@ -1142,19 +1142,67 @@
                            "cost":  {
                                         "purple":  13
                                     },
-                           "effect_text":  "Purple strength 8.0",
+                           "effect_text":  "Purple Area 7",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "strength_purple",
-                                          "value":  8.0
+                                          "value":  7
                                       }
                        },
                        {
                            "level":  2,
                            "cost":  {
-                                        "purple":  32
+                                        "purple":  49
                                     },
-                           "effect_text":  "Purple strength 9.5",
+                           "effect_text":  "Purple Area 7.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_purple",
+                                          "value":  7.5
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "purple":  136
+                                    },
+                           "effect_text":  "Purple Area 8",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_purple",
+                                          "value":  8
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "purple":  345
+                                    },
+                           "effect_text":  "Purple Area 8.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_purple",
+                                          "value":  8.5
+                                      }
+                       },
+                       {
+                           "level":  5,
+                           "cost":  {
+                                        "purple":  846
+                                    },
+                           "effect_text":  "Purple Area 9",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "strength_purple",
+                                          "value":  9
+                                      }
+                       },
+                       {
+                           "level":  6,
+                           "cost":  {
+                                        "purple":  2028
+                                    },
+                           "effect_text":  "Purple Area 9.5",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "strength_purple",
@@ -1162,75 +1210,27 @@
                                       }
                        },
                        {
-                           "level":  3,
-                           "cost":  {
-                                        "purple":  70
-                                    },
-                           "effect_text":  "Purple strength 11.5",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_purple",
-                                          "value":  11.5
-                                      }
-                       },
-                       {
-                           "level":  4,
-                           "cost":  {
-                                        "purple":  150
-                                    },
-                           "effect_text":  "Purple strength 14.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_purple",
-                                          "value":  14.0
-                                      }
-                       },
-                       {
-                           "level":  5,
-                           "cost":  {
-                                        "purple":  322
-                                    },
-                           "effect_text":  "Purple strength 17.04",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_purple",
-                                          "value":  17.043
-                                      }
-                       },
-                       {
-                           "level":  6,
-                           "cost":  {
-                                        "purple":  692
-                                    },
-                           "effect_text":  "Purple strength 20.75",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "strength_purple",
-                                          "value":  20.747
-                                      }
-                       },
-                       {
                            "level":  7,
                            "cost":  {
-                                        "purple":  1488
+                                        "purple":  4782
                                     },
-                           "effect_text":  "Purple strength 25.26",
+                           "effect_text":  "Purple Area 10",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "strength_purple",
-                                          "value":  25.256
+                                          "value":  10
                                       }
                        },
                        {
                            "level":  8,
                            "cost":  {
-                                        "purple":  3200
+                                        "purple":  11144
                                     },
-                           "effect_text":  "Purple strength 30.74",
+                           "effect_text":  "Purple Area 10.5",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "strength_purple",
-                                          "value":  30.745
+                                          "value":  10.5
                                       }
                        }
                    ]
@@ -1245,19 +1245,19 @@
                            "cost":  {
                                         "red":  20
                                     },
-                           "effect_text":  "Spawn speed x1.2",
+                           "effect_text":  "Cluster throughput x1.25",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "spawn_speed",
-                                          "value":  1.2
+                                          "value":  1.25
                                       }
                        },
                        {
                            "level":  2,
                            "cost":  {
-                                        "red":  47
+                                        "red":  60
                                     },
-                           "effect_text":  "Spawn speed x1.5",
+                           "effect_text":  "Cluster throughput x1.5",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "spawn_speed",
@@ -1267,73 +1267,73 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "red":  103
+                                        "red":  151
                                     },
-                           "effect_text":  "Spawn speed x1.9",
+                           "effect_text":  "Cluster throughput x1.75",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "spawn_speed",
-                                          "value":  1.9
+                                          "value":  1.75
                                       }
                        },
                        {
                            "level":  4,
                            "cost":  {
-                                        "red":  217
+                                        "red":  353
                                     },
-                           "effect_text":  "Spawn speed x2.4",
+                           "effect_text":  "Cluster throughput x2",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "spawn_speed",
-                                          "value":  2.4
+                                          "value":  2
                                       }
                        },
                        {
                            "level":  5,
                            "cost":  {
-                                        "red":  458
+                                        "red":  804
                                     },
-                           "effect_text":  "Spawn speed x3.03",
+                           "effect_text":  "Cluster throughput x2.25",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "spawn_speed",
-                                          "value":  3.032
+                                          "value":  2.25
                                       }
                        },
                        {
                            "level":  6,
                            "cost":  {
-                                        "red":  967
+                                        "red":  1810
                                     },
-                           "effect_text":  "Spawn speed x3.83",
+                           "effect_text":  "Cluster throughput x2.5",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "spawn_speed",
-                                          "value":  3.83
+                                          "value":  2.5
                                       }
                        },
                        {
                            "level":  7,
                            "cost":  {
-                                        "red":  2042
+                                        "red":  4035
                                     },
-                           "effect_text":  "Spawn speed x4.84",
+                           "effect_text":  "Cluster throughput x2.75",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "spawn_speed",
-                                          "value":  4.838
+                                          "value":  2.75
                                       }
                        },
                        {
                            "level":  8,
                            "cost":  {
-                                        "red":  4313
+                                        "red":  8930
                                     },
-                           "effect_text":  "Spawn speed x6.11",
+                           "effect_text":  "Cluster throughput x3",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "spawn_speed",
-                                          "value":  6.111
+                                          "value":  3
                                       }
                        }
                    ]
@@ -1348,17 +1348,65 @@
                            "cost":  {
                                         "yellow":  20
                                     },
-                           "effect_text":  "Hatch speed x1.25",
+                           "effect_text":  "Hatch speed x1.1",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "hatch_speed",
-                                          "value":  1.25
+                                          "value":  1.1
                                       }
                        },
                        {
                            "level":  2,
                            "cost":  {
-                                        "yellow":  47
+                                        "yellow":  60
+                                    },
+                           "effect_text":  "Hatch speed x1.2",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_speed",
+                                          "value":  1.2
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "yellow":  151
+                                    },
+                           "effect_text":  "Hatch speed x1.3",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_speed",
+                                          "value":  1.3
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "yellow":  353
+                                    },
+                           "effect_text":  "Hatch speed x1.4",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_speed",
+                                          "value":  1.4
+                                      }
+                       },
+                       {
+                           "level":  5,
+                           "cost":  {
+                                        "yellow":  804
+                                    },
+                           "effect_text":  "Hatch speed x1.5",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_speed",
+                                          "value":  1.5
+                                      }
+                       },
+                       {
+                           "level":  6,
+                           "cost":  {
+                                        "yellow":  1810
                                     },
                            "effect_text":  "Hatch speed x1.6",
                            "effect":  {
@@ -1368,75 +1416,27 @@
                                       }
                        },
                        {
-                           "level":  3,
-                           "cost":  {
-                                        "yellow":  103
-                                    },
-                           "effect_text":  "Hatch speed x2.0",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "hatch_speed",
-                                          "value":  2.0
-                                      }
-                       },
-                       {
-                           "level":  4,
-                           "cost":  {
-                                        "yellow":  217
-                                    },
-                           "effect_text":  "Hatch speed x2.6",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "hatch_speed",
-                                          "value":  2.6
-                                      }
-                       },
-                       {
-                           "level":  5,
-                           "cost":  {
-                                        "yellow":  458
-                                    },
-                           "effect_text":  "Hatch speed x3.38",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "hatch_speed",
-                                          "value":  3.38
-                                      }
-                       },
-                       {
-                           "level":  6,
-                           "cost":  {
-                                        "yellow":  967
-                                    },
-                           "effect_text":  "Hatch speed x4.39",
-                           "effect":  {
-                                          "type":  "set",
-                                          "target":  "hatch_speed",
-                                          "value":  4.394
-                                      }
-                       },
-                       {
                            "level":  7,
                            "cost":  {
-                                        "yellow":  2042
+                                        "yellow":  4035
                                     },
-                           "effect_text":  "Hatch speed x5.71",
+                           "effect_text":  "Hatch speed x1.7",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "hatch_speed",
-                                          "value":  5.712
+                                          "value":  1.7
                                       }
                        },
                        {
                            "level":  8,
                            "cost":  {
-                                        "yellow":  4313
+                                        "yellow":  8930
                                     },
-                           "effect_text":  "Hatch speed x7.42",
+                           "effect_text":  "Hatch speed x1.8",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "hatch_speed",
-                                          "value":  7.425
+                                          "value":  1.8
                                       }
                        }
                    ]
@@ -1461,7 +1461,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "blue":  50
+                                        "blue":  64
                                     },
                            "effect_text":  "Platform length 260",
                            "effect":  {
@@ -1473,7 +1473,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "blue":  110
+                                        "blue":  162
                                     },
                            "effect_text":  "Platform length 300",
                            "effect":  {
@@ -1485,7 +1485,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "blue":  233
+                                        "blue":  379
                                     },
                            "effect_text":  "Platform length 350",
                            "effect":  {
@@ -1497,7 +1497,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "blue":  494
+                                        "blue":  868
                                     },
                            "effect_text":  "Platform length 408.33",
                            "effect":  {
@@ -1509,7 +1509,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "blue":  1048
+                                        "blue":  1962
                                     },
                            "effect_text":  "Platform length 476.39",
                            "effect":  {
@@ -1521,7 +1521,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "blue":  2224
+                                        "blue":  4395
                                     },
                            "effect_text":  "Platform length 555.78",
                            "effect":  {
@@ -1533,13 +1533,116 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "blue":  4720
+                                        "blue":  9773
                                     },
                            "effect_text":  "Platform length 648.42",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "platform_length",
                                           "value":  648.415
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "blue_hatch_height",
+        "name":  "Blue Hatch Height",
+        "description":  "Increase the vertical gap between top and bottom hatches",
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "blue":  22
+                                    },
+                           "effect_text":  "Hatch depth +15",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_height_delta",
+                                          "value":  15
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "blue":  64
+                                    },
+                           "effect_text":  "Hatch depth +30",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_height_delta",
+                                          "value":  30
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "blue":  162
+                                    },
+                           "effect_text":  "Hatch depth +45",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_height_delta",
+                                          "value":  45
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "blue":  379
+                                    },
+                           "effect_text":  "Hatch depth +60",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_height_delta",
+                                          "value":  60
+                                      }
+                       },
+                       {
+                           "level":  5,
+                           "cost":  {
+                                        "blue":  868
+                                    },
+                           "effect_text":  "Hatch depth +75",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_height_delta",
+                                          "value":  75
+                                      }
+                       },
+                       {
+                           "level":  6,
+                           "cost":  {
+                                        "blue":  1962
+                                    },
+                           "effect_text":  "Hatch depth +90",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_height_delta",
+                                          "value":  90
+                                      }
+                       },
+                       {
+                           "level":  7,
+                           "cost":  {
+                                        "blue":  4395
+                                    },
+                           "effect_text":  "Hatch depth +105",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_height_delta",
+                                          "value":  105
+                                      }
+                       },
+                       {
+                           "level":  8,
+                           "cost":  {
+                                        "blue":  9773
+                                    },
+                           "effect_text":  "Hatch depth +120",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "hatch_height_delta",
+                                          "value":  120
                                       }
                        }
                    ]
@@ -1576,9 +1679,9 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "red":  433,
-                                        "yellow":  433,
-                                        "blue":  433
+                                        "red":  552,
+                                        "yellow":  552,
+                                        "blue":  552
                                     },
                            "effect_text":  "Max tier 3",
                            "effect":  {
@@ -1590,9 +1693,9 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "red":  1250,
-                                        "yellow":  1250,
-                                        "blue":  1250
+                                        "red":  1836,
+                                        "yellow":  1836,
+                                        "blue":  1836
                                     },
                            "effect_text":  "Max tier 3",
                            "effect":  {
@@ -1604,15 +1707,79 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "red":  3609,
-                                        "yellow":  3609,
-                                        "blue":  3609
+                                        "red":  5863,
+                                        "yellow":  5863,
+                                        "blue":  5863
                                     },
                            "effect_text":  "Max tier 3",
                            "effect":  {
                                           "type":  "set",
                                           "target":  "max_tier",
                                           "value":  3
+                                      }
+                       }
+                   ]
+    },
+    {
+        "id":  "prismatic_probability",
+        "name":  "Prismatic Probability",
+        "description":  "Increase the chance that random tier generation produces tier 2",
+        "requires_tier_two":  true,
+        "levels":  [
+                       {
+                           "level":  1,
+                           "cost":  {
+                                        "orange":  250,
+                                        "green":  250,
+                                        "purple":  250
+                                    },
+                           "effect_text":  "Tier-2 chance 40%",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "tier_two_probability",
+                                          "value":  0.4
+                                      }
+                       },
+                       {
+                           "level":  2,
+                           "cost":  {
+                                        "orange":  1800,
+                                        "green":  1800,
+                                        "purple":  1800
+                                    },
+                           "effect_text":  "Tier-2 chance 60%",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "tier_two_probability",
+                                          "value":  0.6
+                                      }
+                       },
+                       {
+                           "level":  3,
+                           "cost":  {
+                                        "orange":  12000,
+                                        "green":  12000,
+                                        "purple":  12000
+                                    },
+                           "effect_text":  "Tier-2 chance 80%",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "tier_two_probability",
+                                          "value":  0.8
+                                      }
+                       },
+                       {
+                           "level":  4,
+                           "cost":  {
+                                        "orange":  80000,
+                                        "green":  80000,
+                                        "purple":  80000
+                                    },
+                           "effect_text":  "Tier-2 chance 100%",
+                           "effect":  {
+                                          "type":  "set",
+                                          "target":  "tier_two_probability",
+                                          "value":  1
                                       }
                        }
                    ]
@@ -1637,7 +1804,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "orange":  37
+                                        "orange":  47
                                     },
                            "effect_text":  "Pull strength x1.6",
                            "effect":  {
@@ -1649,7 +1816,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "orange":  80
+                                        "orange":  118
                                     },
                            "effect_text":  "Pull strength x2.1",
                            "effect":  {
@@ -1661,7 +1828,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "orange":  167
+                                        "orange":  271
                                     },
                            "effect_text":  "Pull strength x2.8",
                            "effect":  {
@@ -1673,7 +1840,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "orange":  349
+                                        "orange":  613
                                     },
                            "effect_text":  "Pull strength x3.73",
                            "effect":  {
@@ -1685,7 +1852,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "orange":  730
+                                        "orange":  1367
                                     },
                            "effect_text":  "Pull strength x4.98",
                            "effect":  {
@@ -1697,7 +1864,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "orange":  1527
+                                        "orange":  3017
                                     },
                            "effect_text":  "Pull strength x6.64",
                            "effect":  {
@@ -1709,7 +1876,7 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "orange":  3195
+                                        "orange":  6615
                                     },
                            "effect_text":  "Pull strength x8.85",
                            "effect":  {
@@ -1740,7 +1907,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "orange":  67
+                                        "orange":  85
                                     },
                            "effect_text":  "Grab radius 100",
                            "effect":  {
@@ -1752,7 +1919,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "orange":  150
+                                        "orange":  220
                                     },
                            "effect_text":  "Grab radius 140",
                            "effect":  {
@@ -1764,7 +1931,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "orange":  300
+                                        "orange":  487
                                     },
                            "effect_text":  "Grab radius 190",
                            "effect":  {
@@ -1776,7 +1943,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "orange":  600
+                                        "orange":  1054
                                     },
                            "effect_text":  "Grab radius 257.86",
                            "effect":  {
@@ -1788,7 +1955,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "orange":  1200
+                                        "orange":  2247
                                     },
                            "effect_text":  "Grab radius 349.95",
                            "effect":  {
@@ -1800,7 +1967,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "orange":  2400
+                                        "orange":  4742
                                     },
                            "effect_text":  "Grab radius 474.93",
                            "effect":  {
@@ -1812,7 +1979,7 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "orange":  4800
+                                        "orange":  9939
                                     },
                            "effect_text":  "Grab radius 644.55",
                            "effect":  {
@@ -1843,7 +2010,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "green":  57
+                                        "green":  73
                                     },
                            "effect_text":  "+4% per extra shape",
                            "effect":  {
@@ -1855,7 +2022,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "green":  130
+                                        "green":  191
                                     },
                            "effect_text":  "+6% per extra shape",
                            "effect":  {
@@ -1867,7 +2034,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "green":  283
+                                        "green":  460
                                     },
                            "effect_text":  "+9% per extra shape",
                            "effect":  {
@@ -1879,7 +2046,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "green":  617
+                                        "green":  1084
                                     },
                            "effect_text":  "+14% per extra shape",
                            "effect":  {
@@ -1891,7 +2058,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "green":  1346
+                                        "green":  2520
                                     },
                            "effect_text":  "+20% per extra shape",
                            "effect":  {
@@ -1903,7 +2070,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "green":  2937
+                                        "green":  5803
                                     },
                            "effect_text":  "+30% per extra shape",
                            "effect":  {
@@ -1915,7 +2082,7 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "green":  6409
+                                        "green":  13270
                                     },
                            "effect_text":  "+46% per extra shape",
                            "effect":  {
@@ -1946,7 +2113,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "green":  62
+                                        "green":  79
                                     },
                            "effect_text":  "Same-color +0.19 per extra match",
                            "effect":  {
@@ -1958,7 +2125,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "green":  140
+                                        "green":  206
                                     },
                            "effect_text":  "Same-color +0.23 per extra match",
                            "effect":  {
@@ -1970,7 +2137,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "green":  317
+                                        "green":  515
                                     },
                            "effect_text":  "Same-color +0.29 per extra match",
                            "effect":  {
@@ -1982,7 +2149,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "green":  721
+                                        "green":  1266
                                     },
                            "effect_text":  "Same-color +0.37 per extra match",
                            "effect":  {
@@ -1994,7 +2161,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "green":  1638
+                                        "green":  3067
                                     },
                            "effect_text":  "Same-color +0.46 per extra match",
                            "effect":  {
@@ -2006,7 +2173,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "green":  3722
+                                        "green":  7355
                                     },
                            "effect_text":  "Same-color +0.57 per extra match",
                            "effect":  {
@@ -2018,7 +2185,7 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "green":  8460
+                                        "green":  17517
                                     },
                            "effect_text":  "Same-color +0.72 per extra match",
                            "effect":  {
@@ -2049,7 +2216,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "green":  87
+                                        "green":  111
                                     },
                            "effect_text":  "Rainbow x1.6",
                            "effect":  {
@@ -2061,7 +2228,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "green":  192
+                                        "green":  282
                                     },
                            "effect_text":  "Rainbow x2.1",
                            "effect":  {
@@ -2073,7 +2240,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "green":  400
+                                        "green":  650
                                     },
                            "effect_text":  "Rainbow x2.8",
                            "effect":  {
@@ -2085,7 +2252,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "green":  834
+                                        "green":  1465
                                     },
                            "effect_text":  "Rainbow x3.73",
                            "effect":  {
@@ -2097,7 +2264,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "green":  1739
+                                        "green":  3256
                                     },
                            "effect_text":  "Rainbow x4.98",
                            "effect":  {
@@ -2109,7 +2276,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "green":  3627
+                                        "green":  7167
                                     },
                            "effect_text":  "Rainbow x6.64",
                            "effect":  {
@@ -2121,7 +2288,7 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "green":  7565
+                                        "green":  15664
                                     },
                            "effect_text":  "Rainbow x8.85",
                            "effect":  {
@@ -2156,7 +2323,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "purple":  167
+                                        "purple":  213
                                     },
                            "effect_text":  "Weights: 1 / 0.20 / 0.02 / 0.002",
                            "effect":  {
@@ -2172,7 +2339,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "purple":  367
+                                        "purple":  539
                                     },
                            "effect_text":  "Weights: 1 / 0.35 / 0.035 / 0.0035",
                            "effect":  {
@@ -2188,7 +2355,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "purple":  833
+                                        "purple":  1353
                                     },
                            "effect_text":  "Weights: 1 / 0.5 / 0.05 / 0.005",
                            "effect":  {
@@ -2204,7 +2371,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "purple":  1891
+                                        "purple":  3321
                                     },
                            "effect_text":  "Weights: 1.3 / 0.71 / 0.07 / 0.01",
                            "effect":  {
@@ -2220,7 +2387,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "purple":  4293
+                                        "purple":  8037
                                     },
                            "effect_text":  "Weights: 1.69 / 1.02 / 0.1 / 0.01",
                            "effect":  {
@@ -2236,7 +2403,7 @@
                        {
                            "level":  7,
                            "cost":  {
-                                        "purple":  9747
+                                        "purple":  19260
                                     },
                            "effect_text":  "Weights: 2.2 / 1.46 / 0.14 / 0.01",
                            "effect":  {
@@ -2252,7 +2419,7 @@
                        {
                            "level":  8,
                            "cost":  {
-                                        "purple":  22130
+                                        "purple":  45821
                                     },
                            "effect_text":  "Weights: 2.86 / 2.08 / 0.2 / 0.02",
                            "effect":  {
@@ -2287,7 +2454,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "purple":  108
+                                        "purple":  138
                                     },
                            "effect_text":  "Copper x2.2",
                            "effect":  {
@@ -2299,7 +2466,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "purple":  250
+                                        "purple":  367
                                     },
                            "effect_text":  "Copper x3.2",
                            "effect":  {
@@ -2311,7 +2478,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "purple":  579
+                                        "purple":  941
                                     },
                            "effect_text":  "Copper x4.66",
                            "effect":  {
@@ -2323,7 +2490,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "purple":  1341
+                                        "purple":  2355
                                     },
                            "effect_text":  "Copper x6.77",
                            "effect":  {
@@ -2335,7 +2502,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "purple":  3106
+                                        "purple":  5815
                                     },
                            "effect_text":  "Copper x9.85",
                            "effect":  {
@@ -2366,7 +2533,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "purple":  367
+                                        "purple":  468
                                     },
                            "effect_text":  "Silver x20",
                            "effect":  {
@@ -2378,7 +2545,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "purple":  867
+                                        "purple":  1274
                                     },
                            "effect_text":  "Silver x30",
                            "effect":  {
@@ -2390,7 +2557,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "purple":  2049
+                                        "purple":  3329
                                     },
                            "effect_text":  "Silver x45",
                            "effect":  {
@@ -2402,7 +2569,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "purple":  4843
+                                        "purple":  8507
                                     },
                            "effect_text":  "Silver x67.5",
                            "effect":  {
@@ -2414,7 +2581,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "purple":  11447
+                                        "purple":  21431
                                     },
                            "effect_text":  "Silver x101.25",
                            "effect":  {
@@ -2445,7 +2612,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "purple":  1200
+                                        "purple":  1529
                                     },
                            "effect_text":  "Gold x220",
                            "effect":  {
@@ -2457,7 +2624,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "purple":  2667
+                                        "purple":  3918
                                     },
                            "effect_text":  "Gold x320",
                            "effect":  {
@@ -2469,7 +2636,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "purple":  5928
+                                        "purple":  9630
                                     },
                            "effect_text":  "Gold x465.46",
                            "effect":  {
@@ -2481,7 +2648,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "purple":  13177
+                                        "purple":  23145
                                     },
                            "effect_text":  "Gold x677.03",
                            "effect":  {
@@ -2493,7 +2660,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "purple":  29291
+                                        "purple":  54839
                                     },
                            "effect_text":  "Gold x984.77",
                            "effect":  {
@@ -2524,7 +2691,7 @@
                        {
                            "level":  2,
                            "cost":  {
-                                        "purple":  3667
+                                        "purple":  4674
                                     },
                            "effect_text":  "Crystal x2200",
                            "effect":  {
@@ -2536,7 +2703,7 @@
                        {
                            "level":  3,
                            "cost":  {
-                                        "purple":  8000
+                                        "purple":  11751
                                     },
                            "effect_text":  "Crystal x3200",
                            "effect":  {
@@ -2548,7 +2715,7 @@
                        {
                            "level":  4,
                            "cost":  {
-                                        "purple":  17453
+                                        "purple":  28352
                                     },
                            "effect_text":  "Crystal x4654.54",
                            "effect":  {
@@ -2560,7 +2727,7 @@
                        {
                            "level":  5,
                            "cost":  {
-                                        "purple":  38076
+                                        "purple":  66879
                                     },
                            "effect_text":  "Crystal x6770.25",
                            "effect":  {
@@ -2572,7 +2739,7 @@
                        {
                            "level":  6,
                            "cost":  {
-                                        "purple":  83068
+                                        "purple":  155520
                                     },
                            "effect_text":  "Crystal x9847.63",
                            "effect":  {
