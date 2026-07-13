@@ -1,9 +1,9 @@
 shader_type canvas_item;
 
 uniform vec4 tint_color = vec4(1.0, 1.0, 1.0, 0.7);
-uniform float tint_intensity = 4.8;
+uniform float tint_intensity = 1.0;
 uniform float opacity_multiplier = 1.0;
-uniform float glare_intensity = 12.0;
+uniform float glare_intensity = 3.0;
 uniform vec2 light_dir = vec2(1.0, 1.0);
 uniform sampler2D screen_tex : hint_screen_texture;
 uniform float face_count = 6.0;
@@ -22,7 +22,7 @@ void fragment() {
     float tint_strength = max(tint_intensity, 0.0);
     float glare_strength = max(glare_intensity, 0.0);
 
-    vec3 bg = texture(screen_tex, SCREEN_UV).rgb;
+    vec3 bg = vec3(SCREEN_UV, 0.0);
     float tint_blend = clamp(glass_alpha * (1.7 + tint_strength), 0.0, 1.0);
     vec3 col = mix(bg, dynamic_tint, tint_blend);
 

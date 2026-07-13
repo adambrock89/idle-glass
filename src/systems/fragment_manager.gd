@@ -359,15 +359,11 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 	var push_offset := compute_push_out_offset(centroid, container_center, border_scale)
 	centroid += push_offset
 
-	var base_mesh := Fragment.get_mesh_from_polygon_points(centered_points)
-	if base_mesh == null:
-		return
-
-	var inner := MeshInstance2D.new()
-	inner.name = "InnerMeshInstance_%s" % str(color_name)
-	inner.mesh = base_mesh
-	inner.z_index = 1
+	var inner := Polygon2D.new()
+	inner.name = "InnerPolygon_%s" % str(color_name)
+	inner.polygon = centered_points
 	inner.position = centroid
+	inner.z_index = 1
 	parent_container.add_child(inner)
 
 	var cp := ColorProfile.new()
@@ -383,6 +379,7 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 	mat.set_shader_parameter("object_rotation", inner.rotation)
 
 	inner.material = mat
+
 
 	var collision := CollisionPolygon2D.new()
 	collision.name = "CollisionPolygon2D_%s" % str(color_name)

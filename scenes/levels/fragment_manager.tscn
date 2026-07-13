@@ -117,6 +117,7 @@ position = Vector2(959, 538)
 stream = ExtResource("8_7051s")
 volume_db = -5.622
 autoplay = true
+parameters/looping = false
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(420, 238, 899, 216, 949, 487, 412, 540)

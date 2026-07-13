@@ -8,7 +8,7 @@ var color_profile: ColorProfile
 var color_name: ColorProfile.ColorName
 var base_color: Color
 
-var visual: MeshInstance2D
+var visual: Polygon2D
 var is_being_held: bool = false
 
 var border_mesh: MeshInstance2D
@@ -190,4 +190,3 @@ func _on_body_entered(_body: Node) -> void:
 	impact_player.pitch_scale = lerpf(0.98, 1.03, intensity)
 	impact_player.stream = ProceduralSfx.get_fragment_impact_stream(int(color_name), intensity)
 	impact_player.play()
-

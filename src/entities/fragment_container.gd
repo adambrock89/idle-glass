@@ -55,13 +55,14 @@ func break_apart() -> void:
 
 	var collisions: Array[CollisionPolygon2D] = []
 	var borders: Array[MeshInstance2D] = []
-	var inners: Array[MeshInstance2D] = []
+	var inners: Array[Polygon2D] = []
+
 	_collect_fragment_children(collisions, borders, inners)
 
 	var container_global_pos := global_position
 
 	for inner in inners:
-		var key := inner.name.replace("InnerMeshInstance_", "")
+		var key := inner.name.replace("InnerPolygon_", "")
 
 		var col = null
 		for c in collisions:
@@ -100,20 +101,21 @@ func _get_fragment_collection() -> Node:
 func _collect_fragment_children(
 	collisions: Array[CollisionPolygon2D],
 	borders: Array[MeshInstance2D],
-	inners: Array[MeshInstance2D]
+	inners: Array[Polygon2D]
 ) -> void:
 	for child in get_children():
 		if child is CollisionPolygon2D:
 			collisions.append(child)
-		elif child is MeshInstance2D and child.name.begins_with("InnerMeshInstance_"):
+		elif child is Polygon2D and child.name.begins_with("InnerPolygon_"):
 			inners.append(child)
 		elif child is MeshInstance2D and child.name.begins_with("BorderMeshInstance_"):
 			borders.append(child)
 
+
 func _spawn_fragment_from_parts(
 	key,
 	col: CollisionPolygon2D,
-	inner: MeshInstance2D,
+	inner: Polygon2D,
 	border: MeshInstance2D,
 	container_global_pos: Vector2,
 	fragment_collection: Node,
@@ -166,7 +168,7 @@ func _assign_fragment_mass_from_polygon(frag: Fragment, col: CollisionPolygon2D)
 	frag.mass = frag.fragment_mass
 
 
-func _copy_fragment_metadata_from_inner(frag: Fragment, inner: MeshInstance2D) -> void:
+func _copy_fragment_metadata_from_inner(frag: Fragment, inner: Polygon2D) -> void:
 	var cp: ColorProfile = inner.get_meta("color_profile")
 	var color_name = inner.get_meta("color_name")
 	var base_color: Color = inner.get_meta("base_color")
@@ -175,6 +177,7 @@ func _copy_fragment_metadata_from_inner(frag: Fragment, inner: MeshInstance2D) -
 	frag.color_name = color_name
 	frag.base_color = base_color
 	frag.visual = inner
+
 
 
 func _inherit_container_motion(
