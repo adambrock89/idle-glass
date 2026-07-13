@@ -76,45 +76,92 @@ static func get_hatch_close_stream() -> AudioStreamWAV:
 	return _hatch_close_stream
 
 static func create_fragment_impact_stream(color_name: int, impact_strength: float = 0.5) -> AudioStreamWAV:
-	var duration: float = lerpf(0.07, 0.13, clampf(impact_strength, 0.0, 1.0))
+	var duration: float = lerpf(0.045, 0.085, clampf(impact_strength, 0.0, 1.0))
 	var sample_count := int(float(SAMPLE_RATE) * duration)
 	var data := PackedByteArray()
 	data.resize(sample_count * 2)
 
+	# Base pitch raised significantly for glass
 	var color_frequencies: Array[float] = [294.0, 311.13, 329.63, 349.23, 370.0, 392.0, 415.3, 440.0, 466.16, 493.88, 523.25, 554.37]
-	var frequency: float = color_frequencies[color_name % color_frequencies.size()]
-	var overtone: float = frequency * 1.5
-	var ring: float = frequency * 2.15
-	var strength: float = clampf(impact_strength, 0.0, 1.0)
+	var base := color_frequencies[color_name % color_frequencies.size()] * 1.55
+
+	# Glassy overtones
+	var overtone := base * 2.3
+	var shard := base * 3.9
+	var tinkle := base * 6.2
+
+	var strength := clampf(impact_strength, 0.0, 1.0)
 
 	for i in range(sample_count):
 		var t := float(i) / float(SAMPLE_RATE)
-		var attack: float = minf(t * 180.0, 1.0)
-		var envelope: float = attack * exp(-22.0 * t) * (0.52 + strength * 0.22)
-		var body: float = sin(TAU * frequency * t)
-		var partial: float = sin(TAU * overtone * t + 0.2)
-		var resonance: float = sin(TAU * ring * t + 0.55)
-		var texture: float = (randf() * 2.0 - 1.0) * 0.035 * exp(-32.0 * t)
-		var sample: float = ((body * 0.68) + (partial * 0.2) + (resonance * 0.08) + texture) * envelope
+
+		# Faster attack, faster decay = brittle glass
+		var attack := minf(t * 420.0, 1.0)
+		var envelope := attack * exp(-38.0 * t) * (0.42 + strength * 0.32)
+
+		# Slight random pitch drift per sample (micro‑shards)
+		var drift := randf_range(-0.015, 0.015)
+
+		var body := sin(TAU * (base + drift) * t)
+		var partial := sin(TAU * (overtone + drift * 2.0) * t + 0.2)
+		var resonance := sin(TAU * (shard + drift * 3.0) * t + 0.55)
+		var sparkle := sin(TAU * (tinkle + drift * 4.0) * t + 1.1)
+
+		# High‑frequency noise burst (glass crackle)
+		var burst := (randf() * 2.0 - 1.0) * 0.065 * exp(-52.0 * t)
+
+		# Remove low-end → more glass, less bamboo
+		var sample := (
+			body * 0.42 +
+			partial * 0.28 +
+			resonance * 0.18 +
+			sparkle * 0.12 +
+			burst
+		) * envelope
+
 		_write_pcm16_sample(data, i * 2, sample)
 
 	return _build_stream(data)
 
 static func create_container_break_stream(impact_strength: float = 1.0) -> AudioStreamWAV:
-	var duration: float = lerpf(0.18, 0.34, clampf(impact_strength, 0.0, 1.0))
+	var duration: float = lerpf(0.16, 0.30, clampf(impact_strength, 0.0, 1.0))
 	var sample_count := int(float(SAMPLE_RATE) * duration)
 	var data := PackedByteArray()
 	data.resize(sample_count * 2)
-	var strength: float = clampf(impact_strength, 0.0, 1.0)
+
+	var strength := clampf(impact_strength, 0.0, 1.0)
+
+	# Core frequencies for realistic glass
+	var crack_freq := 1800.0
+	var shard_freq := 2600.0
+	var tinkle_freq := 4200.0
 
 	for i in range(sample_count):
 		var t := float(i) / float(SAMPLE_RATE)
-		var envelope := exp(-10.0 * t)
-		var low := sin(TAU * 170.0 * t)
-		var mid := sin(TAU * 420.0 * t + 0.4)
-		var glass := sin(TAU * 910.0 * t + 0.8)
-		var burst: float = (randf() * 2.0 - 1.0) * (0.24 + strength * 0.18) * exp(-18.0 * t)
-		var sample: float = ((low * 0.34) + (mid * 0.26) + (glass * 0.12) + burst) * envelope
+
+		# Faster decay for brittle material
+		var envelope := exp(-16.0 * t)
+
+		# Initial crack (wide-band, sharp)
+		var crack := sin(TAU * crack_freq * t + randf_range(-0.2, 0.2)) * exp(-60.0 * t)
+
+		# Chaotic shard cluster (bright, noisy)
+		var shard := sin(TAU * shard_freq * t + randf_range(-1.0, 1.0)) * exp(-32.0 * t)
+
+		# Tinkle tail (tiny pieces settling)
+		var tinkle := sin(TAU * tinkle_freq * t + randf_range(-2.0, 2.0)) * exp(-22.0 * t)
+
+		# Noise burst (crackle)
+		var burst := (randf() * 2.0 - 1.0) * (0.28 + strength * 0.22) * exp(-24.0 * t)
+
+		# Mix — weighted for realism
+		var sample := (
+			crack * 0.34 +
+			shard * 0.28 +
+			tinkle * 0.18 +
+			burst
+		) * envelope
+
 		_write_pcm16_sample(data, i * 2, sample)
 
 	return _build_stream(data)

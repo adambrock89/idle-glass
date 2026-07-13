@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcwrs2omiht6q"]
+
+[ext_resource type="Script" uid="uid://g70py6lkglk3" path="res://src/entities/placeable.gd" id="1_jty5r"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7051s"]
+bounce = 3.0
+
+[node name="Bumper" type="StaticBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_7051s")
+script = ExtResource("1_jty5r")
+
+[node name="Polygon2D2" type="Polygon2D" parent="."]
+position = Vector2(-212, -619)
+polygon = PackedVector2Array(134, 528, 320, 693, 318, 720, 298, 723, 114, 560, 109, 528)
+
+[node name="Polygon2D3" type="CollisionPolygon2D" parent="."]
+position = Vector2(-212, -619)
+polygon = PackedVector2Array(134, 528, 320, 693, 318, 720, 298, 723, 114, 560, 109, 528)

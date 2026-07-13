@@ -3,8 +3,13 @@ extends RigidBody2D
 
 @export var break_speed_threshold: float = 200.0
 
+var prev_linear_velocity: Vector2
+var prev_angular_velocity: float
+
 var last_speed: float = 0.0
 var hull_polygon_points: PackedVector2Array
+
+var _broken: bool = false
 
 
 func _ready() -> void:
@@ -28,11 +33,19 @@ func _physics_process(_delta: float) -> void:
 				mat.set_shader_parameter("light_dir", screen_light_dir.rotated(-child.global_rotation))
 
 
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	# Store previous tick velocities BEFORE physics updates
+	prev_linear_velocity = state.linear_velocity
+	prev_angular_velocity = state.angular_velocity
 
 
 func _on_body_entered(_body: Node) -> void:
+	if _broken:
+		return
+
 	if last_speed > break_speed_threshold:
-		break_apart()
+		_broken = true
+		call_deferred("break_apart")
 
 
 func finalize_container() -> void:
@@ -43,15 +56,19 @@ func finalize_container() -> void:
 func break_apart() -> void:
 	var fragment_collection := _get_fragment_collection()
 	if fragment_collection == null:
-		
 		return
+
+	# Stop this container from participating in physics before we spawn fragments
+	collision_layer = 0
+	collision_mask = 0
+	sleeping = true
 
 	var scene_root := get_tree().current_scene
 	var break_intensity: float = clampf(last_speed / maxf(break_speed_threshold * 3.0, 1.0), 0.2, 1.0)
 	ProceduralSfx.play_break_at(scene_root, global_position, break_intensity)
 
-	var container_linear_velocity := linear_velocity
-	var container_angular_velocity := angular_velocity
+	var container_linear_velocity := prev_linear_velocity
+	var container_angular_velocity := prev_angular_velocity
 
 	var collisions: Array[CollisionPolygon2D] = []
 	var borders: Array[MeshInstance2D] = []
@@ -64,17 +81,16 @@ func break_apart() -> void:
 	for inner in inners:
 		var key := inner.name.replace("InnerPolygon_", "")
 
-		var col = null
+		var col: CollisionPolygon2D = null
 		for c in collisions:
 			if c.name.ends_with(key):
 				col = c
 				break
 
 		if col == null:
-			
 			continue
 
-		var border = null
+		var border: MeshInstance2D = null
 		for b in borders:
 			if b.name.ends_with(key):
 				border = b
@@ -91,8 +107,7 @@ func break_apart() -> void:
 			container_angular_velocity
 		)
 
-	queue_free()
-
+	call_deferred("queue_free")
 
 func _get_fragment_collection() -> Node:
 	return get_tree().current_scene.find_child("FragmentCollection", true, false)
@@ -126,7 +141,11 @@ func _spawn_fragment_from_parts(
 	frag.name = "Fragment_%s" % key
 	fragment_collection.add_child(frag)
 
+	# Base position from collision polygon
 	frag.global_position = col.global_position
+
+	# Small random offset to avoid perfect overlap
+	frag.global_position += (Vector2(randf() - 0.5, randf() - 0.5) * 2.0)
 
 	_assign_fragment_mass_from_polygon(frag, col)
 
@@ -134,17 +153,13 @@ func _spawn_fragment_from_parts(
 	var col_xform := col.global_transform
 	var inner_xform := inner.global_transform
 
-	remove_child(border)
-	remove_child(col)
-	remove_child(inner)
+	border.reparent(frag)
+	col.reparent(frag)
+	inner.reparent(frag)
 
-	frag.call_deferred("add_child", border)
-	frag.call_deferred("add_child", col)
-	frag.call_deferred("add_child", inner)
-
-	border.call_deferred("set", "global_transform", border_xform)
-	col.call_deferred("set", "global_transform", col_xform)
-	inner.call_deferred("set", "global_transform", inner_xform)
+	border.global_transform = border_xform
+	col.global_transform = col_xform
+	inner.global_transform = inner_xform
 
 	_copy_fragment_metadata_from_inner(frag, inner)
 
@@ -157,6 +172,7 @@ func _spawn_fragment_from_parts(
 		container_linear_velocity,
 		container_angular_velocity
 	)
+
 
 func _assign_fragment_mass_from_polygon(frag: Fragment, col: CollisionPolygon2D) -> void:
 	var inner_points := PackedVector2Array()
@@ -179,16 +195,20 @@ func _copy_fragment_metadata_from_inner(frag: Fragment, inner: Polygon2D) -> voi
 	frag.visual = inner
 
 
-
 func _inherit_container_motion(
 	frag: Fragment,
 	container_global_pos: Vector2,
 	container_linear_velocity: Vector2,
 	container_angular_velocity: float
 ) -> void:
+	# Linear velocity from container
+	var lv := container_linear_velocity
+
+	# Add angular contribution based on offset from container center
 	var offset := frag.global_position - container_global_pos
-	var tangential_velocity := Vector2(-offset.y, offset.x) * container_angular_velocity
-	frag.linear_velocity = container_linear_velocity + tangential_velocity
+	var angular_vel := Vector2(-offset.y, offset.x) * container_angular_velocity
+
+	frag.linear_velocity = lv + angular_vel
 	frag.angular_velocity = container_angular_velocity
 
 

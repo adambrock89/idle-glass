@@ -1,23 +1,14 @@
 [gd_scene load_steps=11 format=3 uid="uid://dt00mwv1c6iv7"]
 
 [ext_resource type="Script" uid="uid://c44lkg4323ht7" path="res://src/systems/fragment_manager.gd" id="1_qpyrk"]
-[ext_resource type="Shader" uid="uid://djx2fgbjj2431" path="res://assets/shaders/glass_fragment.gdshader" id="2_srsae"]
+[ext_resource type="PackedScene" uid="uid://chfdew1we81ky" path="res://scenes/prefabs/barrel.tscn" id="3_41nyt"]
 [ext_resource type="PackedScene" uid="uid://rdykjwiqqe5d" path="res://scenes/prefabs/turnin_platform.tscn" id="3_7051s"]
+[ext_resource type="PackedScene" uid="uid://bcwrs2omiht6q" path="res://scenes/prefabs/bumper.tscn" id="3_l78gl"]
 [ext_resource type="Script" uid="uid://30l0kyqowhp5" path="res://src/entities/turnin_platform.gd" id="4_l78gl"]
 [ext_resource type="PackedScene" uid="uid://y7uofinlt53n" path="res://scenes/ui/scoreboard.tscn" id="5_41nyt"]
 [ext_resource type="Shader" uid="uid://kbpueo5fiw7y" path="res://assets/shaders/sunset_background.gdshader" id="6_6ke61"]
 [ext_resource type="PackedScene" path="res://scenes/ui/shop_container.tscn" id="7_srsae"]
 [ext_resource type="AudioStream" uid="uid://blvgmm6lrbn80" path="res://assets/music/nakaradaalexander-kind-celtic-loop-238364.mp3" id="8_7051s"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hwl8a"]
-shader = ExtResource("2_srsae")
-shader_parameter/tint_color = Vector4(1, 1, 1, 0.75)
-shader_parameter/tint_intensity = 3.2
-shader_parameter/opacity_multiplier = 1.35
-shader_parameter/glare_intensity = 2.6
-shader_parameter/light_dir = Vector2(1, -1)
-shader_parameter/face_count = 6.0
-shader_parameter/bevel_width = 0.3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qxbly"]
 shader = ExtResource("6_6ke61")
@@ -47,40 +38,21 @@ polygon = PackedVector2Array(-28.9, -804.2, 11.1, 5.79999, 747.1, 76.8, 751.1, 2
 position = Vector2(51.9, 797.2)
 polygon = PackedVector2Array(-28.9, -804.2, 11.1, 5.79999, 748.1, 77.8, 750.1, 298.8, -61.9, 293.8, -129.9, -811.2)
 
-[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="MainBody"]
-material = SubResource("ShaderMaterial_hwl8a")
-position = Vector2(1634, 335.4)
-polygon = PackedVector2Array(6, 40, 38, 43, 42, 113, 200, 114, 198, 45, 232, 47, 235, 148, 7, 142)
-
-[node name="CollisionPolygon2D4" type="Polygon2D" parent="MainBody"]
-position = Vector2(1634, 335.4)
-color = Color(0.25098, 0.141176, 0.105882, 1)
-polygon = PackedVector2Array(6, 40, 38, 43, 42, 113, 200, 114, 198, 45, 232, 47, 235, 148, 7, 142)
-
-[node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="MainBody"]
-position = Vector2(1399, 335.4)
-polygon = PackedVector2Array(6, 40, 38, 43, 42, 113, 200, 114, 198, 45, 232, 47, 235, 148, 7, 142)
-
-[node name="CollisionPolygon2D6" type="Polygon2D" parent="MainBody"]
-position = Vector2(1399, 335.4)
-color = Color(0.25098, 0.141176, 0.105882, 1)
-polygon = PackedVector2Array(6, 40, 38, 43, 42, 113, 200, 114, 198, 45, 232, 47, 235, 148, 7, 142)
-
-[node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="MainBody"]
-position = Vector2(1165.7, 335.4)
-polygon = PackedVector2Array(6, 40, 38, 43, 42, 113, 200, 114, 198, 45, 232, 47, 235, 148, 7, 142)
-
-[node name="CollisionPolygon2D8" type="Polygon2D" parent="MainBody"]
-position = Vector2(1165.7, 335.4)
-color = Color(0.252934, 0.144814, 0.107426, 1)
-polygon = PackedVector2Array(6, 40, 38, 43, 42, 113, 200, 114, 198, 45, 232, 47, 235, 148, 7, 142)
-
 [node name="Polygon2D" type="Polygon2D" parent="MainBody"]
 top_level = true
 visibility_layer = 512
 position = Vector2(81, -31)
 color = Color(0.0248005, 0.399007, 0, 1)
 polygon = PackedVector2Array(96, -74, 98, 26, 40, 31, 43, 81, 282, 75, 279, 24, 228, 27, 220, -73)
+
+[node name="Barrel_A" parent="MainBody" instance=ExtResource("3_41nyt")]
+position = Vector2(1136, 274)
+
+[node name="Barrel_B" parent="MainBody" instance=ExtResource("3_41nyt")]
+position = Vector2(1715, 280)
+
+[node name="Barrel_C" parent="MainBody" instance=ExtResource("3_41nyt")]
+position = Vector2(1429, 277)
 
 [node name="CollisionPolygon2D9" type="CollisionPolygon2D" parent="MainBody"]
 position = Vector2(1171.54, 796.74)
@@ -89,6 +61,9 @@ polygon = PackedVector2Array(14, 76, 784.1, 75.8, 792.47, 313.6, 17.47, 317.6)
 [node name="CollisionPolygon2D10" type="Polygon2D" parent="MainBody"]
 position = Vector2(1171.54, 796.74)
 polygon = PackedVector2Array(14, 76, 784.1, 75.8, 792.47, 313.6, 17.47, 317.6)
+
+[node name="Bumper" parent="MainBody" instance=ExtResource("3_l78gl")]
+position = Vector2(254, 656)
 
 [node name="SpawnPoint" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -107,6 +82,7 @@ material = SubResource("ShaderMaterial_qxbly")
 offset_right = 1915.0
 offset_bottom = 1083.0
 mouse_filter = 2
+metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(959, 538)
@@ -120,4 +96,5 @@ autoplay = true
 parameters/looping = false
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(36, -169)
 polygon = PackedVector2Array(420, 238, 899, 216, 949, 487, 412, 540)
