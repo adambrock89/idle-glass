@@ -71,7 +71,7 @@ func _ready() -> void:
 
 	ui_click_player = AudioStreamPlayer.new()
 	ui_click_player.stream = ProceduralSfx.get_ui_click_stream()
-	ui_click_player.volume_db = -11.0
+	ui_click_player.volume_db = -5.0
 	add_child(ui_click_player)
 
 	# try to find scoreboard and connect: prefer current scene, fallback to root

@@ -131,7 +131,9 @@ func _ready() -> void:
 
     button_sfx_player = AudioStreamPlayer2D.new()
     button_sfx_player.name = "ButtonSfxPlayer"
-    button_sfx_player.volume_db = -9.5
+    button_sfx_player.volume_db = -3.0
+    button_sfx_player.attenuation = 0.0
+    button_sfx_player.max_distance = 100000.0
     add_child(button_sfx_player)
 
     scoring_zone = create_scoring_zone()

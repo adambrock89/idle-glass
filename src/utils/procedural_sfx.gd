@@ -212,7 +212,9 @@ static func play_hatch_motion_at(root: Node, position: Vector2, opening: bool) -
 	var player := AudioStreamPlayer2D.new()
 	player.stream = get_hatch_open_stream() if opening else get_hatch_close_stream()
 	player.global_position = position
-	player.volume_db = -13.0 if opening else -11.5
+	player.volume_db = -4.0 if opening else -2.5
+	player.attenuation = 0.0
+	player.max_distance = 100000.0
 	root.add_child(player)
 	player.finished.connect(player.queue_free)
 	player.play()

@@ -37,7 +37,7 @@ var scores: Dictionary = {
 	"yellow": 200.0,
 	"green": 200.0,
 	"blue": 200.0,
-	"purple": 200.0
+	"purple": 200000.0
 }
 
 var value_multiplier: Dictionary = {

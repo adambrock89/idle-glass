@@ -1,10 +1,10 @@
 shader_type canvas_item;
 
-uniform vec4 tint_color = vec4(1.0, 1.0, 1.0, 0.9);
+uniform vec4 tint_color = vec4(1.0, 1.0, 1.0, 0.7);
 uniform float tint_intensity = 4.8;
-uniform float opacity_multiplier = 1.35;
-uniform float glare_intensity = 9.0;
-uniform vec2 light_dir = vec2(1.0, -1.0);
+uniform float opacity_multiplier = 1.0;
+uniform float glare_intensity = 12.0;
+uniform vec2 light_dir = vec2(1.0, 1.0);
 uniform sampler2D screen_tex : hint_screen_texture;
 uniform float face_count = 6.0;
 uniform float bevel_width = 0.30;

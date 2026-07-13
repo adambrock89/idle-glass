@@ -444,6 +444,11 @@ func create_border(centered_points: PackedVector2Array, inner: Node2D) -> MeshIn
 	mat.set("shader_parameter/metal_type", get_random_metal_type())
 	mat.set("shader_parameter/bevel_mode", 0)
 	mat.set("shader_parameter/motion_factor", 0.0)
+	mat.set("shader_parameter/global_rotation", global_transform.get_rotation())
+	
+	var angle_offset = get_angle_offset_by_color(inner.get_meta("color_name"))
+	mat.set("shader_parameter/uv_angle_offset", angle_offset)
+	
 
 	border_mesh.material = mat
 	border_mesh.z_index = 10
@@ -452,6 +457,16 @@ func create_border(centered_points: PackedVector2Array, inner: Node2D) -> MeshIn
 	border_mesh.name = "BorderMeshInstance_%s" % str(color_name)
 	frag.add_child(border_mesh)
 	return border_mesh
+	
+func get_angle_offset_by_color(color_name) -> float:
+	if color_name == ColorProfile.ColorName.RED:
+		return PI
+	elif color_name == ColorProfile.ColorName.YELLOW:
+		return PI/3
+	elif color_name == ColorProfile.ColorName.BLUE:
+		return PI * 5/3
+		
+	return 0
 
 func create_border_mesh_from_polygon(points: PackedVector2Array, thickness: float) -> MeshInstance2D:
 	var mesh := ArrayMesh.new()

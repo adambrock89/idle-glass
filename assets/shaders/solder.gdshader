@@ -6,11 +6,14 @@ uniform int metal_type = 0;
 // 0 = soft, 1 = sharp, 2 = deep
 uniform int bevel_mode = 0;
 
-// Fixed top-right light in screen/world space
-uniform vec2 light_dir = vec2(-1.0, 1.0);
+uniform vec2 light_dir = vec2(-1.0, -1.0);
 
 // Motion factor (0..0.25), used for animation only
 uniform float motion_factor = 0.0;
+
+// Rotation of the CanvasItem in radians (passed from GDScript)
+uniform float global_rotation = 0.0;
+uniform float uv_angle_offset = 0.0;
 
 
 // ----------------------
@@ -55,10 +58,10 @@ vec3 get_crystal_color(float input_fresnel, float input_motion_factor, vec2 uv) 
 // Metal / material
 // ----------------------
 vec3 get_metal_color(int m, float fresnel_val, float input_motion_factor, vec2 uv_val) {
-    if (m == 0) return vec3(0.65, 0.40, 0.22); // darker copper
-    if (m == 1) return vec3(0.78, 0.78, 0.83); // softer silver
-    if (m == 2) return vec3(0.88, 0.75, 0.32); // slightly muted gold
-    return get_crystal_color(fresnel_val, input_motion_factor, uv_val); // Crystal/Platinum
+    if (m == 0) return vec3(0.65, 0.40, 0.22);
+    if (m == 1) return vec3(0.78, 0.78, 0.83);
+    if (m == 2) return vec3(0.88, 0.75, 0.32);
+    return get_crystal_color(fresnel_val, input_motion_factor, uv_val);
 }
 
 float get_sparkle_strength(int m) {
@@ -113,21 +116,31 @@ void fragment() {
     vec3 base_color = get_metal_color(metal_type, fresnel, motion_factor, uv);
     float sparkle_strength = get_sparkle_strength(metal_type);
 
-    // Distance from center line of the strip: 0 at center, 1 at inner/outer edges.
     float edge_t = clamp(abs(uv.y - 0.5) * 2.0, 0.0, 1.0);
     float bevel = get_bevel_factor(edge_t, bevel_mode);
 
+    // WORLDSPACE LIGHT (lower-left)
     vec2 dir = normalize(light_dir);
 
-    // Use the perimeter U as ring angle so each side of the fragment gets its own facing.
-    float angle = uv.x * TAU;
-    vec2 ring_normal = vec2(cos(angle), sin(angle));
+    // OBJECT-SPACE BEVEL NORMAL
+    float angle = uv.x * TAU + uv_angle_offset;
+    vec2 ring_normal = vec2(cos(angle), -sin(angle));
 
-    // Inner and outer bevel faces point in opposite directions.
     float side_sign = (uv.y < 0.5) ? -1.0 : 1.0;
-    vec2 bevel_normal = normalize(ring_normal * side_sign);
+    vec2 bevel_normal_obj = normalize(ring_normal * side_sign);
 
-    float ndl_signed = dot(bevel_normal, dir);
+    // ROTATE NORMAL INTO WORLDSPACE
+    float a = global_rotation;
+
+    mat2 rot = mat2(
+        vec2(cos(a), -sin(a)),
+        vec2(sin(a),  cos(a))
+    );
+
+    vec2 bevel_normal_world = normalize(rot * bevel_normal_obj);
+
+    // LIGHTING
+    float ndl_signed = dot(bevel_normal_world, dir);
     float ndl_lit = max(ndl_signed, 0.0);
     float ndl_shadow = max(-ndl_signed, 0.0);
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dt00mwv1c6iv7"]
+[gd_scene load_steps=11 format=3 uid="uid://dt00mwv1c6iv7"]
 
 [ext_resource type="Script" uid="uid://c44lkg4323ht7" path="res://src/systems/fragment_manager.gd" id="1_qpyrk"]
 [ext_resource type="Shader" uid="uid://djx2fgbjj2431" path="res://assets/shaders/glass_fragment.gdshader" id="2_srsae"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://y7uofinlt53n" path="res://scenes/ui/scoreboard.tscn" id="5_41nyt"]
 [ext_resource type="Shader" uid="uid://kbpueo5fiw7y" path="res://assets/shaders/sunset_background.gdshader" id="6_6ke61"]
 [ext_resource type="PackedScene" path="res://scenes/ui/shop_container.tscn" id="7_srsae"]
+[ext_resource type="AudioStream" uid="uid://blvgmm6lrbn80" path="res://assets/music/nakaradaalexander-kind-celtic-loop-238364.mp3" id="8_7051s"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hwl8a"]
 shader = ExtResource("2_srsae")
@@ -112,5 +113,10 @@ position = Vector2(959, 538)
 
 [node name="Shop" parent="." instance=ExtResource("7_srsae")]
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_7051s")
+volume_db = -5.622
+autoplay = true
+
 [node name="Polygon2D" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(601, 362, 533, 492, 714, 520, 784, 367)
+polygon = PackedVector2Array(420, 238, 899, 216, 949, 487, 412, 540)
