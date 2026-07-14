@@ -76,52 +76,64 @@ static func get_hatch_close_stream() -> AudioStreamWAV:
 	return _hatch_close_stream
 
 static func create_fragment_impact_stream(color_name: int, impact_strength: float = 0.5) -> AudioStreamWAV:
-	var duration: float = lerpf(0.045, 0.085, clampf(impact_strength, 0.0, 1.0))
-	var sample_count := int(float(SAMPLE_RATE) * duration)
+	var duration := lerpf(0.030, 0.055, clampf(impact_strength, 0.0, 1.0))
+	var sample_count := int(SAMPLE_RATE * duration)
 	var data := PackedByteArray()
 	data.resize(sample_count * 2)
 
-	# Base pitch raised significantly for glass
-	var color_frequencies: Array[float] = [294.0, 311.13, 329.63, 349.23, 370.0, 392.0, 415.3, 440.0, 466.16, 493.88, 523.25, 554.37]
-	var base := color_frequencies[color_name % color_frequencies.size()] * 1.55
+	var color_frequencies: Array[float] = [
+		294.0, 311.13, 329.63, 349.23, 349.0, 392.0,
+		415.3, 440.0, 440.0, 493.88, 523.25, 554.37
+	]
 
-	# Glassy overtones
-	var overtone := base * 2.3
-	var shard := base * 3.9
-	var tinkle := base * 6.2
+	# Your base frequency, already multiplied upward
+	var base := color_frequencies[color_name % color_frequencies.size()] * 5
+
+	# Glass modal ratios (inharmonic)
+	var m1 := base * 1.00
+	var m2 := base * 1.13
+	var m3 := base * 1.27
+	var m4 := base * 1.51
 
 	var strength := clampf(impact_strength, 0.0, 1.0)
 
 	for i in range(sample_count):
-		var t := float(i) / float(SAMPLE_RATE)
+		var t := float(i) / SAMPLE_RATE
 
-		# Faster attack, faster decay = brittle glass
-		var attack := minf(t * 420.0, 1.0)
-		var envelope := attack * exp(-38.0 * t) * (0.42 + strength * 0.32)
+		# Very fast attack
+		var attack := minf(t * 1200.0, 1.0)
 
-		# Slight random pitch drift per sample (micro‑shards)
-		var drift := randf_range(-0.015, 0.015)
+		# Modal damping (higher modes die faster)
+		var d1 := exp(-45.0 * t)
+		var d2 := exp(-60.0 * t)
+		var d3 := exp(-75.0 * t)
+		var d4 := exp(-95.0 * t)
 
-		var body := sin(TAU * (base + drift) * t)
-		var partial := sin(TAU * (overtone + drift * 2.0) * t + 0.2)
-		var resonance := sin(TAU * (shard + drift * 3.0) * t + 0.55)
-		var sparkle := sin(TAU * (tinkle + drift * 4.0) * t + 1.1)
+		# Modal oscillators
+		var s1 := sin(TAU * m1 * t) * d1
+		var s2 := sin(TAU * m2 * t) * d2
+		var s3 := sin(TAU * m3 * t) * d3
+		var s4 := sin(TAU * m4 * t) * d4
 
-		# High‑frequency noise burst (glass crackle)
-		var burst := (randf() * 2.0 - 1.0) * 0.065 * exp(-52.0 * t)
+		# Tiny metallic tail (2–3 kHz)
+		var tail := sin(TAU * 2600.0 * t) * exp(-110.0 * t) * 0.08
 
-		# Remove low-end → more glass, less bamboo
+		# Small noise burst
+		var burst := (randf() * 2.0 - 1.0) * 0.035 * exp(-85.0 * t)
+
 		var sample := (
-			body * 0.42 +
-			partial * 0.28 +
-			resonance * 0.18 +
-			sparkle * 0.12 +
+			s1 * 0.55 +
+			s2 * 0.25 +
+			s3 * 0.12 +
+			s4 * 0.08 +
+			tail +
 			burst
-		) * envelope
+		) * attack * (0.45 + strength * 0.35)
 
 		_write_pcm16_sample(data, i * 2, sample)
 
 	return _build_stream(data)
+
 
 static func create_container_break_stream(impact_strength: float = 1.0) -> AudioStreamWAV:
 	var duration: float = lerpf(0.16, 0.30, clampf(impact_strength, 0.0, 1.0))
@@ -140,7 +152,7 @@ static func create_container_break_stream(impact_strength: float = 1.0) -> Audio
 		var t := float(i) / float(SAMPLE_RATE)
 
 		# Faster decay for brittle material
-		var envelope := exp(-16.0 * t)
+		var envelope := exp(t)
 
 		# Initial crack (wide-band, sharp)
 		var crack := sin(TAU * crack_freq * t + randf_range(-0.2, 0.2)) * exp(-60.0 * t)

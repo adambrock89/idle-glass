@@ -32,7 +32,7 @@ var scoreboard_colors: Dictionary = {
 }
 
 var scores: Dictionary = {
-	"red": 200.0,
+	"red": 200000000.0,
 	"orange": 200.0,
 	"yellow": 200.0,
 	"green": 200.0,
@@ -366,7 +366,7 @@ func _find_game_node(node_name: String) -> Node:
 	return null
 
 func _apply_set_effect(target: String, value: Variant) -> void:
-	var fragment_manager := _find_game_node("Node2D")
+	var fragment_manager := %FragmentCollection
 	var platform := _find_game_node("Platform")
 
 	match target:

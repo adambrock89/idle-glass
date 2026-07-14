@@ -7,7 +7,7 @@ extends Node2D
 @export var Blue: ColorProfile
 @export var Purple: ColorProfile
 
-var base_wait_time: float = 5.0
+var base_wait_time: float = 4.0
 var spawn_speed_multiplier: float = 1.0
 var spawn_timer: Timer
 var generation_enabled: bool = true
@@ -218,7 +218,7 @@ func build_clusters() -> void:
 	var polygon_points: PackedVector2Array
 
 	var fragment_container := FragmentContainer.new()
-	$FragmentCollection.add_child(fragment_container)
+	%FragmentCollection.add_child(fragment_container)
 	fragment_container.global_position = %SpawnPoint.global_position
 
 	var angle_offset := 0
@@ -256,6 +256,7 @@ func build_clusters() -> void:
 
 		angle_offset += 30
 	fragment_container.finalize_container()
+	fragment_container.apply_central_impulse(Vector2(0, 500))
 
 func _scaled_color_strength(value: float) -> float:
 	var clamped_value: float = max(0.1, value)
@@ -374,29 +375,11 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 		min_y = min(min_y, p.y)
 		max_x = max(max_x, p.x)
 		max_y = max(max_y, p.y)
-
+	
+	var screen_min = Vector2(min_x, min_y)
+	var screen_max = Vector2(max_x, max_y)
 	var size := Vector2(max_x - min_x, max_y - min_y)
 	var center := Vector2(min_x + size.x * 0.5, min_y + size.y * 0.5)
-
-	# Per-pane variation
-	var rand_seed := float(randi() % 10000)
-	var wobble_strength := 0.15
-	var radial_scale := 1.0
-
-	for p in centered_points:
-		var local := p - center
-
-		# Radial UV
-		var angle := (local.angle() + PI) / TAU
-		var dist := local.length() / (size.length() * 0.5)
-
-		# Pane-specific wobble
-		var wobble := sin(dist * 8.0 + rand_seed * 0.01) * wobble_strength
-
-		var u = clamp(angle + wobble, 0.0, 1.0)
-		var v = clamp(dist * radial_scale, 0.0, 1.0)
-
-		uvs.append(Vector2(u, v))
 
 	var inner := Polygon2D.new()
 	inner.name = "InnerPolygon_%s" % str(color_name)
@@ -406,7 +389,7 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 	img.fill(Color.WHITE)
 	var tex := ImageTexture.create_from_image(img)
 	inner.texture = tex
-	inner.uv = uvs
+	inner.uv = polygon_to_uv(centered_points)
 	inner.position = centroid
 	inner.z_index = 1
 	parent_container.add_child(inner)
@@ -420,8 +403,19 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 
 	var mat := ShaderMaterial.new()
 	mat.shader = preload("res://assets/shaders/glass_fragment.gdshader")
-	mat.set_shader_parameter("tint_color", cp.get_color_code())
-	mat.set_shader_parameter("object_rotation", global_transform.get_rotation())
+	mat.set_shader_parameter("base_color", cp.get_color_code())
+	mat.set_shader_parameter("pane_rotation", global_transform.get_rotation())
+	mat.set_shader_parameter("screen_min", screen_min)
+	mat.set_shader_parameter("screen_max", screen_max)
+	var poly_screen := []
+	for p in centered_points:
+		var gp = inner.to_global(p)
+		var rp = gp.rotated(global_transform.get_rotation())
+		poly_screen.append(rp)
+		
+	mat.set_shader_parameter("poly", poly_screen)
+	mat.set_shader_parameter("poly_count", poly_screen.size())
+	mat.set_shader_parameter("viewport_size", get_viewport_rect().size)
 
 	inner.material = mat
 
@@ -700,3 +694,30 @@ class GrabRadiusIndicator:
 			return
 		draw_circle(Vector2.ZERO, radius, Color(1.0, 0.55, 0.12, 0.14))
 		draw_arc(Vector2.ZERO, radius, 0.0, TAU, 96, Color(1.0, 0.72, 0.2, 0.9), 2.0)
+
+func polygon_to_uv(points: Array) -> Array:
+	var result := []
+	
+	# Compute bounding box
+	var min_x := INF
+	var max_x := -INF
+	var min_y := INF
+	var max_y := -INF
+	
+	for p in points:
+		if p.x < min_x: min_x = p.x
+		if p.x > max_x: max_x = p.x
+		if p.y < min_y: min_y = p.y
+		if p.y > max_y: max_y = p.y
+	
+	var size := Vector2(max_x - min_x, max_y - min_y)
+	
+	# Convert each point to UV (0–1 range)
+	for p in points:
+		var uv := Vector2(
+			(p.x - min_x) / size.x,
+			(p.y - min_y) / size.y
+		)
+		result.append(uv)
+	
+	return result

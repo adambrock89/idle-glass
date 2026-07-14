@@ -76,7 +76,15 @@ func _update_shader_parameters() -> void:
 
 	if inner_poly and inner_poly.material is ShaderMaterial:
 		var mat := inner_poly.material as ShaderMaterial
-		mat.set_shader_parameter("object_rotation", inner_poly.global_rotation)
+		
+		var poly_screen := []
+		for p in inner_poly.polygon:
+			poly_screen.append(inner_poly.to_global(p))
+			
+		mat.set_shader_parameter("poly", poly_screen)
+		mat.set_shader_parameter("poly_count", poly_screen.size())
+		mat.set_shader_parameter("viewport_size", get_viewport_rect().size)
+		mat.set_shader_parameter("pane_rotation", inner_poly.global_rotation)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if is_being_held:

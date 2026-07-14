@@ -18,14 +18,14 @@ shader_parameter/bottom_color = Vector4(1, 0.75, 0.45, 1)
 shader_parameter/light_dir = Vector2(1, -1)
 
 [node name="Node2D" type="Node2D"]
-script = ExtResource("1_qpyrk")
 
 [node name="RigidBody2D" type="RigidBody2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D"]
 
-[node name="FragmentCollection" type="Node" parent="."]
+[node name="FragmentCollection" type="Node2D" parent="."]
 unique_name_in_owner = true
+script = ExtResource("1_qpyrk")
 
 [node name="MainBody" type="RigidBody2D" parent="."]
 freeze = true
@@ -63,14 +63,14 @@ position = Vector2(1171.54, 796.74)
 polygon = PackedVector2Array(14, 76, 784.1, 75.8, 792.47, 313.6, 17.47, 317.6)
 
 [node name="Bumper" parent="MainBody" instance=ExtResource("3_l78gl")]
-position = Vector2(254, 656)
+position = Vector2(879, 142)
 
 [node name="SpawnPoint" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(244, -75)
 
 [node name="Platform" parent="." instance=ExtResource("3_7051s")]
-position = Vector2(682, 969)
+position = Vector2(681, 873)
 scale = Vector2(3, 3)
 script = ExtResource("4_l78gl")
 

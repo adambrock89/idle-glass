@@ -1335,6 +1335,150 @@
 										  "target":  "spawn_speed",
 										  "value":  3
 									  }
+					   },
+						{
+						   "level":  9,
+						   "cost":  {
+										"red":  17000
+									},
+						   "effect_text":  "Cluster throughput x3.25",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  3.25
+									  }
+					   },
+						{
+						   "level":  10,
+						   "cost":  {
+										"red":  35000
+									},
+						   "effect_text":  "Cluster throughput x3.5",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  3.5
+									  }
+					   },
+						{
+						   "level":  11,
+						   "cost":  {
+										"red":  75000
+									},
+						   "effect_text":  "Cluster throughput x3.75",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  3.75
+									  }
+					   },
+					   {
+						   "level":  12,
+						   "cost":  {
+										"red":  160000
+									},
+						   "effect_text":  "Cluster throughput x4",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  4
+									  }
+					   },
+					   {
+						   "level":  13,
+						   "cost":  {
+										"red":  350000
+									},
+						   "effect_text":  "Cluster throughput x4.25",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  4.25
+									  }
+					   },
+					   {
+						   "level":  14,
+						   "cost":  {
+										"red":  1000000
+									},
+						   "effect_text":  "Cluster throughput x4.5",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  4.5
+									  }
+					   },
+						{
+						   "level":  15,
+						   "cost":  {
+										"red":  2500000
+									},
+						   "effect_text":  "Cluster throughput x4.75",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  4.75
+									  }
+					   },
+						{
+						   "level":  16,
+						   "cost":  {
+										"red":  6000000
+									},
+						   "effect_text":  "Cluster throughput x5",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  5
+									  }
+					   },
+						{
+						   "level":  17,
+						   "cost":  {
+										"red":  15000000
+									},
+						   "effect_text":  "Cluster throughput x5.25",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  5.25
+									  }
+					   },
+					   {
+						   "level":  18,
+						   "cost":  {
+										"red":  35000000
+									},
+						   "effect_text":  "Cluster throughput x5.5",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  5.5
+									  }
+					   },
+						{
+						   "level":  19,
+						   "cost":  {
+										"red":  100000000
+									},
+						   "effect_text":  "Cluster throughput x5.75",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  5.75
+									  }
+					   },
+						{
+						   "level":  20,
+						   "cost":  {
+										"red":  250000000
+									},
+						   "effect_text":  "Cluster throughput x6 (MAX)",
+						   "effect":  {
+										  "type":  "set",
+										  "target":  "spawn_speed",
+										  "value":  6
+									  }
 					   }
 				   ]
 	},
@@ -1554,11 +1698,11 @@
 						   "cost":  {
 										"blue":  22
 									},
-						   "effect_text":  "Hatch depth +15",
+						   "effect_text":  "Hatch depth +10",
 						   "effect":  {
 										  "type":  "set",
 										  "target":  "hatch_height_delta",
-										  "value":  15
+										  "value":  50.0
 									  }
 					   },
 					   {
@@ -1566,11 +1710,11 @@
 						   "cost":  {
 										"blue":  64
 									},
-						   "effect_text":  "Hatch depth +30",
+						   "effect_text":  "Hatch depth +20",
 						   "effect":  {
 										  "type":  "set",
 										  "target":  "hatch_height_delta",
-										  "value":  30
+										  "value":  60.0
 									  }
 					   },
 					   {
@@ -1578,11 +1722,11 @@
 						   "cost":  {
 										"blue":  162
 									},
-						   "effect_text":  "Hatch depth +45",
+						   "effect_text":  "Hatch depth +30",
 						   "effect":  {
 										  "type":  "set",
 										  "target":  "hatch_height_delta",
-										  "value":  45
+										  "value":  70.0
 									  }
 					   },
 					   {
@@ -1590,11 +1734,11 @@
 						   "cost":  {
 										"blue":  379
 									},
-						   "effect_text":  "Hatch depth +60",
+						   "effect_text":  "Hatch depth +40",
 						   "effect":  {
 										  "type":  "set",
 										  "target":  "hatch_height_delta",
-										  "value":  60
+										  "value":  80.0
 									  }
 					   },
 					   {
@@ -1602,11 +1746,11 @@
 						   "cost":  {
 										"blue":  868
 									},
-						   "effect_text":  "Hatch depth +75",
+						   "effect_text":  "Hatch depth +50",
 						   "effect":  {
 										  "type":  "set",
 										  "target":  "hatch_height_delta",
-										  "value":  75
+										  "value":  90.0
 									  }
 					   },
 					   {
@@ -1614,11 +1758,11 @@
 						   "cost":  {
 										"blue":  1962
 									},
-						   "effect_text":  "Hatch depth +90",
+						   "effect_text":  "Hatch depth +60",
 						   "effect":  {
 										  "type":  "set",
 										  "target":  "hatch_height_delta",
-										  "value":  90
+										  "value":  100.0
 									  }
 					   },
 					   {
@@ -1626,11 +1770,11 @@
 						   "cost":  {
 										"blue":  4395
 									},
-						   "effect_text":  "Hatch depth +105",
+						   "effect_text":  "Hatch depth +70",
 						   "effect":  {
 										  "type":  "set",
 										  "target":  "hatch_height_delta",
-										  "value":  105
+										  "value":  110.0
 									  }
 					   },
 					   {
@@ -1638,11 +1782,11 @@
 						   "cost":  {
 										"blue":  9773
 									},
-						   "effect_text":  "Hatch depth +120",
+						   "effect_text":  "Hatch depth +80",
 						   "effect":  {
 										  "type":  "set",
 										  "target":  "hatch_height_delta",
-										  "value":  120
+										  "value":  120.0
 									  }
 					   }
 				   ]
