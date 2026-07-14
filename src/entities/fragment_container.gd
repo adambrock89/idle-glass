@@ -31,7 +31,11 @@ func _physics_process(_delta: float) -> void:
 			if mat:
 				mat.set_shader_parameter("motion_factor", motion_factor)
 				mat.set_shader_parameter("light_dir", screen_light_dir.rotated(-child.global_rotation))
-
+		elif child is Polygon2D and child.name.begins_with("InnerPolygon_"):
+			var mat := child.material as ShaderMaterial
+			if mat:
+				mat.set_shader_parameter("object_position", child.global_position)
+				mat.set_shader_parameter("object_rotation", child.global_rotation)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	# Store previous tick velocities BEFORE physics updates

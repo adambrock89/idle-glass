@@ -353,15 +353,60 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 	var centered_points := PackedVector2Array()
 	for point in points:
 		centered_points.append(point - centroid)
+		
 
 	var container_center := parent_container.global_position
 	var border_scale := 1.15
 	var push_offset := compute_push_out_offset(centroid, container_center, border_scale)
 	centroid += push_offset
 
+	# --- Curvature-based UV generation ---
+	var uvs := PackedVector2Array()
+
+	# Compute bounding box
+	var min_x := INF
+	var min_y := INF
+	var max_x := -INF
+	var max_y := -INF
+
+	for p in centered_points:
+		min_x = min(min_x, p.x)
+		min_y = min(min_y, p.y)
+		max_x = max(max_x, p.x)
+		max_y = max(max_y, p.y)
+
+	var size := Vector2(max_x - min_x, max_y - min_y)
+	var center := Vector2(min_x + size.x * 0.5, min_y + size.y * 0.5)
+
+	# Per-pane variation
+	var rand_seed := float(randi() % 10000)
+	var wobble_strength := 0.15
+	var radial_scale := 1.0
+
+	for p in centered_points:
+		var local := p - center
+
+		# Radial UV
+		var angle := (local.angle() + PI) / TAU
+		var dist := local.length() / (size.length() * 0.5)
+
+		# Pane-specific wobble
+		var wobble := sin(dist * 8.0 + rand_seed * 0.01) * wobble_strength
+
+		var u = clamp(angle + wobble, 0.0, 1.0)
+		var v = clamp(dist * radial_scale, 0.0, 1.0)
+
+		uvs.append(Vector2(u, v))
+
 	var inner := Polygon2D.new()
 	inner.name = "InnerPolygon_%s" % str(color_name)
 	inner.polygon = centered_points
+	
+	var img := Image.create(1, 1, false, Image.FORMAT_RGBA8)
+	img.fill(Color.WHITE)
+	var tex := ImageTexture.create_from_image(img)
+	inner.texture = tex
+	inner.uv = uvs
 	inner.position = centroid
 	inner.z_index = 1
 	parent_container.add_child(inner)
@@ -376,7 +421,7 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 	var mat := ShaderMaterial.new()
 	mat.shader = preload("res://assets/shaders/glass_fragment.gdshader")
 	mat.set_shader_parameter("tint_color", cp.get_color_code())
-	mat.set_shader_parameter("object_rotation", inner.rotation)
+	mat.set_shader_parameter("object_rotation", global_transform.get_rotation())
 
 	inner.material = mat
 
@@ -443,6 +488,7 @@ func create_border(centered_points: PackedVector2Array, inner: Node2D) -> MeshIn
 	mat.set("shader_parameter/motion_factor", 0.0)
 	mat.set("shader_parameter/global_rotation", global_transform.get_rotation())
 	
+	
 	var angle_offset = get_angle_offset_by_color(inner.get_meta("color_name"))
 	mat.set("shader_parameter/uv_angle_offset", angle_offset)
 	
@@ -462,6 +508,12 @@ func get_angle_offset_by_color(color_name) -> float:
 		return PI/3
 	elif color_name == ColorProfile.ColorName.BLUE:
 		return PI * 5/3
+	elif color_name == ColorProfile.ColorName.ORANGE:
+		return PI * 2/3
+	elif color_name == ColorProfile.ColorName.GREEN:
+		return 0
+	elif color_name == ColorProfile.ColorName.PURPLE:
+		return PI * 4/3
 		
 	return 0
 

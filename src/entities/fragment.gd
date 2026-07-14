@@ -12,7 +12,7 @@ var visual: Polygon2D
 var is_being_held: bool = false
 
 var border_mesh: MeshInstance2D
-var inner_mesh: MeshInstance2D
+var inner_poly: Polygon2D
 
 @export var pull_strength: float = 5
 @export var max_velocity: float = 2500.0
@@ -59,8 +59,8 @@ func _configure_physics_material() -> void:
 
 func _sync_meshes() -> void:
 	for child in get_children():
-		if child is MeshInstance2D and child.name.begins_with("InnerMeshInstance_"):
-			inner_mesh = child
+		if child is Polygon2D and child.name.begins_with("InnerPolygon_"):
+			inner_poly = child
 		elif child is MeshInstance2D and child.name.begins_with("BorderMeshInstance_"):
 			border_mesh = child
 
@@ -74,9 +74,9 @@ func _update_shader_parameters() -> void:
 		bmat.set_shader_parameter("motion_factor", motion_factor)
 		bmat.set_shader_parameter("light_dir", screen_light_dir.rotated(-border_mesh.global_rotation))
 
-	if inner_mesh and inner_mesh.material is ShaderMaterial:
-		var mat := inner_mesh.material as ShaderMaterial
-		mat.set_shader_parameter("light_dir", screen_light_dir.rotated(-inner_mesh.global_rotation))
+	if inner_poly and inner_poly.material is ShaderMaterial:
+		var mat := inner_poly.material as ShaderMaterial
+		mat.set_shader_parameter("object_rotation", inner_poly.global_rotation)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if is_being_held:
@@ -172,7 +172,7 @@ func _cache_meshes():
 		if child is MeshInstance2D and child.name.begins_with("BorderMeshInstance_"):
 			border_mesh = child
 		elif child is MeshInstance2D and child.name.begins_with("InnerMeshInstance_"):
-			inner_mesh = child
+			inner_poly = child
 
 func _on_body_entered(_body: Node) -> void:
 	if impact_player == null or impact_cooldown_remaining > 0.0:

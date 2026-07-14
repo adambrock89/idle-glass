@@ -252,10 +252,7 @@ func _physics_process(delta: float) -> void:
 	button.position = Vector2(rest_x, new_y)
 
 	var pressed_now: bool = is_button_pressed()
-	if pressed_now and not button_was_pressed:
-		_play_button_click_down()
-	elif not pressed_now and button_was_pressed:
-		_play_button_click_up()
+
 	button_was_pressed = pressed_now
 
 	if pressed_now and not animating:
@@ -276,23 +273,6 @@ func _sfx_call(method_name: String, args: Array) -> Variant:
 	if procedural_sfx_script == null:
 		return null
 	return procedural_sfx_script.callv(method_name, args)
-
-
-func _play_button_click_down() -> void:
-	if button_sfx_player == null:
-		return
-	button_sfx_player.global_position = (get_node("ButtonShaft") as Node2D).global_position
-	button_sfx_player.stream = _sfx_call("get_ui_click_down_stream", []) as AudioStream
-	button_sfx_player.play()
-
-
-func _play_button_click_up() -> void:
-	if button_sfx_player == null:
-		return
-	button_sfx_player.global_position = (get_node("ButtonShaft") as Node2D).global_position
-	button_sfx_player.stream = _sfx_call("get_ui_click_up_stream", []) as AudioStream
-	button_sfx_player.play()
-
 
 func build_hatch(is_left: bool, y_offset: float) -> Node2D:
 	var hatch := StaticBody2D.new()
