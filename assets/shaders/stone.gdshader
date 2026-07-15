@@ -1,73 +1,173 @@
 shader_type canvas_item;
 
-uniform vec4 base_color : source_color = vec4(0.45, 0.45, 0.45, 1.0);
-uniform vec4 dark_color : source_color = vec4(0.25, 0.25, 0.25, 1.0);
-uniform vec4 light_color : source_color = vec4(0.70, 0.70, 0.70, 1.0);
+// Polygon geometry
+uniform int point_count;
+uniform vec2 points[256];
 
-uniform float bevel_width = 0.22;
-uniform float bevel_softness = 0.12;
+// Bevel controls
+uniform float bevel_thickness = 40.0;
+uniform float carve_noise = 0.55;      // stronger irregularity for medieval carving
+uniform float carve_scale = 0.10;      // slightly lower frequency
 
-uniform vec2 light_dir = vec2(-0.4, -0.8);
+// Lighting
+uniform vec2 light_dir = vec2(1.0, -0.3);
 
-uniform float noise_scale = 6.0;
-uniform float noise_strength = 0.55;
+// Wood base color (medieval dark oak)
+uniform vec3 wood_base = vec3(0.45, 0.28, 0.10);
 
-uniform float contrast = 1.1;
-uniform float brightness = 1.0;
 
-float hash(vec2 p) {
-    p = vec2(
-        dot(p, vec2(127.1, 311.7)),
-        dot(p, vec2(269.5, 183.3))
-    );
-    return fract(sin(p.x) * 43758.5453123 + sin(p.y) * 37483.5439213);
+// ------------------------------------------------------------
+// Utility
+// ------------------------------------------------------------
+float softmin(float a, float b, float k) {
+    return -log(exp(-k * a) + exp(-k * b)) / k;
 }
 
-float noise2d(vec2 p) {
+float sd_segment(vec2 p, vec2 a, vec2 b) {
+    vec2 pa = p - a;
+    vec2 ba = b - a;
+    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+    return length(pa - ba * h);
+}
+
+float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+vec2 random2(vec2 p) {
+    return fract(sin(vec2(
+        dot(p, vec2(127.1, 311.7)),
+        dot(p, vec2(269.5, 183.3))
+    )) * 43758.5453);
+}
+
+float grad_noise(vec2 p) {
     vec2 i = floor(p);
     vec2 f = fract(p);
 
-    float a = hash(i);
-    float b = hash(i + vec2(1.0, 0.0));
-    float c = hash(i + vec2(0.0, 1.0));
-    float d = hash(i + vec2(1.0, 1.0));
+    vec2 a = random2(i);
+    vec2 b = random2(i + vec2(1.0, 0.0));
+    vec2 c = random2(i + vec2(0.0, 1.0));
+    vec2 d = random2(i + vec2(1.0, 1.0));
 
     vec2 u = f * f * (3.0 - 2.0 * f);
 
-    return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+    float va = dot(a, f - vec2(0.0, 0.0));
+    float vb = dot(b, f - vec2(1.0, 0.0));
+    float vc = dot(c, f - vec2(0.0, 1.0));
+    float vd = dot(d, f - vec2(1.0, 1.0));
+
+    return mix(mix(va, vb, u.x), mix(vc, vd, u.x), u.y);
 }
 
+
+
+// ------------------------------------------------------------
+// FBM turbulence
+// ------------------------------------------------------------
+float fbm(vec2 p) {
+    float f = 0.0;
+    float amp = 0.5;
+    for (int i = 0; i < 5; i++) {
+        f += amp * grad_noise(p);
+        p *= 2.0;
+        amp *= 0.5;
+    }
+    return f;
+}
+
+
+
+// ------------------------------------------------------------
+// Wood grain function (rings + knots + fibers)
+// ------------------------------------------------------------
+float wood(vec2 p) {
+    // Stretch grain direction (vertical fibers)
+    p.x *= 0.25;
+
+    // Base rings with turbulence
+    float rings = p.x + fbm(p * 0.5) * 2.0;
+
+    // Sharpen rings
+    rings = fract(rings);
+
+    // Knot turbulence
+    float knot = fbm(p * 3.0);
+
+    // Combine rings + knots
+    float grain = rings * 0.6 + knot * 0.4;
+
+    return grain;
+}
+
+
+// ------------------------------------------------------------
+// Fragment
+// ------------------------------------------------------------
 void fragment() {
-    vec2 uv = FRAGCOORD.xy / 256.0;
+    vec2 p = FRAGCOORD.xy;
 
-    float d_left   = uv.x;
-    float d_right  = 1.0 - uv.x;
-    float d_top    = uv.y;
-    float d_bottom = 1.0 - uv.y;
+    float min_dist = 999999.0;
+    int closest_index = 0;
 
-    float d = min(min(d_left, d_right), min(d_top, d_bottom));
+    float k = 12.0;
 
-    float inner = smoothstep(0.0, bevel_width, d);
-    float soft  = smoothstep(bevel_width, bevel_width + bevel_softness, d);
-    float bevel = inner * soft;
+    for (int i = 0; i < point_count; i++) {
+        vec2 a = points[i];
+        vec2 b = points[(i + 1) % point_count];
 
-    vec3 col = base_color.rgb;
+        float d = sd_segment(p, a, b);
+        float blended = softmin(min_dist, d, k);
 
-    float n = noise2d(uv * noise_scale);
-    n = (n - 0.5) * 2.0;
-    col += n * noise_strength;
+        if (d < min_dist) {
+            closest_index = i;
+        }
 
-    vec3 fake_normal = normalize(vec3(uv.x - 0.5, uv.y - 0.5, 0.6));
-    vec3 L = normalize(vec3(light_dir.x, light_dir.y, 0.6));
+        min_dist = blended;
+    }
 
-    float ndotl = clamp(dot(fake_normal, L), -1.0, 1.0);
-    float edge_light = mix(0.0, ndotl * 0.7 + 0.3, 1.0 - bevel);
+    // Hand‑carved irregularity (stronger for medieval)
+    float carve = grad_noise(p * carve_scale) * carve_noise;
+    min_dist += carve;
 
-    vec3 lit = mix(dark_color.rgb, light_color.rgb, edge_light);
-    col = mix(col, lit, 0.6);
+    min_dist = sqrt(min_dist * min_dist + 0.0001);
 
-    col = (col - 0.5) * contrast + 0.5;
-    col *= brightness;
+    float nd = clamp(min_dist / bevel_thickness, 0.0, 1.0);
+    float bevel = nd * nd * (3.0 - 2.0 * nd);
+    bevel = 1.0 - bevel;
 
-    COLOR = vec4(uv, 0.0, 1.0);
+    vec2 a = points[closest_index];
+    vec2 b = points[(closest_index + 1) % point_count];
+    vec2 edge_dir = normalize(b - a);
+    vec2 normal2d = vec2(-edge_dir.y, edge_dir.x);
+
+    float light = clamp(dot(normal2d, -normalize(light_dir)), 0.0, 1.0);
+
+
+    // ------------------------------------------------------------
+    // Wood grain
+    // ------------------------------------------------------------
+    float grain = wood(p * 0.18);
+
+    // Fiber streaks (medieval rough-cut)
+    float fibers = fbm(p * vec2(20.0, 1.0)) * 0.1;
+
+    vec3 wood_color = wood_base;
+
+    // Darken rings (medieval oak)
+    wood_color *= 1.0 - grain * 0.25;
+
+    // Add fiber streaks
+    wood_color += fibers * 0.15;
+
+    // Slight burn tint inside carved areas
+    wood_color *= mix(1.0, 0.85, bevel);
+
+
+    // ------------------------------------------------------------
+    // Lighting only on bevel
+    // ------------------------------------------------------------
+    float edge_light = mix(1.0, 1.0 + light * 0.8, bevel);
+
+    COLOR = vec4(wood_color * edge_light, 1.0);
 }

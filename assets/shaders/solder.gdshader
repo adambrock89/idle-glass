@@ -6,7 +6,7 @@ uniform int metal_type = 0;
 // 0 = soft, 1 = sharp, 2 = deep
 uniform int bevel_mode = 0;
 
-uniform vec2 light_dir = vec2(-1.0, -1.0);
+uniform vec2 light_dir = vec2(1.0, -0.3);
 
 // Motion factor (0..0.25), used for animation only
 uniform float motion_factor = 0.0;

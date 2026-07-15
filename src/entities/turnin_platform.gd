@@ -5,12 +5,8 @@ signal hatch_edges(left_edge: Vector2, right_edge: Vector2, top_edge: Vector2)
 const PROCEDURAL_SFX_PATH := "res://src/utils/procedural_sfx.gd"
 var procedural_sfx_script: Script = load(PROCEDURAL_SFX_PATH) as Script
 
-# --- POSITIONING SYSTEM ---
-const TOP_ANCHOR_Y := 200.0   # <--- Top hatch + button always live here
-
 var platform_length := 120.0
 var hatch_height := 5.0
-var hatch_offset := 40.0
 
 var animating := false
 
@@ -19,7 +15,7 @@ var top_right_hatch: Node2D
 var bottom_left_hatch: Node2D
 var bottom_right_hatch: Node2D
 
-var hatch_height_delta: float = 40.0
+var hatch_height_delta: float = 60.0
 
 var base_top_left_global: PackedVector2Array
 var base_top_right_global: PackedVector2Array
@@ -27,12 +23,10 @@ var base_bottom_left_global: PackedVector2Array
 var base_bottom_right_global: PackedVector2Array
 
 var base_top_y: float
-var leg_top_y: float = 0.0
 
 var rest_y: float
 var button_initialized := false
 var button_was_pressed: bool = false
-var button_sfx_player: AudioStreamPlayer2D = null
 var scoring_zone: Area2D
 var hatch_speed_multiplier: float = 1.0
 
@@ -40,18 +34,36 @@ var hatch_speed_multiplier: float = 1.0
 func start() -> void:
 	print("Self script:", self.get_script())
 	build_button()
-
 	build_hatches()
-	
+
 	scoring_zone = create_scoring_zone()
 	scoring_zone.monitoring = false
 
-	spawn_at_bottom()
+	configure_layout()
 	rebuild()
 
+
+func configure_layout() -> void:
+	var viewport := get_viewport()
+	var rect := viewport.get_visible_rect()
+	var camera := viewport.get_camera_2d()
+
+	if camera == null:
+		return
+
+	var world_bottom_y := camera.global_position.y + rect.size.y * 0.5
+	var world_center_x := camera.global_position.x
+
+	var scale_y := global_transform.get_scale().y
+	var parent_y := world_bottom_y - (hatch_height_delta + hatch_height) * scale_y
+	global_position = Vector2(world_center_x, parent_y)
+
+
+
 func build_button():
-	# BUTTON BASE
 	button_initialized = false
+
+	# BUTTON BASE
 	var button_base := StaticBody2D.new()
 	button_base.name = "ButtonBase"
 	button_base.z_index = 1
@@ -71,7 +83,7 @@ func build_button():
 	])
 	button_base_vis.polygon = button_base_col.polygon
 	button_base_vis.color = Color8(200, 200, 200)
-	
+
 	# BUTTON SHAFT
 	var button := AnimatableBody2D.new()
 	button.name = "ButtonShaft"
@@ -109,8 +121,25 @@ func build_button():
 	detector.position = Vector2.ZERO
 	detector.monitoring = true
 	detector.monitorable = true
-	
-	
+
+
+func _build_hatch_polygon(is_left: bool) -> PackedVector2Array:
+	var half := platform_length * 0.5
+	if is_left:
+		return PackedVector2Array([
+			Vector2(-half, 0),
+			Vector2(0, 0),
+			Vector2(0, hatch_height),
+			Vector2(-half, hatch_height)
+		])
+	else:
+		return PackedVector2Array([
+			Vector2(0, 0),
+			Vector2(half, 0),
+			Vector2(half, hatch_height),
+			Vector2(0, hatch_height)
+		])
+
 
 func build_hatches():
 	top_left_hatch = build_hatch(true, 0.0)
@@ -124,28 +153,36 @@ func build_hatches():
 
 	bottom_right_hatch = build_hatch(false, hatch_height_delta)
 	bottom_right_hatch.name = "BottomRightHatch"
-	
-func spawn_at_bottom():
-	var viewport_size = get_viewport().get_visible_rect().size
-	var camera := get_viewport().get_camera_2d()
-	if camera == null:
-		return
 
-	var world_bottom_y = camera.global_position.y + viewport_size.y * 0.5
-	var world_center_x = camera.global_position.x
 
-	# Bottom hatch flush with screen bottom
-	var parent_y = world_bottom_y - (hatch_height_delta + hatch_height)
+func build_hatch(is_left: bool, y_offset: float) -> Node2D:
+	var hatch := StaticBody2D.new()
+	add_child(hatch)
 
-	# Compute actual visible width of the platform
-	var platform_width = platform_length - (hatch_offset * 2)
+	var col := CollisionPolygon2D.new()
+	col.name = "CollisionPolygon2D"
+	var vis := Polygon2D.new()
+	vis.name = "Polygon2D"
 
-	var parent_x = world_center_x
+	hatch.add_child(col)
+	hatch.add_child(vis)
 
-	# Your vertical offset
-	var visual_offset := -90
+	col.polygon = _build_hatch_polygon(is_left)
+	vis.polygon = col.polygon
 
-	global_position = Vector2(parent_x, parent_y + visual_offset)
+	if is_left:
+		vis.color = Color.WHITE
+	else:
+		vis.color = Color8(255, 122, 122, 255)
+
+	hatch.position = Vector2(0, y_offset)
+	return hatch
+
+
+func reset_hatch_geometry(hatch: Node2D, is_left: bool):
+	var col := hatch.get_node("CollisionPolygon2D") as CollisionPolygon2D
+	col.polygon = _build_hatch_polygon(is_left)
+
 
 func rebuild() -> void:
 	# --- TOP HATCHES ALWAYS AT Y = 0 ---
@@ -157,23 +194,22 @@ func rebuild() -> void:
 	bottom_left_hatch.position = Vector2(0, hatch_height_delta)
 	bottom_right_hatch.position = Vector2(0, hatch_height_delta)
 
-
-
 	# BUTTON POSITION (anchored to top hatch)
-	var button_offset = 15
+	var button_offset := 15
 	var button_base: StaticBody2D = get_node_or_null("ButtonBase") as StaticBody2D
 	if button_base != null:
-		button_base.position = Vector2(platform_length/2 + button_offset, 0)
+		button_base.position = Vector2(platform_length / 2 + button_offset, 0)
 
 	var button: AnimatableBody2D = get_node_or_null("ButtonShaft") as AnimatableBody2D
 	if button != null:
-		button.position = Vector2(platform_length/2 + button_offset+2, base_top_y)
-		button.set_meta("rest_x", platform_length/2 + button_offset+2)
+		button.position = Vector2(platform_length / 2 + button_offset + 2, base_top_y)
+		button.set_meta("rest_x", platform_length / 2 + button_offset + 2)
 
 	reset_hatch_geometry(top_left_hatch, true)
 	reset_hatch_geometry(top_right_hatch, false)
 	reset_hatch_geometry(bottom_left_hatch, true)
 	reset_hatch_geometry(bottom_right_hatch, false)
+
 	# STORE BASE GEOMETRY
 	base_top_left_global = store_base(top_left_hatch)
 	base_top_right_global = store_base(top_right_hatch)
@@ -195,70 +231,18 @@ func rebuild() -> void:
 		var scoring_visual: Polygon2D = scoring_zone.get_node_or_null("Polygon2D") as Polygon2D
 		if scoring_visual != null:
 			scoring_visual.polygon = _build_rect_polygon(platform_length, 40.0)
-			
+
 	# HATCH SIGNAL FOR LEVEL GENERATION
 	send_hatch_edges()
-	
-func reset_hatch_geometry(hatch: Node2D, is_left: bool):
-	var col := hatch.get_node("CollisionPolygon2D")
-	var half := platform_length * 0.5
 
-	if is_left:
-		col.polygon = PackedVector2Array([
-			Vector2(-half, 0),
-			Vector2(0, 0),
-			Vector2(0, hatch_height),
-			Vector2(-half, hatch_height)
-		])
-	else:
-		col.polygon = PackedVector2Array([
-			Vector2(0, 0),
-			Vector2(half, 0),
-			Vector2(half, hatch_height),
-			Vector2(0, hatch_height)
-		])
-		
-func build_hatch(is_left: bool, y_offset: float) -> Node2D:
-	var hatch := StaticBody2D.new()
-	add_child(hatch)
-
-	var col := CollisionPolygon2D.new()
-	col.name = "CollisionPolygon2D"   # REQUIRED
-	var vis := Polygon2D.new()
-	vis.name = "Polygon2D"            # REQUIRED
-
-	hatch.add_child(col)
-	hatch.add_child(vis)
-
-	var half := platform_length * 0.5
-
-	if is_left:
-		col.polygon = PackedVector2Array([
-			Vector2(-half, 0),
-			Vector2(0, 0),
-			Vector2(0, hatch_height),
-			Vector2(-half, hatch_height)
-		])
-		vis.color = Color.WHITE
-	else:
-		col.polygon = PackedVector2Array([
-			Vector2(0, 0),
-			Vector2(half, 0),
-			Vector2(half, hatch_height),
-			Vector2(0, hatch_height)
-		])
-		vis.color = Color8(255, 122, 122, 255)
-
-	vis.polygon = col.polygon
-	hatch.position = Vector2(0, y_offset)
-	return hatch
 
 func store_base(hatch_node: Node2D) -> PackedVector2Array:
 	var col := hatch_node.get_node("CollisionPolygon2D") as CollisionPolygon2D
 	var arr := PackedVector2Array()
 	for point in col.polygon:
-		arr.append(point)  # store local points
+		arr.append(point)
 	return arr
+
 
 func animate_hatch(progress: float, hatch_node: Node2D, is_left: bool, opening: bool, base: PackedVector2Array) -> void:
 	var col := hatch_node.get_node("CollisionPolygon2D") as CollisionPolygon2D
@@ -278,7 +262,6 @@ func animate_hatch(progress: float, hatch_node: Node2D, is_left: bool, opening: 
 
 	col.polygon = new_local
 	vis.polygon = new_local
-
 
 
 func create_scoring_zone() -> Area2D:
@@ -317,9 +300,10 @@ func _physics_process(delta: float) -> void:
 		button_initialized = true
 		return
 
-	var button:= get_node_or_null("ButtonShaft")
+	var button := get_node_or_null("ButtonShaft")
 	if button == null:
 		return
+
 	var rest_x_meta = button.get_meta("rest_x")
 	if button and rest_x_meta:
 		var detector: Area2D = button.get_node("PressDetector") as Area2D
@@ -342,12 +326,12 @@ func _physics_process(delta: float) -> void:
 		button.position = Vector2(rest_x, new_y)
 
 		var pressed_now: bool = is_button_pressed()
-
 		button_was_pressed = pressed_now
 
 		if pressed_now and not animating:
 			toggle_all_hatches()
-		
+
+
 func _input(event: InputEvent) -> void:
 	if animating:
 		return
@@ -442,33 +426,32 @@ func _sfx_call(method_name: String, args: Array) -> Variant:
 		return null
 	return procedural_sfx_script.callv(method_name, args)
 
+
 func set_hatch_height_delta(val: float):
 	hatch_height_delta = val
 	rebuild()
+
 
 func set_platform_length(val: float):
 	platform_length = val
 	rebuild()
 
+
 func send_hatch_edges():
 	print("Emit from node:", self)
 	print("Platform node:", get_tree().current_scene.find_child("Platform", true, false))
 
-	# Ensure hatches exist
 	if top_left_hatch == null or top_right_hatch == null:
 		return
 
-	# LEFT HATCH LEFT EDGE (local: -half, 0)
 	var left_col := top_left_hatch.get_node("CollisionPolygon2D") as CollisionPolygon2D
-	var left_edge_local := left_col.polygon[0]  # (-half, 0)
+	var left_edge_local := left_col.polygon[0]
 	var left_edge_global := left_col.to_global(left_edge_local)
 
-	# RIGHT HATCH RIGHT EDGE (local: +half, 0)
 	var right_col := top_right_hatch.get_node("CollisionPolygon2D") as CollisionPolygon2D
-	var right_edge_local := right_col.polygon[1]  # (half, 0)
+	var right_edge_local := right_col.polygon[1]
 	var right_edge_global := right_col.to_global(right_edge_local)
 
-	# TOP EDGE (local: 0, 0 of top-left hatch)
 	var top_edge_local := Vector2(0, 0)
 	var top_edge_global := left_col.to_global(top_edge_local)
 	print("Sending signal to:", get_signal_connection_list("hatch_edges"))

@@ -6,7 +6,7 @@ uniform vec4 base_color : source_color = vec4(1.0, 0.8, 0.6, 1.0);
 uniform float transparency = 0.75;
 
 // Light direction (screen space)
-uniform vec2 light_dir = vec2(-1.0, 1.0);
+uniform vec2 light_dir = vec2(1.0, -0.3);
 
 // Pane rotation (radians)
 uniform float pane_rotation = 0.0;
@@ -83,7 +83,7 @@ void fragment() {
     float hy = height_at(pane_pos + vec2(0.0, eps), R) - height;
 
     vec2 N = normalize(-vec2(hx, hy));
-    vec2 L = normalize(R * light_dir);
+    vec2 L = -normalize(R * light_dir);
 
     float ndl = dot(N, L);
 

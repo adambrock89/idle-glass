@@ -49,8 +49,11 @@ func generate_level_boundaries(hatch_left_edge: Vector2, hatch_right_edge: Vecto
 		left_vis.color = Color(0.2, 0.6, 1.0, 0.25)
 		left_body.add_child(left_vis)
 	left_vis.polygon = left_poly
+	left_vis.antialiased = true
 	left_vis.material = ShaderMaterial.new()
 	left_vis.material.shader = stone_shader
+	left_vis.material.set_shader_parameter("points", left_poly)
+	left_vis.material.set_shader_parameter("point_count", left_poly.size())
 	
 	# ----------------------------------------
 	# RIGHT SIDE BOUNDARY
@@ -84,8 +87,11 @@ func generate_level_boundaries(hatch_left_edge: Vector2, hatch_right_edge: Vecto
 		right_vis.color = Color(1.0, 0.4, 0.4, 0.25)
 		right_body.add_child(right_vis)
 	right_vis.polygon = right_poly
+	right_vis.antialiased = true
 	right_vis.material = ShaderMaterial.new()
 	right_vis.material.shader = stone_shader
+	right_vis.material.set_shader_parameter("points", right_poly)
+	right_vis.material.set_shader_parameter("point_count", right_poly.size())
 	
 func _on_hatch_edges(left_edge: Vector2, right_edge: Vector2, top_edge: Vector2):
 	print("about to generate")
