@@ -317,7 +317,9 @@ func _physics_process(delta: float) -> void:
 		button_initialized = true
 		return
 
-	var button: AnimatableBody2D = get_node("ButtonShaft") as AnimatableBody2D
+	var button:= get_node_or_null("ButtonShaft")
+	if button == null:
+		return
 	var rest_x_meta = button.get_meta("rest_x")
 	if button and rest_x_meta:
 		var detector: Area2D = button.get_node("PressDetector") as Area2D
@@ -329,10 +331,10 @@ func _physics_process(delta: float) -> void:
 		var press_speed := press_force * 0.5 * delta
 		rest_y = base_top_y
 
-		var displacement := rest_y - button.position.y
+		var displacement = rest_y - button.position.y
 		var spring_strength := 20.0
-		var spring_speed := displacement * spring_strength * delta
-		var velocity_y := press_speed + spring_speed
+		var spring_speed = displacement * spring_strength * delta
+		var velocity_y = press_speed + spring_speed
 
 		var max_press := 2.0
 		var new_y: float = clamp(button.position.y + velocity_y, rest_y, rest_y + max_press)
