@@ -367,7 +367,7 @@ func _find_game_node(node_name: String) -> Node:
 
 func _apply_set_effect(target: String, value: Variant) -> void:
 	var fragment_manager := %FragmentCollection
-	var platform := _find_game_node("Platform")
+	var platform := %Platform
 
 	match target:
 		"spawn_speed":
