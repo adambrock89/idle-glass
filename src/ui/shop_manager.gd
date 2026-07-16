@@ -143,21 +143,35 @@ func refresh_list() -> void:
 		if child is Node:
 			child.queue_free()
 
-	for raw_series in upgrades_data:
-		var series: Dictionary = raw_series as Dictionary
-		var sid: String = String(series.get("id", ""))
-		var levels: Array = series.get("levels", []) as Array
-		var lvl_idx: int = int(current_level.get(sid, 0))
-		if lvl_idx >= levels.size():
-			continue
+	for upgrade_data in upgrades_data:
+		var this_upgrade: Dictionary = upgrade_data as Dictionary
+		var sid = this_upgrade.get("id")
+		var level: int = int(current_level.get(sid, 0))
+		this_upgrade.set("level",level)
 
-		var level_data: Dictionary = levels[lvl_idx] as Dictionary
+		var is_max_level: bool = level >= int(this_upgrade.get("max_level", 0))
+		var this_target: String = String(this_upgrade.get("effect",0).get("target",0))
+		
+		#Calculate Effects
+		var effect_type = this_upgrade.get("effect", {}).get("type", "")
+		print(effect_type)
+		var this_level_effect
+		var next_level_effect
 
-		if bool(series.get("requires_tier_two", false)) and (scoreboard == null or not bool(scoreboard.tier_two_unlocked)):
-			continue
+		if effect_type == "mult":
+			this_level_effect = pow(this_upgrade.get("effect",0).get("multiplier",0),level)
+			next_level_effect = pow(this_upgrade.get("effect",0).get("multiplier",0),level + 1)
+
+		this_upgrade.set("current_value_text", str(this_level_effect))
+		this_upgrade.set("next_value_text", str(next_level_effect))
+
+		#Calculate Costs
+		var cost_multiplier = this_upgrade.get("cost_multiplier",0)
+		var costs: Dictionary = this_upgrade.get("cost",{})
+		for color in costs.keys():
+			costs[color] = costs[color] * pow(cost_multiplier, level)
 
 		# Unlock rules: if cost contains secondary color and player has none, skip
-		var costs: Dictionary = level_data.get("cost", {}) as Dictionary
 		var locked: bool = false
 		for raw_color_name in costs.keys():
 			var color_name: String = String(raw_color_name)
@@ -173,7 +187,7 @@ func refresh_list() -> void:
 			list.add_child(row)
 
 			if row.has_method("set_data"):
-				row.call("set_data", series, lvl_idx)
+				row.call("set_data", this_upgrade, level)
 
 			var can_afford: bool = scoreboard != null and scoreboard.has_cost(costs)
 			if row.has_method("set_purchase_state"):
@@ -183,7 +197,7 @@ func refresh_list() -> void:
 				row.connect("purchase_requested", Callable(self, "_on_purchase_requested"))
 
 
-func _on_purchase_requested(series_id: String) -> void:
+func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 	var series: Dictionary = {}
 	for raw_s in upgrades_data:
 		var s: Dictionary = raw_s as Dictionary
@@ -194,13 +208,16 @@ func _on_purchase_requested(series_id: String) -> void:
 		return
 
 	var lvl_idx: int = int(current_level.get(series_id, 0))
-	var levels: Array = series.get("levels", []) as Array
-	if lvl_idx >= levels.size():
+	var max_level: int = series.get("max_level", 0)
+	if lvl_idx >= max_level:
 		print("ShopManager: already at max level for=", series_id)
 		return
 
-	var level_data: Dictionary = levels[lvl_idx] as Dictionary
-	var costs: Dictionary = level_data.get("cost", {}) as Dictionary
+	var costs: Dictionary = series.get("cost", {}) as Dictionary
+	
+	for cost in costs:
+		
+		cost.set("cost", "")
 
 	if scoreboard == null:
 		push_warning("No scoreboard found; cannot process purchase")
@@ -217,8 +234,10 @@ func _on_purchase_requested(series_id: String) -> void:
 		if ui_click_player != null:
 			ui_click_player.play()
 		current_level[series_id] = lvl_idx + 1
-		var effect = level_data.get("effect", null)
+		var effect = series.get("effect", null)
+		effect.set("level",series.get("level",0))
 		if effect != null and scoreboard != null:
+			print(effect)
 			scoreboard.apply_effect(effect as Dictionary)
 		refresh_list()
 	else:

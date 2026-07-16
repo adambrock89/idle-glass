@@ -32,7 +32,6 @@ var hatch_speed_multiplier: float = 1.0
 
 
 func start() -> void:
-	print("Self script:", self.get_script())
 	build_button()
 	build_hatches()
 
@@ -438,9 +437,6 @@ func set_platform_length(val: float):
 
 
 func send_hatch_edges():
-	print("Emit from node:", self)
-	print("Platform node:", get_tree().current_scene.find_child("Platform", true, false))
-
 	if top_left_hatch == null or top_right_hatch == null:
 		return
 
@@ -454,6 +450,5 @@ func send_hatch_edges():
 
 	var top_edge_local := Vector2(0, 0)
 	var top_edge_global := left_col.to_global(top_edge_local)
-	print("Sending signal to:", get_signal_connection_list("hatch_edges"))
 
 	emit_signal("hatch_edges", left_edge_global, right_edge_global, top_edge_global)

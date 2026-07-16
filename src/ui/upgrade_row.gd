@@ -41,15 +41,11 @@ func set_data(series: Dictionary, level_idx: int) -> void:
 	series_id = String(series.get("id", ""))
 	level_index = level_idx
 
-	var levels: Array = series.get("levels", []) as Array
-	if level_index < 0 or level_index >= levels.size():
-		return
-
-	var level_data: Dictionary = levels[level_index] as Dictionary
 	var name_text: String = _normalize_display_text(String(series.get("name", "")))
 	var description_text: String = _normalize_display_text(String(series.get("description", "")))
-	var current_value_text: String = _get_current_value_text(levels, level_index)
-	var next_value_text: String = _get_next_value_text(level_data)
+
+	var current_value_text: String = series.get("current_value_text","")
+	var next_value_text: String = series.get("next_value_text","")
 
 	name_label.text = name_text
 	level_label.text = "Level %d" % level_index
@@ -64,7 +60,7 @@ func set_data(series: Dictionary, level_idx: int) -> void:
 	level_label.modulate = Color(0.72, 0.92, 1)
 	effect_label.modulate = Color(1, 1, 1)
 
-	var costs: Dictionary = level_data.get("cost", {}) as Dictionary
+	var costs: Dictionary = series.get("cost", {}) as Dictionary
 	_update_button_cost_label(costs)
 
 func set_purchase_state(can_afford: bool) -> void:
@@ -272,20 +268,6 @@ func _position_hover_tooltip() -> void:
 
 func _normalize_display_text(text: String) -> String:
 	return text.replace("Strength", "Area").replace("strength", "area")
-
-func _get_current_value_text(levels: Array, next_level_index: int) -> String:
-	if next_level_index > 0 and next_level_index - 1 < levels.size():
-		var current_level_data: Dictionary = levels[next_level_index - 1] as Dictionary
-		return _extract_value_text(_normalize_display_text(String(current_level_data.get("effect_text", "-"))))
-
-	if next_level_index < levels.size():
-		var next_level_data: Dictionary = levels[next_level_index] as Dictionary
-		return _get_base_value_text(next_level_data.get("effect", {}) as Dictionary)
-
-	return "-"
-
-func _get_next_value_text(level_data: Dictionary) -> String:
-	return _extract_value_text(_normalize_display_text(String(level_data.get("effect_text", "-"))))
 
 func _get_base_value_text(effect: Dictionary) -> String:
 	var effect_type: String = String(effect.get("type", ""))

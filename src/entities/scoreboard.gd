@@ -32,7 +32,7 @@ var scoreboard_colors: Dictionary = {
 }
 
 var scores: Dictionary = {
-	"red": 200000000.0,
+	"red": 10000.0,
 	"orange": 200.0,
 	"yellow": 200.0,
 	"green": 200.0,
@@ -304,7 +304,7 @@ func score_shape(fragment: Fragment) -> void:
 		return
 
 	var add: float = _compute_fragment_score(fragment, 1.0)
-	print("Scoreboard: scoring fragment mass=", fragment.fragment_mass, " color=", color_name, " value=", add)
+
 	scores[color_name] = float(scores[color_name]) + add
 	_refresh_entry(color_name)
 	emit_signal("scores_changed")
@@ -341,7 +341,7 @@ func process_batch(fragments: Array) -> void:
 		var fragment: Fragment = frag as Fragment
 		var color_name: String = _get_fragment_color_name(fragment)
 		var add: float = _compute_fragment_score(fragment, batch_mult)
-		print("Scoreboard: scoring fragment mass=", fragment.fragment_mass, " color=", color_name, " value=", add)
+
 		scores[color_name] = float(scores[color_name]) + add
 
 	update_ui()
@@ -416,18 +416,21 @@ func apply_effect(effect: Dictionary) -> void:
 
 	var t: String = String(effect.get("type", ""))
 	var target: String = String(effect.get("target", ""))
-
+	print(effect)
 	if t == "mult":
 		if target.ends_with("_value"):
 			var color: String = target.replace("_value", "")
 			var mult: float = float(effect.get("multiplier", 1.0))
+			
 			if value_multiplier.has(color):
 				value_multiplier[color] = mult
+				print("new: ", mult)
 		elif target.begins_with("metal_") and target.ends_with("_value"):
 			var metal_name: String = target.replace("metal_", "").replace("_value", "")
 			var metal_mult: float = float(effect.get("multiplier", 1.0))
 			if metal_value_multiplier.has(metal_name):
 				metal_value_multiplier[metal_name] = metal_mult
+		_apply_set_effect(target, effect.get("value", null))
 	elif t == "set":
 		_apply_set_effect(target, effect.get("value", null))
 	elif t == "set_weights":

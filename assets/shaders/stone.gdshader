@@ -147,7 +147,7 @@ void fragment() {
     // ------------------------------------------------------------
     // Wood grain
     // ------------------------------------------------------------
-    float grain = wood(p * 0.18);
+    float grain = wood(p * 0.12);
 
     // Fiber streaks (medieval rough-cut)
     float fibers = fbm(p * vec2(20.0, 1.0)) * 0.1;

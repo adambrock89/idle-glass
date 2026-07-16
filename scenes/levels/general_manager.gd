@@ -10,7 +10,6 @@ func _ready():
 		
 
 func generate_level_boundaries(hatch_left_edge: Vector2, hatch_right_edge: Vector2, hatch_top_edge: Vector2) -> void:
-	print("generating level")
 	var viewport := get_viewport().get_visible_rect()
 	var screen_top := viewport.position.y
 	var screen_bottom := viewport.position.y + viewport.size.y
@@ -94,7 +93,6 @@ func generate_level_boundaries(hatch_left_edge: Vector2, hatch_right_edge: Vecto
 	right_vis.material.set_shader_parameter("point_count", right_poly.size())
 	
 func _on_hatch_edges(left_edge: Vector2, right_edge: Vector2, top_edge: Vector2):
-	print("about to generate")
 	generate_level_boundaries(left_edge, right_edge, top_edge)
 
 	# Your logic here
