@@ -118,5 +118,20 @@
 			"yellow":  500
 		},
 		"cost_multiplier": 1.45
+	},
+	{
+		"id":  "hatch_width",
+		"name":  "Hatch Width",
+		"description":  "Increases the width of the hatches",
+		"max_level": 25,
+		"effect":  {
+			"type":  "mult",
+			"target":  "hatch_width",
+			"multiplier":  1.05
+		},
+		"cost": {
+			"yellow":  500
+		},
+		"cost_multiplier": 1.45
 	}
 ]

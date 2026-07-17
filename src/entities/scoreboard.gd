@@ -424,6 +424,8 @@ func apply_effect(effect: Dictionary) -> void:
 			%FragmentCollection.set_spawn_speed_multiplier(mult)
 		elif target == "hatch_speed":
 			%Platform.hatch_speed_multiplier = mult
+		elif target == "hatch_width":
+			%Platform.set_hatch_width_multiplier(mult)
 			
 		elif target.begins_with("metal_") and target.ends_with("_value"):
 			var metal_name: String = target.replace("metal_", "").replace("_value", "")
