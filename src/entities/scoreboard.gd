@@ -420,6 +420,8 @@ func apply_effect(effect: Dictionary) -> void:
 			%Platform.hatch_speed_multiplier = mult
 		elif effect_id == "hatch_width":
 			%Platform.set_hatch_width_multiplier(mult)
+		elif effect_id == "prismatic_probability":
+			%FragmentCollection.set_probability_modifier(mult)
 				
 	elif t == "set":
 		if effect_id == "tier_two_unlock":

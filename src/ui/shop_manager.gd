@@ -198,7 +198,7 @@ func refresh_list() -> void:
 		this_upgrade.set("level",level)
 
 		var is_max_level: bool = level >= int(this_upgrade.get("max_level", 0))
-		var this_target: String = String(this_upgrade.get("effect",0).get("id",0))
+		var this_target: String = String(this_upgrade.get("id",0))
 		
 		#Calculate Effects
 		var effect_type = this_upgrade.get("effect", {}).get("type", "")
@@ -281,6 +281,7 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 		current_level[series_id] = lvl_idx + 1
 		var effect = series.get("effect", null)
 		effect.set("level",requested_level)
+		effect.set("id",series.get("id"))
 		if effect != null and scoreboard != null:
 			scoreboard.apply_effect(effect as Dictionary)
 		refresh_list()

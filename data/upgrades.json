@@ -6,7 +6,6 @@
 		"max_level": 100,
 		"effect":  {
 			"type":  "mult",
-			"id":  "red_value",
 			"multiplier":  1.2
 		},
 		"cost": {
@@ -21,7 +20,6 @@
 		"max_level": 100,
 		"effect":  {
 			"type":  "mult",
-			"id":  "yellow_value",
 			"multiplier":  1.2
 		},
 		"cost": {
@@ -36,7 +34,6 @@
 		"max_level": 100,
 		"effect":  {
 			"type":  "mult",
-			"id":  "blue_value",
 			"multiplier":  1.2
 		},
 		"cost": {
@@ -51,7 +48,6 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"id":  "red_size",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -66,7 +62,6 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"id":  "yellow_size",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -81,7 +76,6 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"id":  "blue_size",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -96,7 +90,6 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"id":  "spawn_speed",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -111,7 +104,6 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"id":  "hatch_speed",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -126,7 +118,6 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"id":  "hatch_width",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -140,13 +131,28 @@
 		"description":  "Unlocks tier two, which adds orange, green, and purple.",
 		"max_level": 1,
 		"effect":  {
-			"type":  "set",
-			"id":  "tier_two_unlock"
+			"type":  "set"
 		},
 		"cost": {
 			"red":  1000,
 			"yellow": 1000,
 			"blue": 1000
 		}
+	},
+	{
+		"id":  "prismatic_probability",
+		"name":  "Prismatic Probability",
+		"description":  "Increases the chances of spawning a higher tier cluster",
+		"max_level": 25,
+		"effect":  {
+			"type":  "mult",
+			"multiplier": 1.10
+		},
+		"cost": {
+			"orange":  10,
+			"green": 10,
+			"purple": 10
+		},
+		"cost_multiplier":1.75
 	}
 ]

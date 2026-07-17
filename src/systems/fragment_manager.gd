@@ -6,7 +6,8 @@ var spawn_timer: Timer
 var generation_enabled: bool = true
 var max_tier: int = 1
 var randomize_tier: bool = false
-var tier_two_probability: float = 0.2
+var tier_probability_base: float = 0.2
+var probability_modifier: float = 1.0
 
 var base_pull_strength: float = 5.0
 var pull_strength_multiplier: float = 1.0
@@ -579,14 +580,20 @@ func set_grab_radius(radius: float) -> void:
 	active_grab_radius_index = unlocked_grab_radii.size() - 1
 	_apply_active_grab_radius()
 
-func set_tier_two_probability(probability: float) -> void:
-	tier_two_probability = clamp(probability, 0.0, 1.0)
+func set_tier_probability_base(probability: float) -> void:
+	tier_probability_base = clamp(probability, 0.0, 1.0)
+
+func set_probability_modifier(modifier: float) -> void:
+	probability_modifier = modifier
 
 func _roll_random_tier() -> int:
+	var roll = randf()
 	if max_tier <= 1:
 		return 1
-
-	if randf() <= tier_two_probability:
+		
+	if roll <= tier_probability_base/10 * probability_modifier:
+		return min(max_tier,3)
+	if roll <= tier_probability_base * probability_modifier:
 		return 2
 
 	if max_tier == 2:
