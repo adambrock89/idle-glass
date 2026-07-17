@@ -16,7 +16,7 @@ func _on_body_entered(body):
 func _score_fragment(fragment):
 	var scoreboard = get_tree().current_scene.find_child("Scoreboard", true, false)
 	if scoreboard == null:
-		print("ERROR: Scoreboard not found")
+		push_error("Scoreboard not found")
 		return
 
 	scoreboard.score_shape(fragment)

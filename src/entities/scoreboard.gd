@@ -33,9 +33,9 @@ var scoreboard_colors: Dictionary = {
 }
 
 var scores: Dictionary = {
-	"red": 1000.0,
+	"red": 1000000.0,
 	"orange": 200.0,
-	"yellow": 200.0,
+	"yellow": 200000.0,
 	"green": 200.0,
 	"blue": 200.0,
 	"purple": 200000.0
@@ -286,7 +286,6 @@ func _get_fragment_metal_name(fragment: Fragment) -> String:
 	return String(METAL_ID_TO_NAME.get(metal_type, "copper"))
 
 func _compute_fragment_score(fragment: Fragment, batch_multiplier: float) -> float:
-	print("Compute: ",fragment,batch_multiplier)
 	if fragment == null:
 		return 0.0
 
@@ -320,14 +319,11 @@ func process_batch(fragments: Array) -> void:
 
 	var count: int = valid_fragments.size()
 	var batch_mult: float = 1.0 + max(0, count - 1) * modifier_lots_shapes_per_shape
-	print(batch_mult)
 	if unique_colors.size() == 1 and count > 1:
 		var same_color_batch_bonus: float = 1.0 + float(count - 1) * modifier_all_same_color_mult
 		batch_mult += same_color_batch_bonus
-		print("samecolor: ",batch_mult)
 	if unique_colors.has("red") and unique_colors.has("orange") and unique_colors.has("yellow") and unique_colors.has("green") and unique_colors.has("blue") and unique_colors.has("purple"):
 		batch_mult *= modifier_rainbow_mult
-		print("wanebow: ",batch_mult)
 	for frag in valid_fragments:
 		var fragment: Fragment = frag as Fragment
 		var color_name: String = _get_fragment_color_name(fragment)
@@ -402,40 +398,39 @@ func _apply_set_effect(target: String, value: Variant) -> void:
 				fragment_manager.call("set_color_strength", color_name, float(value))
 
 func apply_effect(effect: Dictionary) -> void:
-	print(value_multiplier)
 	if effect == null:
 		return
 
 	var t: String = String(effect.get("type", ""))
 	var target: String = String(effect.get("target", ""))
 	if t == "mult": #WORKING HERE
+		var base_mult: float = float(effect.get("multiplier", 1.0))
+		var level: int = int(effect.get("level",0.0))
+		var mult = pow(base_mult, level)
 		if target.ends_with("_value"):
 			var color: String = target.replace("_value", "")
-			var base_mult: float = float(effect.get("multiplier", 1.0))
-			var level: int = int(effect.get("level",0.0))
-			var mult = pow(base_mult, level)
-			
 			if value_multiplier.has(color):
 				value_multiplier[color] = mult
 
-		if target.ends_with("_size"):
+		elif target.ends_with("_size"):
 			var size_multiplier = %FragmentCollection.get("size_multiplier")
 			var color: String = target.replace("_size", "")
-			
-			var base_mult: float = float(effect.get("multiplier", 1.0))
-			var level: int = int(effect.get("level",0.0))
-			var mult = pow(base_mult, level)
 			
 			if size_multiplier.has(color):
 				size_multiplier[color] = mult 
 				#Tell fragment_manager
+		
+		elif target == "spawn_speed":
+			%FragmentCollection.set_spawn_speed_multiplier(mult)
+		elif target == "hatch_speed":
+			%Platform.hatch_speed_multiplier = mult
+			
 		elif target.begins_with("metal_") and target.ends_with("_value"):
 			var metal_name: String = target.replace("metal_", "").replace("_value", "")
 			var metal_mult: float = float(effect.get("multiplier", 1.0))
 			if metal_value_multiplier.has(metal_name):
 				metal_value_multiplier[metal_name] = metal_mult
 				
-		_apply_set_effect(target, effect.get("value", null))
 	elif t == "set":
 		_apply_set_effect(target, effect.get("value", null))
 	elif t == "set_weights":

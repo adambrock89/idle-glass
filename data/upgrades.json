@@ -73,7 +73,8 @@
 			"yellow":  100
 		},
 		"cost_multiplier": 2
-	},{
+	},
+	{
 		"id":  "blue_size",
 		"name":  "Blue Size",
 		"description":  "Increase the size of blue glass pieces",
@@ -87,5 +88,35 @@
 			"blue":  100
 		},
 		"cost_multiplier": 2
+	},
+	{
+		"id":  "spawn_speed",
+		"name":  "Cluster Speed",
+		"description":  "Increases the speed clusters are spawned",
+		"max_level": 25,
+		"effect":  {
+			"type":  "mult",
+			"target":  "spawn_speed",
+			"multiplier":  1.05
+		},
+		"cost": {
+			"red":  500
+		},
+		"cost_multiplier": 1.45
+	},
+	{
+		"id":  "hatch_speed",
+		"name":  "Hatch Speed",
+		"description":  "Increases the speed hatches open and shut",
+		"max_level": 25,
+		"effect":  {
+			"type":  "mult",
+			"target":  "hatch_speed",
+			"multiplier":  1.05
+		},
+		"cost": {
+			"yellow":  500
+		},
+		"cost_multiplier": 1.45
 	}
 ]

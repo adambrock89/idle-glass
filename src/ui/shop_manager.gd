@@ -245,7 +245,6 @@ func refresh_list() -> void:
 
 
 func _on_purchase_requested(series_id: String, requested_level: int) -> void:
-	print("Requested level: ", requested_level)
 	var series: Dictionary = {}
 	for raw_s in upgrades_data:
 		var s: Dictionary = raw_s as Dictionary
@@ -258,7 +257,7 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 	var lvl_idx: int = int(current_level.get(series_id, 0))
 	var max_level: int = series.get("max_level", 0)
 	if lvl_idx >= max_level:
-		print("ShopManager: already at max level for=", series_id)
+		push_warning("ShopManager: already at max level for=", series_id)
 		return
 
 	var costs := series.get("cost", {}).duplicate() as Dictionary
@@ -273,11 +272,6 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 		return
 
 	var afford: bool = bool(scoreboard.has_cost(costs))
-	print("Afford check: %s" % afford)
-	print(costs)
-	if not afford:
-		print("ShopManager: cannot afford purchase for series=", series_id)
-		return
 
 	suppress_score_refresh = true
 	var spent: bool = bool(scoreboard.spend_cost(costs))
@@ -291,7 +285,7 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 			scoreboard.apply_effect(effect as Dictionary)
 		refresh_list()
 	else:
-		print("ShopManager: spend_cost failed for series=", series_id)
+		push_error("ShopManager: spend_cost failed for series=", series_id)
 
 	suppress_score_refresh = false
 	
