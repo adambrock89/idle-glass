@@ -431,6 +431,17 @@ func apply_effect(effect: Dictionary) -> void:
 			
 			if value_multiplier.has(color):
 				value_multiplier[color] = mult
+
+		if target.ends_with("_size"):
+			var size_multiplier = %FragmentCollection.get("size_multiplier")
+			var color: String = target.replace("_size", "")
+			var base_mult: float = float(effect.get("multiplier", 1.0))
+			var level: int = int(effect.get("level",0.0))
+			var mult = pow(base_mult, level)
+			
+			if size_multiplier.has(color):
+				size_multiplier[color] = mult 
+				#Tell fragment_manager
 		elif target.begins_with("metal_") and target.ends_with("_value"):
 			var metal_name: String = target.replace("metal_", "").replace("_value", "")
 			var metal_mult: float = float(effect.get("multiplier", 1.0))

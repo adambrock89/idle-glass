@@ -43,5 +43,49 @@
 			"blue":  10
 		},
 		"cost_multiplier": 1.35
+	},
+	{
+		"id":  "red_size",
+		"name":  "Red Size",
+		"description":  "Increase the size of red glass pieces",
+		"max_level": 25,
+		"effect":  {
+			"type":  "mult",
+			"target":  "red_size",
+			"multiplier":  1.05
+		},
+		"cost": {
+			"red":  100
+		},
+		"cost_multiplier": 2
+	},
+	{
+		"id":  "yellow_size",
+		"name":  "Yellow Size",
+		"description":  "Increase the size of yellow glass pieces",
+		"max_level": 25,
+		"effect":  {
+			"type":  "mult",
+			"target":  "yellow_size",
+			"multiplier":  1.05
+		},
+		"cost": {
+			"yellow":  100
+		},
+		"cost_multiplier": 2
+	},{
+		"id":  "blue_size",
+		"name":  "Blue Size",
+		"description":  "Increase the size of blue glass pieces",
+		"max_level": 25,
+		"effect":  {
+			"type":  "mult",
+			"target":  "blue_size",
+			"multiplier":  1.05
+		},
+		"cost": {
+			"blue":  100
+		},
+		"cost_multiplier": 2
 	}
 ]

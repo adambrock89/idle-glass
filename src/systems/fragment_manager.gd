@@ -1,12 +1,5 @@
 extends Node2D
 
-@export var Red: ColorProfile
-@export var Orange: ColorProfile
-@export var Yellow: ColorProfile
-@export var Green: ColorProfile
-@export var Blue: ColorProfile
-@export var Purple: ColorProfile
-
 var base_wait_time: float = 4.0
 var spawn_speed_multiplier: float = 1.0
 var spawn_timer: Timer
@@ -35,6 +28,7 @@ var METAL_WEIGHTS := {
 	"crystal": 0.0
 }
 
+
 var color_list := ColorProfile.ColorName.values()
 var primary_colors: Array[ColorProfile.ColorName] = [
 	ColorProfile.ColorName.RED,
@@ -55,16 +49,15 @@ var tertiary_colors: Array[ColorProfile.ColorName] = [
 	ColorProfile.ColorName.PURPLE_RED
 ]
 
-const BASE_COLOR_STRENGTH: float = 6.5
-const STRENGTH_VISIBILITY_MULTIPLIER: float = 0.75
-
-var color_strength: Dictionary = {
-	"red": BASE_COLOR_STRENGTH,
-	"orange": BASE_COLOR_STRENGTH,
-	"yellow": BASE_COLOR_STRENGTH,
-	"green": BASE_COLOR_STRENGTH,
-	"blue": BASE_COLOR_STRENGTH,
-	"purple": BASE_COLOR_STRENGTH
+const BASE_SIZE: float = 6.5
+const SIZE_VISIBILITY_MULTIPLIER: float = 0.75
+var size_multiplier: Dictionary = {
+	"red": 1.0,
+	"orange": 1.0,
+	"yellow": 1.0,
+	"green": 1.0,
+	"blue": 1.0,
+	"purple": 1.0
 }
 
 var held_object: Fragment = null
@@ -73,26 +66,6 @@ var grab_indicator: GrabRadiusIndicator = null
 
 func _ready():
 	ProceduralSfx.prime_cache(ColorProfile.ColorName.size())
-
-	Red = ColorProfile.new()
-	Red.color_name = ColorProfile.ColorName.RED
-
-	Orange = ColorProfile.new()
-	Orange.color_name = ColorProfile.ColorName.ORANGE
-
-	Yellow = ColorProfile.new()
-	Yellow.color_name = ColorProfile.ColorName.YELLOW
-
-	Green = ColorProfile.new()
-	Green.color_name = ColorProfile.ColorName.GREEN
-
-	Blue = ColorProfile.new()
-	Blue.color_name = ColorProfile.ColorName.BLUE
-
-	Purple = ColorProfile.new()
-	Purple.color_name = ColorProfile.ColorName.PURPLE
-
-	_sync_color_profile_strengths()
 
 	spawn_timer = Timer.new()
 	add_child(spawn_timer)
@@ -111,25 +84,6 @@ func _process(_delta: float) -> void:
 	if grab_indicator != null:
 		grab_indicator.global_position = get_global_mouse_position()
 		grab_indicator.visible = grab_radius > 0.0
-
-func _sync_color_profile_strengths() -> void:
-	Red.min_strength = float(color_strength["red"])
-	Red.max_strength = float(color_strength["red"])
-
-	Orange.min_strength = float(color_strength["orange"])
-	Orange.max_strength = float(color_strength["orange"])
-
-	Yellow.min_strength = float(color_strength["yellow"])
-	Yellow.max_strength = float(color_strength["yellow"])
-
-	Green.min_strength = float(color_strength["green"])
-	Green.max_strength = float(color_strength["green"])
-
-	Blue.min_strength = float(color_strength["blue"])
-	Blue.max_strength = float(color_strength["blue"])
-
-	Purple.min_strength = float(color_strength["purple"])
-	Purple.max_strength = float(color_strength["purple"])
 
 func _update_spawn_timer_wait_time() -> void:
 	var effective: float = base_wait_time / max(spawn_speed_multiplier, 0.1)
@@ -197,21 +151,11 @@ func _end_grab() -> void:
 	held_fragments.clear()
 
 func build_clusters() -> void:
-	var red_strength: float = _scaled_color_strength(float(color_strength["red"]))
-	var orange_strength: float = _scaled_color_strength(float(color_strength["orange"]))
-	var yellow_strength: float = _scaled_color_strength(float(color_strength["yellow"]))
-	var green_strength: float = _scaled_color_strength(float(color_strength["green"]))
-	var blue_strength: float = _scaled_color_strength(float(color_strength["blue"]))
-	var purple_strength: float = _scaled_color_strength(float(color_strength["purple"]))
+	var sizes: Array[float] = []
 
-	var strengths: Array[float] = [
-		red_strength,
-		orange_strength,
-		yellow_strength,
-		green_strength,
-		blue_strength,
-		purple_strength
-	]
+	for size in size_multiplier:
+		var value = BASE_SIZE * size_multiplier.get(size)
+		sizes.append(value)
 
 	var primary_index := 0
 	var tertiary_index := 0
@@ -228,16 +172,16 @@ func build_clusters() -> void:
 
 	for color in color_list:
 		if color in primary_colors:
-			polygon_points = get_poly_points(color, tier, strengths[primary_index], null, null, angle_offset)
+			polygon_points = get_poly_points(color, tier, sizes[primary_index], null, null, angle_offset)
 			build_nodes(fragment_container, polygon_points, color)
 			primary_index += 1
 		elif color in secondary_colors:
 			polygon_points = get_poly_points(
 				color,
 				tier,
-				strengths[(primary_index - 1) % strengths.size()],
-				strengths[primary_index],
-				strengths[(primary_index + 1) % strengths.size()],
+				sizes[(primary_index - 1) % sizes.size()],
+				sizes[primary_index],
+				sizes[(primary_index + 1) % sizes.size()],
 				angle_offset
 			)
 			build_nodes(fragment_container, polygon_points, color)
@@ -246,8 +190,8 @@ func build_clusters() -> void:
 			polygon_points = get_poly_points(
 				color,
 				tier,
-				strengths[tertiary_index],
-				strengths[(tertiary_index + 1) % strengths.size()],
+				sizes[tertiary_index],
+				sizes[(tertiary_index + 1) % sizes.size()],
 				null,
 				angle_offset
 			)
@@ -257,12 +201,6 @@ func build_clusters() -> void:
 		angle_offset += 30
 	fragment_container.finalize_container()
 	fragment_container.apply_central_impulse(Vector2(0, 500))
-
-func _scaled_color_strength(value: float) -> float:
-	var clamped_value: float = max(0.1, value)
-	if clamped_value <= BASE_COLOR_STRENGTH:
-		return clamped_value
-	return BASE_COLOR_STRENGTH + (clamped_value - BASE_COLOR_STRENGTH) * STRENGTH_VISIBILITY_MULTIPLIER
 
 func _coerce_strength(value: Variant, default: float = 0.0) -> float:
 	if value == null:
@@ -612,12 +550,6 @@ func get_random_metal_type() -> int:
 			return entry.id
 
 	return METAL_TYPES["copper"]
-
-func set_color_strength(color_name: String, value: float) -> void:
-	if not color_strength.has(color_name):
-		return
-	color_strength[color_name] = max(0.1, value)
-	_sync_color_profile_strengths()
 
 func set_spawn_speed_multiplier(multiplier: float) -> void:
 	spawn_speed_multiplier = max(0.1, multiplier)
