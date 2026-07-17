@@ -12,9 +12,6 @@ func _on_body_entered(body):
 	if body is Fragment and not seen_fragments.has(body):
 		seen_fragments[body] = true
 		processed_fragments.append(body)
-		body.visible = false
-		body.set_deferred("freezing", true)
-		body.set_deferred("monitoring", false)
 
 func _score_fragment(fragment):
 	var scoreboard = get_tree().current_scene.find_child("Scoreboard", true, false)

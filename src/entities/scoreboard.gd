@@ -33,7 +33,7 @@ var scoreboard_colors: Dictionary = {
 }
 
 var scores: Dictionary = {
-	"red": 10000.0,
+	"red": 1000.0,
 	"orange": 200.0,
 	"yellow": 200.0,
 	"green": 200.0,
@@ -57,7 +57,7 @@ var metal_value_multiplier: Dictionary = {
 	"crystal": 1000.0
 }
 
-var modifier_lots_shapes_per_shape: float = 0.0
+var modifier_lots_shapes_per_shape: float = 1.0
 var modifier_all_same_color_mult: float = 1.0
 var modifier_rainbow_mult: float = 1.0
 

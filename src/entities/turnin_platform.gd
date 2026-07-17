@@ -223,13 +223,10 @@ func rebuild() -> void:
 
 	# SCORING ZONE
 	if scoring_zone != null:
-		scoring_zone.position = Vector2(0, hatch_height_delta + 40.0)
+		scoring_zone.position = Vector2(-platform_length * 0.5, hatch_height_delta)
 		var scoring_collision: CollisionPolygon2D = scoring_zone.get_node_or_null("CollisionPolygon2D") as CollisionPolygon2D
 		if scoring_collision != null:
 			scoring_collision.polygon = _build_rect_polygon(platform_length, 40.0)
-		var scoring_visual: Polygon2D = scoring_zone.get_node_or_null("Polygon2D") as Polygon2D
-		if scoring_visual != null:
-			scoring_visual.polygon = _build_rect_polygon(platform_length, 40.0)
 
 	# HATCH SIGNAL FOR LEVEL GENERATION
 	send_hatch_edges()

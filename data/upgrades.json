@@ -2,7 +2,7 @@
 	{
 		"id":  "red_value",
 		"name":  "Red Value",
-		"description":  "Increase red score value per fragment",
+		"description":  "Increase the value of red glass",
 		"max_level": 100,
 		"effect":  {
 			"type":  "mult",
@@ -11,6 +11,36 @@
 		},
 		"cost": {
 			"red":  10
+		},
+		"cost_multiplier": 1.35
+	},
+	{
+		"id":  "yellow_value",
+		"name":  "Yellow Value",
+		"description":  "Increase the value of yellow glass",
+		"max_level": 100,
+		"effect":  {
+			"type":  "mult",
+			"target":  "yellow_value",
+			"multiplier":  1.2
+		},
+		"cost": {
+			"yellow":  10
+		},
+		"cost_multiplier": 1.35
+	},
+	{
+		"id":  "blue_value",
+		"name":  "Blue Value",
+		"description":  "Increase the value of blue glass",
+		"max_level": 100,
+		"effect":  {
+			"type":  "mult",
+			"target":  "blue_value",
+			"multiplier":  1.2
+		},
+		"cost": {
+			"blue":  10
 		},
 		"cost_multiplier": 1.35
 	}
