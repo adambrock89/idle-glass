@@ -198,7 +198,6 @@ func refresh_list() -> void:
 		this_upgrade.set("level",level)
 
 		var is_max_level: bool = level >= int(this_upgrade.get("max_level", 0))
-		var this_target: String = String(this_upgrade.get("id",0))
 		
 		#Calculate Effects
 		var effect_type = this_upgrade.get("effect", {}).get("type", "")
@@ -261,17 +260,10 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 		return
 
 	var costs := series.get("cost", {}).duplicate() as Dictionary
-	var cost_multiplier := series.get("cost_multiplier",1.0) as float
-	
-	for cost in costs:
-		var original_cost = costs.get(cost)
-		costs.set(cost, costs.get(cost) * pow(cost_multiplier,requested_level-1))
 
 	if scoreboard == null:
 		push_warning("No scoreboard found; cannot process purchase")
 		return
-
-	var afford: bool = bool(scoreboard.has_cost(costs))
 
 	suppress_score_refresh = true
 	var spent: bool = bool(scoreboard.spend_cost(costs))

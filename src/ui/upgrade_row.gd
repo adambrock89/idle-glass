@@ -129,9 +129,12 @@ func _ready() -> void:
 	_apply_button_styles()
 	_setup_buy_cost_overlay()
 	_setup_hover_tooltip()
-
 	if buy_button != null:
 		buy_button.connect("pressed", Callable(self, "_on_Buy_pressed"))
+		buy_button.custom_minimum_size.x = 120
+	var meta_col: VBoxContainer = get_node("Margin/Content/MetaCol")
+	meta_col.custom_minimum_size.x = 2
+	
 
 	mouse_entered.connect(_on_row_mouse_entered)
 	mouse_exited.connect(_on_row_mouse_exited)

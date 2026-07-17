@@ -11,4 +11,4 @@ func format_float_for_notation(raw_float: float) -> String:
 	
 	var calculated_value := raw_float / pow(1000, multiple_of_thousands)
 	var notation = notations[multiple_of_thousands]
-	return "%.2f %s" % [calculated_value,notation]
+	return "%.2f%s" % [calculated_value,notation]

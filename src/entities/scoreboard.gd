@@ -8,7 +8,7 @@ const AREA_SCORE_REFERENCE_VALUE: float = 1.0
 const AREA_SCORE_TARGET_MASS: float = 181.0
 const AREA_SCORE_TARGET_VALUE: float = 3.0
 const AREA_SCORE_EXPONENT: float = 1.5
-const PANEL_WIDTH: float = 484.0
+const PANEL_WIDTH: float = 465.0
 const PANEL_SIDE_MARGIN: float = 12.0
 const PANEL_TOP_MARGIN: float = 12.0
 const METAL_ID_TO_NAME: Dictionary = {
@@ -154,6 +154,7 @@ func _on_root_gui_input(event: InputEvent) -> void:
 		emit_signal("shop_toggled")
 
 func set_shop_open(is_open: bool) -> void:
+	
 	if panel_root != null:
 		if is_open:
 			panel_root.anchor_bottom = 1.0
@@ -422,6 +423,8 @@ func apply_effect(effect: Dictionary) -> void:
 			%Platform.set_hatch_width_multiplier(mult)
 		elif effect_id == "prismatic_probability":
 			%FragmentCollection.set_probability_modifier(mult)
+		elif effect_id == "grab_radius":
+			%FragmentCollection.set_grab_radius(mult)
 				
 	elif t == "set":
 		if effect_id == "tier_two_unlock":

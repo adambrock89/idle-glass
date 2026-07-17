@@ -154,5 +154,19 @@
 			"purple": 10
 		},
 		"cost_multiplier":1.75
+	},
+	{
+		"id":  "grab_radius",
+		"name":  "Grab Radius",
+		"description":  "Unlocks and expands your grab radius",
+		"max_level": 10,
+		"effect":  {
+			"type":  "mult",
+			"multiplier": 1.15
+		},
+		"cost": {
+			"orange":  25
+		},
+		"cost_multiplier":8
 	}
 ]

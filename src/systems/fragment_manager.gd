@@ -12,8 +12,10 @@ var probability_modifier: float = 1.0
 var base_pull_strength: float = 5.0
 var pull_strength_multiplier: float = 1.0
 var grab_radius: float = 0.0
+var grab_radius_base: float = 45.0
 var unlocked_grab_radii: Array[float] = [0.0]
 var active_grab_radius_index: int = 0
+var is_grabbing: bool = false
 
 var METAL_TYPES := {
 	"copper": 0,
@@ -93,18 +95,18 @@ func _update_spawn_timer_wait_time() -> void:
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			_adjust_grab_radius_selection(1)
-			return
-		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			_adjust_grab_radius_selection(-1)
-			return
+			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+				_adjust_grab_radius_selection(1)
+				return
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				_adjust_grab_radius_selection(-1)
+				return
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		_begin_grab(get_global_mouse_position())
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-		_end_grab()
+			_end_grab()
 
 	if Input.is_action_just_pressed("toggle_generation"):
 		_on_toggle_generation_pressed()
@@ -133,7 +135,7 @@ func _begin_grab(mouse_pos: Vector2) -> void:
 	query.collision_mask = 0xFFFFFFFF
 
 	var results = space_state.intersect_point(query)
-
+	
 	for result in results:
 		if result.collider is Fragment:
 			held_object = result.collider
@@ -300,9 +302,6 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 	var push_offset := compute_push_out_offset(centroid, container_center, border_scale)
 	centroid += push_offset
 
-	# --- Curvature-based UV generation ---
-	var uvs := PackedVector2Array()
-
 	# Compute bounding box
 	var min_x := INF
 	var min_y := INF
@@ -318,7 +317,6 @@ func build_nodes(parent_container: FragmentContainer, points: PackedVector2Array
 	var screen_min = Vector2(min_x, min_y)
 	var screen_max = Vector2(max_x, max_y)
 	var size := Vector2(max_x - min_x, max_y - min_y)
-	var center := Vector2(min_x + size.x * 0.5, min_y + size.y * 0.5)
 
 	var inner := Polygon2D.new()
 	inner.name = "InnerPolygon_%s" % str(color_name)
@@ -567,8 +565,8 @@ func set_tier_randomization(enabled: bool) -> void:
 func set_pull_strength_multiplier(multiplier: float) -> void:
 	pull_strength_multiplier = max(0.1, multiplier)
 
-func set_grab_radius(radius: float) -> void:
-	var clamped_radius: float = max(0.0, radius)
+func set_grab_radius(radius_modifier: float) -> void:
+	var clamped_radius: float = max(0.0, grab_radius_base*radius_modifier)
 	var already_unlocked := false
 	for unlocked in unlocked_grab_radii:
 		if is_equal_approx(unlocked, clamped_radius):
@@ -587,6 +585,8 @@ func set_probability_modifier(modifier: float) -> void:
 	probability_modifier = modifier
 
 func _roll_random_tier() -> int:
+	print("Tier 2 odds: %s" % str(tier_probability_base * probability_modifier))
+	print("Tier 2 odds: %s" % str(tier_probability_base/10 * probability_modifier))
 	var roll = randf()
 	if max_tier <= 1:
 		return 1
