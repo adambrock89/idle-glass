@@ -37,7 +37,7 @@ var cost_color_map: Dictionary = {
 @onready var level_label: Label = get_node("Margin/Content/MetaCol/Level") as Label
 @onready var effect_label: Label = get_node("Margin/Content/MetaCol/Effect") as Label
 
-func set_data(series: Dictionary, level_idx: int) -> void:
+func set_data(series: Dictionary, costs: Dictionary, level_idx: int) -> void:
 	series_id = String(series.get("id", ""))
 	level_index = level_idx
 
@@ -60,7 +60,6 @@ func set_data(series: Dictionary, level_idx: int) -> void:
 	level_label.modulate = Color(0.72, 0.92, 1)
 	effect_label.modulate = Color(1, 1, 1)
 
-	var costs: Dictionary = series.get("cost", {}) as Dictionary
 	_update_button_cost_label(costs)
 
 func set_purchase_state(can_afford: bool) -> void:
@@ -113,7 +112,8 @@ func _get_cost_color(color_name: String) -> Color:
 	return color_profile.rgb_values[enum_value]
 
 func _on_Buy_pressed() -> void:
-	emit_signal("purchase_requested", series_id)
+	print("button pressed")
+	emit_signal("purchase_requested", series_id, level_index)
 
 func _ready() -> void:
 	_apply_row_style()

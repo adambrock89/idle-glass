@@ -167,7 +167,7 @@ func refresh_list() -> void:
 
 		#Calculate Costs
 		var cost_multiplier = this_upgrade.get("cost_multiplier",0)
-		var costs: Dictionary = this_upgrade.get("cost",{})
+		var costs: Dictionary = this_upgrade.get("cost",{}).duplicate()
 		for color in costs.keys():
 			costs[color] = costs[color] * pow(cost_multiplier, level)
 
@@ -187,9 +187,10 @@ func refresh_list() -> void:
 			list.add_child(row)
 
 			if row.has_method("set_data"):
-				row.call("set_data", this_upgrade, level)
+				row.call("set_data", this_upgrade, costs, level)
 
 			var can_afford: bool = scoreboard != null and scoreboard.has_cost(costs)
+			print("Can afford: ",can_afford)
 			if row.has_method("set_purchase_state"):
 				row.call("set_purchase_state", can_afford)
 
@@ -213,12 +214,15 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 		print("ShopManager: already at max level for=", series_id)
 		return
 
-	var costs: Dictionary = series.get("cost", {}) as Dictionary
+	var costs := series.get("cost", {}).duplicate() as Dictionary
+	var cost_multiplier := series.get("cost_multiplier") as float
 	
 	for cost in costs:
-		
-		cost.set("cost", "")
+		var original_cost = costs.get(cost)
+		costs.set(cost, costs.get(cost) * pow(cost_multiplier,requested_level))
+		print("Setting cost to %s * %s ^ %s" % [str(original_cost), str(cost_multiplier), str(requested_level)])
 
+	print(costs)
 	if scoreboard == null:
 		push_warning("No scoreboard found; cannot process purchase")
 		return
