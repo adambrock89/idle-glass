@@ -245,6 +245,7 @@ func refresh_list() -> void:
 
 
 func _on_purchase_requested(series_id: String, requested_level: int) -> void:
+	print("Requested level: ", requested_level)
 	var series: Dictionary = {}
 	for raw_s in upgrades_data:
 		var s: Dictionary = raw_s as Dictionary
@@ -265,13 +266,15 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 	
 	for cost in costs:
 		var original_cost = costs.get(cost)
-		costs.set(cost, costs.get(cost) * pow(cost_multiplier,requested_level))
+		costs.set(cost, costs.get(cost) * pow(cost_multiplier,requested_level-1))
 
 	if scoreboard == null:
 		push_warning("No scoreboard found; cannot process purchase")
 		return
 
 	var afford: bool = bool(scoreboard.has_cost(costs))
+	print("Afford check: %s" % afford)
+	print(costs)
 	if not afford:
 		print("ShopManager: cannot afford purchase for series=", series_id)
 		return

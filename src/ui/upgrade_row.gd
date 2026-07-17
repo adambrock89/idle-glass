@@ -122,7 +122,7 @@ func _get_cost_color(color_name: String) -> Color:
 	return color_profile.rgb_values[enum_value]
 
 func _on_Buy_pressed() -> void:
-	emit_signal("purchase_requested", series_id, level_index)
+	emit_signal("purchase_requested", series_id, level_index+1)
 
 func _ready() -> void:
 	_apply_row_style()
