@@ -6,7 +6,7 @@
 		"max_level": 100,
 		"effect":  {
 			"type":  "mult",
-			"target":  "red_value",
+			"id":  "red_value",
 			"multiplier":  1.2
 		},
 		"cost": {
@@ -21,7 +21,7 @@
 		"max_level": 100,
 		"effect":  {
 			"type":  "mult",
-			"target":  "yellow_value",
+			"id":  "yellow_value",
 			"multiplier":  1.2
 		},
 		"cost": {
@@ -36,7 +36,7 @@
 		"max_level": 100,
 		"effect":  {
 			"type":  "mult",
-			"target":  "blue_value",
+			"id":  "blue_value",
 			"multiplier":  1.2
 		},
 		"cost": {
@@ -51,7 +51,7 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"target":  "red_size",
+			"id":  "red_size",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -66,7 +66,7 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"target":  "yellow_size",
+			"id":  "yellow_size",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -81,7 +81,7 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"target":  "blue_size",
+			"id":  "blue_size",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -96,7 +96,7 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"target":  "spawn_speed",
+			"id":  "spawn_speed",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -111,7 +111,7 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"target":  "hatch_speed",
+			"id":  "hatch_speed",
 			"multiplier":  1.05
 		},
 		"cost": {
@@ -126,12 +126,27 @@
 		"max_level": 25,
 		"effect":  {
 			"type":  "mult",
-			"target":  "hatch_width",
+			"id":  "hatch_width",
 			"multiplier":  1.05
 		},
 		"cost": {
 			"yellow":  500
 		},
 		"cost_multiplier": 1.45
+	},
+	{
+		"id":  "tier_two_unlock",
+		"name":  "Tier Two Unlock",
+		"description":  "Unlocks tier two, which adds orange, green, and purple.",
+		"max_level": 1,
+		"effect":  {
+			"type":  "set",
+			"id":  "tier_two_unlock"
+		},
+		"cost": {
+			"red":  1000,
+			"yellow": 1000,
+			"blue": 1000
+		}
 	}
 ]

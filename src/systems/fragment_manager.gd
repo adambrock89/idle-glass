@@ -557,6 +557,8 @@ func set_spawn_speed_multiplier(multiplier: float) -> void:
 
 func set_max_tier(tier: int) -> void:
 	max_tier = clamp(tier, 1, 3)
+	if(max_tier > 1):
+		set_tier_randomization(true)
 
 func set_tier_randomization(enabled: bool) -> void:
 	randomize_tier = enabled

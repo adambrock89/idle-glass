@@ -198,7 +198,7 @@ func refresh_list() -> void:
 		this_upgrade.set("level",level)
 
 		var is_max_level: bool = level >= int(this_upgrade.get("max_level", 0))
-		var this_target: String = String(this_upgrade.get("effect",0).get("target",0))
+		var this_target: String = String(this_upgrade.get("effect",0).get("id",0))
 		
 		#Calculate Effects
 		var effect_type = this_upgrade.get("effect", {}).get("type", "")
@@ -225,7 +225,7 @@ func refresh_list() -> void:
 			if color_name in ["orange", "green", "purple"]:
 				if scoreboard != null and scoreboard.scores.get(color_name, 0) <= 0:
 					locked = true
-		if locked:
+		if locked or is_max_level:
 			continue
 
 		var row: Node = upgrade_row_scene.instantiate()
@@ -261,7 +261,7 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 		return
 
 	var costs := series.get("cost", {}).duplicate() as Dictionary
-	var cost_multiplier := series.get("cost_multiplier") as float
+	var cost_multiplier := series.get("cost_multiplier",1.0) as float
 	
 	for cost in costs:
 		var original_cost = costs.get(cost)
@@ -296,3 +296,6 @@ func _on_scoreboard_clicked() -> void:
 		# Only close if the mouse is inside the original scoreboard area
 		if scoreboard_open_rect.has_point(last_mouse_pos):
 			close_shop()
+
+func update_scoreboard_size():
+	scoreboard_open_rect = scoreboard.panel_root.get_global_rect()

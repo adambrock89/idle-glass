@@ -37,7 +37,7 @@ var scores: Dictionary = {
 	"orange": 200.0,
 	"yellow": 200000.0,
 	"green": 200.0,
-	"blue": 200.0,
+	"blue": 2000.0,
 	"purple": 200000.0
 }
 
@@ -252,13 +252,6 @@ func _build_panel_style() -> StyleBoxFlat:
 	style.corner_radius_bottom_left = 16
 	return style
 
-func update_scores(new_scores: Dictionary) -> void:
-	for key in new_scores.keys():
-		if scores.has(key):
-			scores[key] = float(new_scores[key])
-			_refresh_entry(String(key))
-	emit_signal("scores_changed")
-
 func _refresh_entry(color_name: String) -> void:
 	var entry: HBoxContainer = entries[color_name] as HBoxContainer
 	var label: Label = entry.get_node("Label") as Label
@@ -402,55 +395,38 @@ func apply_effect(effect: Dictionary) -> void:
 		return
 
 	var t: String = String(effect.get("type", ""))
-	var target: String = String(effect.get("target", ""))
+	var effect_id: String = String(effect.get("id", ""))
+	
 	if t == "mult": #WORKING HERE
 		var base_mult: float = float(effect.get("multiplier", 1.0))
 		var level: int = int(effect.get("level",0.0))
 		var mult = pow(base_mult, level)
-		if target.ends_with("_value"):
-			var color: String = target.replace("_value", "")
+		if effect_id.ends_with("_value"):
+			var color: String = effect_id.replace("_value", "")
 			if value_multiplier.has(color):
 				value_multiplier[color] = mult
 
-		elif target.ends_with("_size"):
+		elif effect_id.ends_with("_size"):
 			var size_multiplier = %FragmentCollection.get("size_multiplier")
-			var color: String = target.replace("_size", "")
+			var color: String = effect_id.replace("_size", "")
 			
 			if size_multiplier.has(color):
 				size_multiplier[color] = mult 
 				#Tell fragment_manager
 		
-		elif target == "spawn_speed":
+		elif effect_id == "spawn_speed":
 			%FragmentCollection.set_spawn_speed_multiplier(mult)
-		elif target == "hatch_speed":
+		elif effect_id == "hatch_speed":
 			%Platform.hatch_speed_multiplier = mult
-		elif target == "hatch_width":
+		elif effect_id == "hatch_width":
 			%Platform.set_hatch_width_multiplier(mult)
-			
-		elif target.begins_with("metal_") and target.ends_with("_value"):
-			var metal_name: String = target.replace("metal_", "").replace("_value", "")
-			var metal_mult: float = float(effect.get("multiplier", 1.0))
-			if metal_value_multiplier.has(metal_name):
-				metal_value_multiplier[metal_name] = metal_mult
 				
 	elif t == "set":
-		_apply_set_effect(target, effect.get("value", null))
-	elif t == "set_weights":
-		var fragment_manager := _find_game_node("Node2D")
-		if fragment_manager != null and fragment_manager.has_method("set_metal_weights"):
-			fragment_manager.call("set_metal_weights", effect.get("weights", {}) as Dictionary)
-	elif t == "multi":
-		var effects: Array = effect.get("effects", []) as Array
-		for raw_effect in effects:
-			if raw_effect is Dictionary:
-				apply_effect(raw_effect as Dictionary)
-	elif t == "add_percent":
-		if target == "modifier_lots_shapes_per_shape":
-			modifier_lots_shapes_per_shape += float(effect.get("amount", 0.0))
-		elif target == "modifier_all_same_color_mult":
-			modifier_all_same_color_mult += float(effect.get("amount", 0.0))
-		elif target == "modifier_rainbow_mult":
-			modifier_rainbow_mult += float(effect.get("amount", 0.0))
+		if effect_id == "tier_two_unlock":
+			%FragmentCollection.set_max_tier(2)
+			tier_two_unlocked = true
+			_update_tier_two_entry_visibility()
+			%Shop.update_scoreboard_size()
 
 func update_ui():
 	for color_name in entries.keys():
