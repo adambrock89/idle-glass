@@ -18,6 +18,13 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		var mouse = event.position
+
+		if %Scoreboard.panel_root.get_global_rect().has_point(mouse):
+			return
+
+		if %Shop.shop_panel.get_global_rect().has_point(mouse):
+			return
 		if _mouse_over_self():
 			start_placing()
 

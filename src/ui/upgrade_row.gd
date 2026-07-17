@@ -12,6 +12,7 @@ const BUY_DISABLED_COLOR := Color(0.12, 0.13, 0.15, 0.98)
 const BUY_ENABLED_BORDER_COLOR := Color(0.44, 0.68, 0.5, 0.95)
 const BUY_DISABLED_BORDER_COLOR := Color(0.2, 0.22, 0.25, 0.95)
 
+var global_functions: GlobalFunctions = GlobalFunctions.new()
 var series_id: String
 var level_index: int = 0
 var color_profile: ColorProfile = ColorProfile.new()
@@ -44,15 +45,18 @@ func set_data(series: Dictionary, costs: Dictionary, level_idx: int) -> void:
 	var name_text: String = _normalize_display_text(String(series.get("name", "")))
 	var description_text: String = _normalize_display_text(String(series.get("description", "")))
 
-	var current_value_text: String = series.get("current_value_text","")
-	var next_value_text: String = series.get("next_value_text","")
-
+	var current_value: float = series.get("current_value","")
+	var next_value: float = series.get("next_value","")
+	
+	var current_value_text = global_functions.format_float_for_notation(current_value)
+	var next_value_text = global_functions.format_float_for_notation(next_value)
+	
 	name_label.text = name_text
 	level_label.text = "Level %d" % level_index
-	effect_label.text = current_value_text
+	effect_label.text = "x%s" % current_value_text
 	tooltip_text = ""
 	tooltip_description_text = description_text
-	tooltip_values_text = "(%s -> %s)" % [current_value_text, next_value_text]
+	tooltip_values_text = "(x%s -> x%s)" % [current_value_text, next_value_text]
 	_update_hover_tooltip_text()
 
 	# Keep text legible on dark shop panel.
@@ -66,7 +70,13 @@ func set_purchase_state(can_afford: bool) -> void:
 	if buy_button == null:
 		return
 	buy_button.disabled = not can_afford
-	buy_button.modulate = Color(1, 1, 1, 1)
+	if can_afford:
+		buy_button.modulate = Color(1, 1, 1, 1)
+		buy_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	else:
+		buy_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	
 
 func _update_button_cost_label(costs: Dictionary) -> void:
 	var ordered_colors: Array[String] = []
@@ -99,9 +109,9 @@ func _update_button_cost_label(costs: Dictionary) -> void:
 
 	buy_button.text = ""
 	for color_name in ordered_colors:
-		var amount: int = int(costs.get(color_name, 0))
+		var amount: float = float(costs.get(color_name, 0))
 		var cost_chunk := Label.new()
-		cost_chunk.text = "\u25CF%d" % amount
+		cost_chunk.text = global_functions.format_float_for_notation(amount)
 		cost_chunk.modulate = _get_cost_color(color_name)
 		cost_chunk.add_theme_font_size_override("font_size", 13)
 		cost_chunk.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -112,7 +122,6 @@ func _get_cost_color(color_name: String) -> Color:
 	return color_profile.rgb_values[enum_value]
 
 func _on_Buy_pressed() -> void:
-	print("button pressed")
 	emit_signal("purchase_requested", series_id, level_index)
 
 func _ready() -> void:
@@ -194,7 +203,7 @@ func _setup_buy_cost_overlay() -> void:
 	buy_cost_overlay.offset_top = 8.0
 	buy_cost_overlay.offset_right = -8.0
 	buy_cost_overlay.offset_bottom = -8.0
-	buy_cost_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	buy_cost_overlay.mouse_filter = Control.MOUSE_FILTER_PASS
 	buy_cost_overlay.alignment = BoxContainer.ALIGNMENT_CENTER
 	buy_cost_overlay.add_theme_constant_override("separation", 6)
 	buy_button.add_child(buy_cost_overlay)
@@ -203,7 +212,7 @@ func _setup_hover_tooltip() -> void:
 	hover_tooltip = PanelContainer.new()
 	hover_tooltip.visible = false
 	hover_tooltip.top_level = true
-	hover_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hover_tooltip.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(hover_tooltip)
 
 	var tooltip_style := StyleBoxFlat.new()

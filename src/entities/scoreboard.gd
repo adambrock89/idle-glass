@@ -20,6 +20,7 @@ const METAL_ID_TO_NAME: Dictionary = {
 const SCORE_COLOR_ORDER: Array[String] = ["red", "yellow", "blue", "orange", "green", "purple"]
 const TIER_TWO_COLORS: Array[String] = ["orange", "green", "purple"]
 
+var global_functions: GlobalFunctions = GlobalFunctions.new()
 var color_profile: ColorProfile = ColorProfile.new()
 
 var scoreboard_colors: Dictionary = {
@@ -121,6 +122,7 @@ func _ready():
 		var entry: Control = build_color_entry(color_name)
 		grid.add_child(entry)
 		entries[color_name] = entry
+		_refresh_entry(color_name)
 
 	_update_tier_two_entry_visibility()
 
@@ -161,7 +163,11 @@ func set_shop_open(is_open: bool) -> void:
 			panel_root.offset_bottom = PANEL_TOP_MARGIN
 
 	if arrow_hint_label != null:
-		arrow_hint_label.visible = not is_open
+		if(is_open):
+			arrow_hint_label.text = "▲"
+		else:
+			arrow_hint_label.text = "▼"
+		
 	if shop_separation != null:
 		shop_separation.visible = is_open
 	if shop_host != null:
@@ -221,7 +227,7 @@ func build_color_entry(color_name: String) -> Control:
 
 	var label := Label.new()
 	label.name = "Label"
-	label.text = str(int(round(float(scores[color_name]))))
+	label.text = "" #Defined on update
 	label.add_theme_font_size_override("font_size", 19)
 	label.modulate = color_profile.rgb_values[scoreboard_colors[color_name]]
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -256,7 +262,7 @@ func update_scores(new_scores: Dictionary) -> void:
 func _refresh_entry(color_name: String) -> void:
 	var entry: HBoxContainer = entries[color_name] as HBoxContainer
 	var label: Label = entry.get_node("Label") as Label
-	label.text = str(int(round(float(scores[color_name]))))
+	label.text = global_functions.format_float_for_notation(scores[color_name])
 
 func _get_fragment_color_name(fragment: Fragment) -> String:
 	if fragment == null:
@@ -411,14 +417,11 @@ func _apply_set_effect(target: String, value: Variant) -> void:
 				fragment_manager.call("set_color_strength", color_name, float(value))
 
 func apply_effect(effect: Dictionary) -> void:
-	print("Effect:")
-	print(effect)
 	if effect == null:
 		return
 
 	var t: String = String(effect.get("type", ""))
 	var target: String = String(effect.get("target", ""))
-	print(t)
 	if t == "mult": #WORKING HERE
 		if target.ends_with("_value"):
 			var color: String = target.replace("_value", "")
@@ -428,14 +431,12 @@ func apply_effect(effect: Dictionary) -> void:
 			
 			if value_multiplier.has(color):
 				value_multiplier[color] = mult
-				print("new: ", mult)
 		elif target.begins_with("metal_") and target.ends_with("_value"):
 			var metal_name: String = target.replace("metal_", "").replace("_value", "")
 			var metal_mult: float = float(effect.get("multiplier", 1.0))
 			if metal_value_multiplier.has(metal_name):
 				metal_value_multiplier[metal_name] = metal_mult
 				
-		print("Triggered apply_set_effect(%s, %s)" % [target, effect.get("value", null)]) #effect.get value is NULL
 		_apply_set_effect(target, effect.get("value", null))
 	elif t == "set":
 		_apply_set_effect(target, effect.get("value", null))

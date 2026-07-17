@@ -3,15 +3,15 @@
 		"id":  "red_value",
 		"name":  "Red Value",
 		"description":  "Increase red score value per fragment",
-		"max_level": 8,
+		"max_level": 100,
 		"effect":  {
 			"type":  "mult",
 			"target":  "red_value",
-			"multiplier":  1.1
+			"multiplier":  1.2
 		},
 		"cost": {
 			"red":  10
 		},
-		"cost_multiplier": 1.15
+		"cost_multiplier": 1.35
 	}
 ]

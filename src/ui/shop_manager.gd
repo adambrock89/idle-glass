@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Control
 
 @onready var upgrade_row_scene: PackedScene = preload("res://scenes/ui/upgrade_row.tscn")
 var scoreboard: CanvasLayer = null
@@ -10,6 +10,8 @@ var shop_panel: Control = null
 var list_container: VBoxContainer = null
 var ui_click_player: AudioStreamPlayer = null
 var suppress_score_refresh: bool = false
+var scoreboard_open_rect: Rect2
+var last_mouse_pos: Vector2 = Vector2.ZERO
 
 var is_open: bool = false
 
@@ -44,6 +46,7 @@ func _ready() -> void:
 	shop_panel.custom_minimum_size = Vector2(0, 0)
 	shop_panel.visible = false
 	shop_panel.add_theme_stylebox_override("panel", _build_panel_style())
+	shop_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 
 
 	var panel_margin := MarginContainer.new()
@@ -82,7 +85,7 @@ func _ready() -> void:
 		scoreboard = _find_node_by_name(get_tree().get_root(), "Scoreboard") as CanvasLayer
 
 	if scoreboard != null:
-		scoreboard.connect("shop_toggled", Callable(self, "toggle_shop"))
+		scoreboard.connect("shop_toggled", Callable(self, "_on_scoreboard_clicked"))
 		scoreboard.connect("scores_changed", Callable(self, "_on_scores_changed"))
 		if scoreboard.has_method("attach_shop_panel"):
 			scoreboard.call("attach_shop_panel", shop_panel)
@@ -105,18 +108,63 @@ func _find_node_by_name(root: Node, target: String) -> Node:
 			if found != null:
 				return found
 	return null
+	
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		last_mouse_pos = event.position
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Tab doesn't have a stable Key enum across builds; check unicode 9 (tab)
+	if event is InputEventMouseButton and event.pressed:
+		# While shop is open, block gameplay clicks
+		if is_open:
+			return
+
+	# Tab toggles shop
 	if event is InputEventKey and event.pressed and int(event.unicode) == 9:
 		toggle_shop()
 
+
+
 func toggle_shop() -> void:
 	is_open = !is_open
+
+	if is_open:
+		# Capture the scoreboard's original clickable area
+		if scoreboard != null and scoreboard.panel_root != null:
+			scoreboard_open_rect = scoreboard.panel_root.get_global_rect()
+	else:
+		# Closing shop normally
+		pass
+
 	if shop_panel != null:
 		shop_panel.visible = is_open
+
 	if scoreboard != null and scoreboard.has_method("set_shop_open"):
 		scoreboard.call("set_shop_open", is_open)
+
+func open_shop() -> void:
+	is_open = true
+
+	# Capture the scoreboard's original clickable area BEFORE it expands
+	if scoreboard != null and scoreboard.panel_root != null:
+		scoreboard_open_rect = scoreboard.panel_root.get_global_rect()
+
+	if shop_panel != null:
+		shop_panel.visible = true
+
+	if scoreboard != null and scoreboard.has_method("set_shop_open"):
+		scoreboard.call("set_shop_open", true)
+
+
+func close_shop() -> void:
+	is_open = false
+
+	if shop_panel != null:
+		shop_panel.visible = false
+
+	if scoreboard != null and scoreboard.has_method("set_shop_open"):
+		scoreboard.call("set_shop_open", false)
+
 
 func _on_scores_changed() -> void:
 	if suppress_score_refresh:
@@ -154,16 +202,15 @@ func refresh_list() -> void:
 		
 		#Calculate Effects
 		var effect_type = this_upgrade.get("effect", {}).get("type", "")
-		print(effect_type)
-		var this_level_effect
-		var next_level_effect
+		var this_level_effect: float
+		var next_level_effect: float
 
 		if effect_type == "mult":
 			this_level_effect = pow(this_upgrade.get("effect",0).get("multiplier",0),level)
 			next_level_effect = pow(this_upgrade.get("effect",0).get("multiplier",0),level + 1)
 
-		this_upgrade.set("current_value_text", str(this_level_effect))
-		this_upgrade.set("next_value_text", str(next_level_effect))
+		this_upgrade.set("current_value", this_level_effect)
+		this_upgrade.set("next_value", next_level_effect)
 
 		#Calculate Costs
 		var cost_multiplier = this_upgrade.get("cost_multiplier",0)
@@ -190,7 +237,6 @@ func refresh_list() -> void:
 				row.call("set_data", this_upgrade, costs, level)
 
 			var can_afford: bool = scoreboard != null and scoreboard.has_cost(costs)
-			print("Can afford: ",can_afford)
 			if row.has_method("set_purchase_state"):
 				row.call("set_purchase_state", can_afford)
 
@@ -220,9 +266,7 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 	for cost in costs:
 		var original_cost = costs.get(cost)
 		costs.set(cost, costs.get(cost) * pow(cost_multiplier,requested_level))
-		print("Setting cost to %s * %s ^ %s" % [str(original_cost), str(cost_multiplier), str(requested_level)])
 
-	print(costs)
 	if scoreboard == null:
 		push_warning("No scoreboard found; cannot process purchase")
 		return
@@ -241,10 +285,17 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 		var effect = series.get("effect", null)
 		effect.set("level",requested_level)
 		if effect != null and scoreboard != null:
-			print(effect)
 			scoreboard.apply_effect(effect as Dictionary)
 		refresh_list()
 	else:
 		print("ShopManager: spend_cost failed for series=", series_id)
 
 	suppress_score_refresh = false
+	
+func _on_scoreboard_clicked() -> void:
+	if not is_open:
+		open_shop()
+	else:
+		# Only close if the mouse is inside the original scoreboard area
+		if scoreboard_open_rect.has_point(last_mouse_pos):
+			close_shop()
