@@ -239,7 +239,7 @@ func _on_purchase_requested(series_id: String, requested_level: int) -> void:
 			ui_click_player.play()
 		current_level[series_id] = lvl_idx + 1
 		var effect = series.get("effect", null)
-		effect.set("level",series.get("level",0))
+		effect.set("level",requested_level)
 		if effect != null and scoreboard != null:
 			print(effect)
 			scoreboard.apply_effect(effect as Dictionary)

@@ -57,7 +57,7 @@ var metal_value_multiplier: Dictionary = {
 }
 
 var modifier_lots_shapes_per_shape: float = 0.0
-var modifier_all_same_color_mult: float = 0.0
+var modifier_all_same_color_mult: float = 1.0
 var modifier_rainbow_mult: float = 1.0
 
 var entries: Dictionary = {}
@@ -411,16 +411,20 @@ func _apply_set_effect(target: String, value: Variant) -> void:
 				fragment_manager.call("set_color_strength", color_name, float(value))
 
 func apply_effect(effect: Dictionary) -> void:
+	print("Effect:")
+	print(effect)
 	if effect == null:
 		return
 
 	var t: String = String(effect.get("type", ""))
 	var target: String = String(effect.get("target", ""))
-	print(effect)
-	if t == "mult":
+	print(t)
+	if t == "mult": #WORKING HERE
 		if target.ends_with("_value"):
 			var color: String = target.replace("_value", "")
-			var mult: float = float(effect.get("multiplier", 1.0))
+			var base_mult: float = float(effect.get("multiplier", 1.0))
+			var level: int = int(effect.get("level",0.0))
+			var mult = pow(base_mult, level)
 			
 			if value_multiplier.has(color):
 				value_multiplier[color] = mult
@@ -430,6 +434,8 @@ func apply_effect(effect: Dictionary) -> void:
 			var metal_mult: float = float(effect.get("multiplier", 1.0))
 			if metal_value_multiplier.has(metal_name):
 				metal_value_multiplier[metal_name] = metal_mult
+				
+		print("Triggered apply_set_effect(%s, %s)" % [target, effect.get("value", null)]) #effect.get value is NULL
 		_apply_set_effect(target, effect.get("value", null))
 	elif t == "set":
 		_apply_set_effect(target, effect.get("value", null))
