@@ -12,6 +12,7 @@ const BUY_DISABLED_COLOR := Color(0.12, 0.13, 0.15, 0.98)
 const BUY_ENABLED_BORDER_COLOR := Color(0.44, 0.68, 0.5, 0.95)
 const BUY_DISABLED_BORDER_COLOR := Color(0.2, 0.22, 0.25, 0.95)
 
+var global_functions: GlobalFunctions = GlobalFunctions.new()
 var series_id: String
 var level_index: int = 0
 var color_profile: ColorProfile = ColorProfile.new()
@@ -37,26 +38,25 @@ var cost_color_map: Dictionary = {
 @onready var level_label: Label = get_node("Margin/Content/MetaCol/Level") as Label
 @onready var effect_label: Label = get_node("Margin/Content/MetaCol/Effect") as Label
 
-func set_data(series: Dictionary, level_idx: int) -> void:
+func set_data(series: Dictionary, costs: Dictionary, level_idx: int) -> void:
 	series_id = String(series.get("id", ""))
 	level_index = level_idx
 
-	var levels: Array = series.get("levels", []) as Array
-	if level_index < 0 or level_index >= levels.size():
-		return
-
-	var level_data: Dictionary = levels[level_index] as Dictionary
 	var name_text: String = _normalize_display_text(String(series.get("name", "")))
 	var description_text: String = _normalize_display_text(String(series.get("description", "")))
-	var current_value_text: String = _get_current_value_text(levels, level_index)
-	var next_value_text: String = _get_next_value_text(level_data)
 
+	var current_value: float = series.get("current_value","")
+	var next_value: float = series.get("next_value","")
+	
+	var current_value_text = global_functions.format_float_for_notation(current_value)
+	var next_value_text = global_functions.format_float_for_notation(next_value)
+	
 	name_label.text = name_text
 	level_label.text = "Level %d" % level_index
-	effect_label.text = current_value_text
+	effect_label.text = "x%s" % current_value_text
 	tooltip_text = ""
 	tooltip_description_text = description_text
-	tooltip_values_text = "(%s -> %s)" % [current_value_text, next_value_text]
+	tooltip_values_text = "(x%s -> x%s)" % [current_value_text, next_value_text]
 	_update_hover_tooltip_text()
 
 	# Keep text legible on dark shop panel.
@@ -64,14 +64,19 @@ func set_data(series: Dictionary, level_idx: int) -> void:
 	level_label.modulate = Color(0.72, 0.92, 1)
 	effect_label.modulate = Color(1, 1, 1)
 
-	var costs: Dictionary = level_data.get("cost", {}) as Dictionary
 	_update_button_cost_label(costs)
 
 func set_purchase_state(can_afford: bool) -> void:
 	if buy_button == null:
 		return
 	buy_button.disabled = not can_afford
-	buy_button.modulate = Color(1, 1, 1, 1)
+	if can_afford:
+		buy_button.modulate = Color(1, 1, 1, 1)
+		buy_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	else:
+		buy_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	
 
 func _update_button_cost_label(costs: Dictionary) -> void:
 	var ordered_colors: Array[String] = []
@@ -104,9 +109,9 @@ func _update_button_cost_label(costs: Dictionary) -> void:
 
 	buy_button.text = ""
 	for color_name in ordered_colors:
-		var amount: int = int(costs.get(color_name, 0))
+		var amount: float = float(costs.get(color_name, 0))
 		var cost_chunk := Label.new()
-		cost_chunk.text = "\u25CF%d" % amount
+		cost_chunk.text = global_functions.format_float_for_notation(amount)
 		cost_chunk.modulate = _get_cost_color(color_name)
 		cost_chunk.add_theme_font_size_override("font_size", 13)
 		cost_chunk.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -117,16 +122,19 @@ func _get_cost_color(color_name: String) -> Color:
 	return color_profile.rgb_values[enum_value]
 
 func _on_Buy_pressed() -> void:
-	emit_signal("purchase_requested", series_id)
+	emit_signal("purchase_requested", series_id, level_index+1)
 
 func _ready() -> void:
 	_apply_row_style()
 	_apply_button_styles()
 	_setup_buy_cost_overlay()
 	_setup_hover_tooltip()
-
 	if buy_button != null:
 		buy_button.connect("pressed", Callable(self, "_on_Buy_pressed"))
+		buy_button.custom_minimum_size.x = 120
+	var meta_col: VBoxContainer = get_node("Margin/Content/MetaCol")
+	meta_col.custom_minimum_size.x = 2
+	
 
 	mouse_entered.connect(_on_row_mouse_entered)
 	mouse_exited.connect(_on_row_mouse_exited)
@@ -198,7 +206,7 @@ func _setup_buy_cost_overlay() -> void:
 	buy_cost_overlay.offset_top = 8.0
 	buy_cost_overlay.offset_right = -8.0
 	buy_cost_overlay.offset_bottom = -8.0
-	buy_cost_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	buy_cost_overlay.mouse_filter = Control.MOUSE_FILTER_PASS
 	buy_cost_overlay.alignment = BoxContainer.ALIGNMENT_CENTER
 	buy_cost_overlay.add_theme_constant_override("separation", 6)
 	buy_button.add_child(buy_cost_overlay)
@@ -207,7 +215,7 @@ func _setup_hover_tooltip() -> void:
 	hover_tooltip = PanelContainer.new()
 	hover_tooltip.visible = false
 	hover_tooltip.top_level = true
-	hover_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hover_tooltip.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(hover_tooltip)
 
 	var tooltip_style := StyleBoxFlat.new()
@@ -272,20 +280,6 @@ func _position_hover_tooltip() -> void:
 
 func _normalize_display_text(text: String) -> String:
 	return text.replace("Strength", "Area").replace("strength", "area")
-
-func _get_current_value_text(levels: Array, next_level_index: int) -> String:
-	if next_level_index > 0 and next_level_index - 1 < levels.size():
-		var current_level_data: Dictionary = levels[next_level_index - 1] as Dictionary
-		return _extract_value_text(_normalize_display_text(String(current_level_data.get("effect_text", "-"))))
-
-	if next_level_index < levels.size():
-		var next_level_data: Dictionary = levels[next_level_index] as Dictionary
-		return _get_base_value_text(next_level_data.get("effect", {}) as Dictionary)
-
-	return "-"
-
-func _get_next_value_text(level_data: Dictionary) -> String:
-	return _extract_value_text(_normalize_display_text(String(level_data.get("effect_text", "-"))))
 
 func _get_base_value_text(effect: Dictionary) -> String:
 	var effect_type: String = String(effect.get("type", ""))

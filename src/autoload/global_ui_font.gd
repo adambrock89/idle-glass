@@ -1,6 +1,6 @@
 extends Node
 
-var MODERN_FONT_NAMES: PackedStringArray = PackedStringArray(["Segoe UI", "Inter", "Noto Sans", "Roboto", "Arial"])
+var MODERN_FONT_NAMES: PackedStringArray = PackedStringArray(["Roboto", "Inter", "Noto Sans", "Segoe UI", "Arial"])
 const APPLIED_META_KEY := &"global_font_applied"
 
 var modern_font: SystemFont

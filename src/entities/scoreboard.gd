@@ -7,8 +7,8 @@ const AREA_SCORE_REFERENCE_MASS: float = 72.0
 const AREA_SCORE_REFERENCE_VALUE: float = 1.0
 const AREA_SCORE_TARGET_MASS: float = 181.0
 const AREA_SCORE_TARGET_VALUE: float = 3.0
-const AREA_SCORE_EXPONENT: float = 1.1909
-const PANEL_WIDTH: float = 484.0
+const AREA_SCORE_EXPONENT: float = 1.5
+const PANEL_WIDTH: float = 465.0
 const PANEL_SIDE_MARGIN: float = 12.0
 const PANEL_TOP_MARGIN: float = 12.0
 const METAL_ID_TO_NAME: Dictionary = {
@@ -20,6 +20,7 @@ const METAL_ID_TO_NAME: Dictionary = {
 const SCORE_COLOR_ORDER: Array[String] = ["red", "yellow", "blue", "orange", "green", "purple"]
 const TIER_TWO_COLORS: Array[String] = ["orange", "green", "purple"]
 
+var global_functions: GlobalFunctions = GlobalFunctions.new()
 var color_profile: ColorProfile = ColorProfile.new()
 
 var scoreboard_colors: Dictionary = {
@@ -32,11 +33,11 @@ var scoreboard_colors: Dictionary = {
 }
 
 var scores: Dictionary = {
-	"red": 200000000.0,
+	"red": 1000000.0,
 	"orange": 200.0,
-	"yellow": 200.0,
+	"yellow": 200000.0,
 	"green": 200.0,
-	"blue": 200.0,
+	"blue": 200000.0,
 	"purple": 200000.0
 }
 
@@ -121,6 +122,7 @@ func _ready():
 		var entry: Control = build_color_entry(color_name)
 		grid.add_child(entry)
 		entries[color_name] = entry
+		_refresh_entry(color_name)
 
 	_update_tier_two_entry_visibility()
 
@@ -152,6 +154,7 @@ func _on_root_gui_input(event: InputEvent) -> void:
 		emit_signal("shop_toggled")
 
 func set_shop_open(is_open: bool) -> void:
+	
 	if panel_root != null:
 		if is_open:
 			panel_root.anchor_bottom = 1.0
@@ -161,7 +164,11 @@ func set_shop_open(is_open: bool) -> void:
 			panel_root.offset_bottom = PANEL_TOP_MARGIN
 
 	if arrow_hint_label != null:
-		arrow_hint_label.visible = not is_open
+		if(is_open):
+			arrow_hint_label.text = "▲"
+		else:
+			arrow_hint_label.text = "▼"
+		
 	if shop_separation != null:
 		shop_separation.visible = is_open
 	if shop_host != null:
@@ -221,7 +228,7 @@ func build_color_entry(color_name: String) -> Control:
 
 	var label := Label.new()
 	label.name = "Label"
-	label.text = str(int(round(float(scores[color_name]))))
+	label.text = "" #Defined on update
 	label.add_theme_font_size_override("font_size", 19)
 	label.modulate = color_profile.rgb_values[scoreboard_colors[color_name]]
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -246,17 +253,10 @@ func _build_panel_style() -> StyleBoxFlat:
 	style.corner_radius_bottom_left = 16
 	return style
 
-func update_scores(new_scores: Dictionary) -> void:
-	for key in new_scores.keys():
-		if scores.has(key):
-			scores[key] = float(new_scores[key])
-			_refresh_entry(String(key))
-	emit_signal("scores_changed")
-
 func _refresh_entry(color_name: String) -> void:
 	var entry: HBoxContainer = entries[color_name] as HBoxContainer
 	var label: Label = entry.get_node("Label") as Label
-	label.text = str(int(round(float(scores[color_name]))))
+	label.text = global_functions.format_float_for_notation(scores[color_name])
 
 func _get_fragment_color_name(fragment: Fragment) -> String:
 	if fragment == null:
@@ -295,28 +295,12 @@ func _compute_fragment_score(fragment: Fragment, batch_multiplier: float) -> flo
 
 	return base_value * color_mult * metal_mult * batch_multiplier
 
-func score_shape(fragment: Fragment) -> void:
-	if fragment == null:
-		return
-
-	var color_name: String = _get_fragment_color_name(fragment)
-	if color_name == "":
-		return
-
-	var add: float = _compute_fragment_score(fragment, 1.0)
-	print("Scoreboard: scoring fragment mass=", fragment.fragment_mass, " color=", color_name, " value=", add)
-	scores[color_name] = float(scores[color_name]) + add
-	_refresh_entry(color_name)
-	emit_signal("scores_changed")
-	fragment.queue_free()
-
 func process_batch(fragments: Array) -> void:
 	if fragments.is_empty():
 		return
-
+		
 	var valid_fragments: Array = []
 	var unique_colors: Dictionary = {}
-
 	for frag in fragments:
 		if frag is Fragment:
 			var color_name: String = _get_fragment_color_name(frag)
@@ -329,19 +313,16 @@ func process_batch(fragments: Array) -> void:
 
 	var count: int = valid_fragments.size()
 	var batch_mult: float = 1.0 + max(0, count - 1) * modifier_lots_shapes_per_shape
-
 	if unique_colors.size() == 1 and count > 1:
 		var same_color_batch_bonus: float = 1.0 + float(count - 1) * modifier_all_same_color_mult
 		batch_mult += same_color_batch_bonus
-
 	if unique_colors.has("red") and unique_colors.has("orange") and unique_colors.has("yellow") and unique_colors.has("green") and unique_colors.has("blue") and unique_colors.has("purple"):
 		batch_mult *= modifier_rainbow_mult
-
 	for frag in valid_fragments:
 		var fragment: Fragment = frag as Fragment
 		var color_name: String = _get_fragment_color_name(fragment)
 		var add: float = _compute_fragment_score(fragment, batch_mult)
-		print("Scoreboard: scoring fragment mass=", fragment.fragment_mass, " color=", color_name, " value=", add)
+
 		scores[color_name] = float(scores[color_name]) + add
 
 	update_ui()
@@ -415,37 +396,41 @@ func apply_effect(effect: Dictionary) -> void:
 		return
 
 	var t: String = String(effect.get("type", ""))
-	var target: String = String(effect.get("target", ""))
-
+	var effect_id: String = String(effect.get("id", ""))
+	
 	if t == "mult":
-		if target.ends_with("_value"):
-			var color: String = target.replace("_value", "")
-			var mult: float = float(effect.get("multiplier", 1.0))
+		var base_mult: float = float(effect.get("multiplier", 1.0))
+		var level: int = int(effect.get("level",0.0))
+		var mult = pow(base_mult, level)
+		if effect_id.ends_with("_value"):
+			var color: String = effect_id.replace("_value", "")
 			if value_multiplier.has(color):
 				value_multiplier[color] = mult
-		elif target.begins_with("metal_") and target.ends_with("_value"):
-			var metal_name: String = target.replace("metal_", "").replace("_value", "")
-			var metal_mult: float = float(effect.get("multiplier", 1.0))
-			if metal_value_multiplier.has(metal_name):
-				metal_value_multiplier[metal_name] = metal_mult
+
+		elif effect_id.ends_with("_size"):
+			var size_multiplier = %FragmentCollection.get("size_multiplier")
+			var color: String = effect_id.replace("_size", "").to_upper()
+			
+			if size_multiplier.has(color):
+				size_multiplier[color] = mult 
+		
+		elif effect_id == "spawn_speed":
+			%FragmentCollection.set_spawn_speed_multiplier(mult)
+		elif effect_id == "hatch_speed":
+			%Platform.hatch_speed_multiplier = mult
+		elif effect_id == "hatch_width":
+			%Platform.set_hatch_width_multiplier(mult)
+		elif effect_id == "prismatic_probability":
+			%FragmentCollection.set_probability_modifier(mult)
+		elif effect_id == "grab_radius":
+			%FragmentCollection.set_grab_radius(mult)
+				
 	elif t == "set":
-		_apply_set_effect(target, effect.get("value", null))
-	elif t == "set_weights":
-		var fragment_manager := _find_game_node("Node2D")
-		if fragment_manager != null and fragment_manager.has_method("set_metal_weights"):
-			fragment_manager.call("set_metal_weights", effect.get("weights", {}) as Dictionary)
-	elif t == "multi":
-		var effects: Array = effect.get("effects", []) as Array
-		for raw_effect in effects:
-			if raw_effect is Dictionary:
-				apply_effect(raw_effect as Dictionary)
-	elif t == "add_percent":
-		if target == "modifier_lots_shapes_per_shape":
-			modifier_lots_shapes_per_shape += float(effect.get("amount", 0.0))
-		elif target == "modifier_all_same_color_mult":
-			modifier_all_same_color_mult += float(effect.get("amount", 0.0))
-		elif target == "modifier_rainbow_mult":
-			modifier_rainbow_mult += float(effect.get("amount", 0.0))
+		if effect_id == "tier_two_unlock":
+			%FragmentCollection.set_max_tier(2)
+			tier_two_unlocked = true
+			_update_tier_two_entry_visibility()
+			%Shop.update_scoreboard_size()
 
 func update_ui():
 	for color_name in entries.keys():

@@ -19,8 +19,10 @@ var rgb_values: Array[Color] = [
 ]
 
 @export var color_name: ColorName
-@export var min_strength: float
-@export var max_strength: float
+@export var size: float
 
 func get_color_code() -> Color:
 	return rgb_values[color_name]
+
+static func get_colornames():
+	return ColorName

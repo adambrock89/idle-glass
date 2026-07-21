@@ -5,7 +5,7 @@ signal hatch_edges(left_edge: Vector2, right_edge: Vector2, top_edge: Vector2)
 const PROCEDURAL_SFX_PATH := "res://src/utils/procedural_sfx.gd"
 var procedural_sfx_script: Script = load(PROCEDURAL_SFX_PATH) as Script
 
-var platform_length := 120.0
+var platform_width := 120.0
 var hatch_height := 5.0
 
 var animating := false
@@ -29,10 +29,10 @@ var button_initialized := false
 var button_was_pressed: bool = false
 var scoring_zone: Area2D
 var hatch_speed_multiplier: float = 1.0
+var hatch_width_multiplier: float = 1.0
 
 
 func start() -> void:
-	print("Self script:", self.get_script())
 	build_button()
 	build_hatches()
 
@@ -124,7 +124,7 @@ func build_button():
 
 
 func _build_hatch_polygon(is_left: bool) -> PackedVector2Array:
-	var half := platform_length * 0.5
+	var half := platform_width * hatch_width_multiplier * 0.5
 	if is_left:
 		return PackedVector2Array([
 			Vector2(-half, 0),
@@ -198,12 +198,12 @@ func rebuild() -> void:
 	var button_offset := 15
 	var button_base: StaticBody2D = get_node_or_null("ButtonBase") as StaticBody2D
 	if button_base != null:
-		button_base.position = Vector2(platform_length / 2 + button_offset, 0)
+		button_base.position = Vector2(platform_width * hatch_width_multiplier / 2 + button_offset, 0)
 
 	var button: AnimatableBody2D = get_node_or_null("ButtonShaft") as AnimatableBody2D
 	if button != null:
-		button.position = Vector2(platform_length / 2 + button_offset + 2, base_top_y)
-		button.set_meta("rest_x", platform_length / 2 + button_offset + 2)
+		button.position = Vector2(platform_width * hatch_width_multiplier/ 2 + button_offset + 2, base_top_y)
+		button.set_meta("rest_x", platform_width * hatch_width_multiplier / 2 + button_offset + 2)
 
 	reset_hatch_geometry(top_left_hatch, true)
 	reset_hatch_geometry(top_right_hatch, false)
@@ -224,13 +224,10 @@ func rebuild() -> void:
 
 	# SCORING ZONE
 	if scoring_zone != null:
-		scoring_zone.position = Vector2(0, hatch_height_delta + 40.0)
+		scoring_zone.position = Vector2(-platform_width * hatch_width_multiplier * 0.5, hatch_height_delta)
 		var scoring_collision: CollisionPolygon2D = scoring_zone.get_node_or_null("CollisionPolygon2D") as CollisionPolygon2D
 		if scoring_collision != null:
-			scoring_collision.polygon = _build_rect_polygon(platform_length, 40.0)
-		var scoring_visual: Polygon2D = scoring_zone.get_node_or_null("Polygon2D") as Polygon2D
-		if scoring_visual != null:
-			scoring_visual.polygon = _build_rect_polygon(platform_length, 40.0)
+			scoring_collision.polygon = _build_rect_polygon(platform_width * hatch_width_multiplier, 40.0)
 
 	# HATCH SIGNAL FOR LEVEL GENERATION
 	send_hatch_edges()
@@ -250,7 +247,7 @@ func animate_hatch(progress: float, hatch_node: Node2D, is_left: bool, opening: 
 
 	var new_local := PackedVector2Array()
 
-	var half := platform_length * 0.5
+	var half := platform_width * hatch_width_multiplier * 0.5
 	var inner_x := 0.0
 	var outer_x := -half if is_left else half
 
@@ -270,13 +267,13 @@ func create_scoring_zone() -> Area2D:
 	zone.set_script(load("res://src/entities/score_zone.gd"))
 
 	var colpoly := CollisionPolygon2D.new()
-	colpoly.polygon = _build_rect_polygon(platform_length, 40.0)
+	colpoly.polygon = _build_rect_polygon(platform_width * hatch_width_multiplier, 40.0)
 	zone.add_child(colpoly)
 
 	var debug_poly := Polygon2D.new()
 	debug_poly.color = Color(1, 0, 0, 0.3)
 	debug_poly.z_index = 999
-	debug_poly.polygon = _build_rect_polygon(platform_length, 40.0)
+	debug_poly.polygon = _build_rect_polygon(platform_width * hatch_width_multiplier, 40.0)
 	zone.add_child(debug_poly)
 
 	zone.position = Vector2(0, hatch_height_delta + 40.0)
@@ -432,15 +429,12 @@ func set_hatch_height_delta(val: float):
 	rebuild()
 
 
-func set_platform_length(val: float):
-	platform_length = val
+func set_hatch_width_multiplier(val: float):
+	hatch_width_multiplier = val
 	rebuild()
 
 
 func send_hatch_edges():
-	print("Emit from node:", self)
-	print("Platform node:", get_tree().current_scene.find_child("Platform", true, false))
-
 	if top_left_hatch == null or top_right_hatch == null:
 		return
 
@@ -454,6 +448,5 @@ func send_hatch_edges():
 
 	var top_edge_local := Vector2(0, 0)
 	var top_edge_global := left_col.to_global(top_edge_local)
-	print("Sending signal to:", get_signal_connection_list("hatch_edges"))
 
 	emit_signal("hatch_edges", left_edge_global, right_edge_global, top_edge_global)

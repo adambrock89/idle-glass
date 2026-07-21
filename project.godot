@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Idle Colors"
+config/version="0.1"
 run/main_scene="uid://dt00mwv1c6iv7"
 config/features=PackedStringArray("4.4", "Mobile")
 
