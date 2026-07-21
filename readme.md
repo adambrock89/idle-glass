@@ -1,6 +1,8 @@
 # Idle Colors
 Idle Colors is an incremental game meant to be pleasant to just sit around and watch, and fun to engage with.
 
+[Download Game](https://github.com/adambrock89/idle-glass/raw/refs/heads/main/Idle%20Colors.zip)
+
 ## Technologies Used:
 Godot (GDScript, GDShader)
 
