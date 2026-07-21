@@ -33,12 +33,12 @@ var scoreboard_colors: Dictionary = {
 }
 
 var scores: Dictionary = {
-	"red": 1000000.0,
-	"orange": 200.0,
-	"yellow": 200000.0,
-	"green": 200.0,
-	"blue": 200000.0,
-	"purple": 200000.0
+	"red": 0.0,
+	"orange": 0.0,
+	"yellow": 0.0,
+	"green": 0.0,
+	"blue": 0.0,
+	"purple": 0.0
 }
 
 var value_multiplier: Dictionary = {
