@@ -121,7 +121,7 @@
 			"multiplier":  1.05
 		},
 		"cost": {
-			"yellow":  500
+			"blue":  500
 		},
 		"cost_multiplier": 1.45
 	},

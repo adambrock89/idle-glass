@@ -37,7 +37,7 @@ var scores: Dictionary = {
 	"orange": 200.0,
 	"yellow": 200000.0,
 	"green": 200.0,
-	"blue": 2000.0,
+	"blue": 200000.0,
 	"purple": 200000.0
 }
 
@@ -398,7 +398,7 @@ func apply_effect(effect: Dictionary) -> void:
 	var t: String = String(effect.get("type", ""))
 	var effect_id: String = String(effect.get("id", ""))
 	
-	if t == "mult": #WORKING HERE
+	if t == "mult":
 		var base_mult: float = float(effect.get("multiplier", 1.0))
 		var level: int = int(effect.get("level",0.0))
 		var mult = pow(base_mult, level)
@@ -409,11 +409,10 @@ func apply_effect(effect: Dictionary) -> void:
 
 		elif effect_id.ends_with("_size"):
 			var size_multiplier = %FragmentCollection.get("size_multiplier")
-			var color: String = effect_id.replace("_size", "")
+			var color: String = effect_id.replace("_size", "").to_upper()
 			
 			if size_multiplier.has(color):
 				size_multiplier[color] = mult 
-				#Tell fragment_manager
 		
 		elif effect_id == "spawn_speed":
 			%FragmentCollection.set_spawn_speed_multiplier(mult)

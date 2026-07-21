@@ -23,3 +23,6 @@ var rgb_values: Array[Color] = [
 
 func get_color_code() -> Color:
 	return rgb_values[color_name]
+
+static func get_colornames():
+	return ColorName

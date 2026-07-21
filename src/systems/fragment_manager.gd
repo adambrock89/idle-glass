@@ -52,22 +52,25 @@ var tertiary_colors: Array[ColorProfile.ColorName] = [
 	ColorProfile.ColorName.PURPLE_RED
 ]
 
-const BASE_SIZE: float = 6.5
+const BASE_SIZE_PRIMARY: float = 6.5
+const BASE_SIZE_SECONDARY: float = 8.0
 const SIZE_VISIBILITY_MULTIPLIER: float = 0.75
 var size_multiplier: Dictionary = {
-	"red": 1.0,
-	"orange": 1.0,
-	"yellow": 1.0,
-	"green": 1.0,
-	"blue": 1.0,
-	"purple": 1.0
+	"RED": 1.0,
+	"ORANGE": 1.0,
+	"YELLOW": 1.0,
+	"GREEN": 1.0,
+	"BLUE": 1.0,
+	"PURPLE": 1.0
 }
 
 var held_object: Fragment = null
 var held_fragments: Array[Fragment] = []
 var grab_indicator: GrabRadiusIndicator = null
+var color_names
 
 func _ready():
+	color_names = ColorProfile.get_colornames()
 	ProceduralSfx.prime_cache(ColorProfile.ColorName.size())
 
 	spawn_timer = Timer.new()
@@ -156,8 +159,16 @@ func _end_grab() -> void:
 func build_clusters() -> void:
 	var sizes: Array[float] = []
 
-	for size in size_multiplier:
-		var value = BASE_SIZE * size_multiplier.get(size)
+	for color in size_multiplier: #(string)
+		var color_index = color_names.get(color)
+		var base_size = BASE_SIZE_PRIMARY
+		
+		if color_index in primary_colors:
+			base_size = BASE_SIZE_PRIMARY
+		elif color_index in secondary_colors:
+			base_size = BASE_SIZE_SECONDARY
+
+		var value = base_size * size_multiplier.get(color)
 		sizes.append(value)
 
 	var primary_index := 0
@@ -241,11 +252,11 @@ func get_poly_points(color: ColorProfile.ColorName, tier: int, first_strength: V
 			elif color in secondary_colors:
 				var point_a := Vector2.UP.rotated(deg_to_rad(starting_angle - 60)) * first_strength_value
 				var point_b := Vector2.UP.rotated(deg_to_rad(starting_angle)) * zero_strength
-				var intersection_ccw := point_a.lerp(point_b, 3.5 / 5.0)
+				var intersection_ccw := point_a.lerp(point_b, 4.0 / 5.0)
 
 				var point_c := Vector2.UP.rotated(deg_to_rad(starting_angle + 60)) * third_strength_value
 				var point_d := Vector2.UP.rotated(deg_to_rad(starting_angle)) * zero_strength
-				var intersection_cw := point_c.lerp(point_d, 3.5 / 5.0)
+				var intersection_cw := point_c.lerp(point_d, 4.0 / 5.0)
 
 				poly_points = [
 					Vector2.UP.rotated(deg_to_rad(starting_angle)) * zero_strength,
