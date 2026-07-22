@@ -3,7 +3,7 @@ extends Resource
 
 enum ColorName {RED,RED_ORANGE,ORANGE,ORANGE_YELLOW,YELLOW,YELLOW_GREEN,GREEN,GREEN_BLUE,BLUE,BLUE_PURPLE,PURPLE, PURPLE_RED}
 
-var rgb_values: Array[Color] = [
+static var rgb_values: Array[Color] = [
 	Color8(198,88,88), #RED
 	Color8(184,100,88), #RED-ORANGE
 	Color8(170,112,88), #ORANGE
@@ -24,5 +24,8 @@ var rgb_values: Array[Color] = [
 func get_color_code() -> Color:
 	return rgb_values[color_name]
 
+static func get_color_code_of_color(color) -> Color:
+	return rgb_values[color]
+	
 static func get_colornames():
 	return ColorName
