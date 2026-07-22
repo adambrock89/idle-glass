@@ -58,7 +58,7 @@ float dist_to_edges(vec2 p, mat2 R) {
 float height_at(vec2 pane_pos, mat2 R) {
     float d = dist_to_edges(pane_pos, R);
 
-    float bevel_thickness = 18.0;
+    float bevel_thickness = 8.0;
 
     float bevel = 1.0 - smoothstep(0.0, bevel_thickness, d);
     bevel = pow(bevel, 0.3);
@@ -82,21 +82,36 @@ void fragment() {
     float hx = height_at(pane_pos + vec2(eps, 0.0), R) - height;
     float hy = height_at(pane_pos + vec2(0.0, eps), R) - height;
 
-    vec2 N = normalize(-vec2(hx, hy));
-    vec2 L = -normalize(R * light_dir);
+    // Normal (thin sheet)
+	vec3 N = normalize(vec3(-hx, -hy, 0.2));
 
-    float ndl = dot(N, L);
+	// Light
+	vec2 L2 = -normalize(R * light_dir);
+	vec3 L = normalize(vec3(L2, 1.0));
 
-	// widen cone
-	ndl = ndl * 0.3 + 0.2;
+	// View
+	vec3 V = vec3(0.0, 0.0, 1.0);
 
-	// soften
-	ndl = pow(ndl, 0.7);
+	// Diffuse
+	float ndl = max(dot(N, L), 0.0);
+	ndl = pow(ndl, 5.0);
 
-	// clamp
-	ndl = clamp(ndl, 0.2, 1.0);
+	// Base shading
+	vec3 col = base_color.rgb * (0.55 + ndl * 1.1);
+	float transmission = 0.15; // subtle glow
+	col += base_color.rgb * transmission;
+	
+	float fresnel = pow(1.0 - max(dot(N, V), 0.0), 4.0);
+	col += fresnel * 0.25;
 
-    vec3 col = base_color.rgb * (0.75 + ndl * 0.9);
+	// Specular
+	vec3 H = normalize(L + V);
+	float spec = pow(max(dot(N, H), 0.0), 64.0);
+	col += spec * 0.25;
 
-    COLOR = vec4(col, transparency);
+	// Final clamp
+	col = clamp(col, 0.0, 1.0);
+
+	COLOR = vec4(col, transparency);
+
 }
