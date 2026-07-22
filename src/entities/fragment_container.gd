@@ -34,8 +34,14 @@ func _physics_process(_delta: float) -> void:
 		elif child is Polygon2D and child.name.begins_with("InnerPolygon_"):
 			var mat := child.material as ShaderMaterial
 			if mat:
-				mat.set_shader_parameter("object_position", child.global_position)
-				mat.set_shader_parameter("object_rotation", child.global_rotation)
+				var poly_screen := []
+				for p in child.polygon:
+					poly_screen.append(child.to_global(p))
+					
+				mat.set_shader_parameter("poly", poly_screen)
+				mat.set_shader_parameter("poly_count", poly_screen.size())
+				mat.set_shader_parameter("viewport_size", get_viewport_rect().size)
+				mat.set_shader_parameter("pane_rotation", child.global_rotation)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	# Store previous tick velocities BEFORE physics updates

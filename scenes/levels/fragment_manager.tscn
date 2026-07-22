@@ -35,9 +35,9 @@ freeze = true
 [node name="Polygon2D" type="Polygon2D" parent="MainBody"]
 top_level = true
 visibility_layer = 512
-position = Vector2(81, -31)
+position = Vector2(214, -31)
 color = Color(0.0248005, 0.399007, 0, 1)
-polygon = PackedVector2Array(96, -74, 98, 26, 40, 31, 43, 81, 282, 75, 279, 24, 228, 27, 220, -73)
+polygon = PackedVector2Array(96, -74, 98, 26, 40, 31, 43, 81, 194.725, 77.191, 282, 75, 279, 24, 228, 27, 220, -73)
 
 [node name="Barrel_A" parent="MainBody" instance=ExtResource("3_41nyt")]
 position = Vector2(1136, 274)
