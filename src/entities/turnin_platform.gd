@@ -69,7 +69,7 @@ func build_button():
 	button_base.z_index = 1
 	add_child(button_base)
 
-	var base_width := 12.0
+	var base_width := 24.0
 	var base_height := 1.5
 	var button_base_col := CollisionPolygon2D.new()
 	var button_base_vis := Polygon2D.new()
@@ -82,7 +82,7 @@ func build_button():
 		Vector2(0, -base_height)
 	])
 	button_base_vis.polygon = button_base_col.polygon
-	button_base_vis.color = Color8(200, 200, 200)
+	button_base_vis.color = ColorProfile.get_color_code_of_color(ColorProfile.ColorName.YELLOW)
 
 	# BUTTON SHAFT
 	var button := AnimatableBody2D.new()
@@ -90,7 +90,7 @@ func build_button():
 	button.z_index = 0
 	add_child(button)
 
-	var shaft_width := 8.0
+	var shaft_width := 20.0
 	var shaft_height := base_height + 1.5
 	var button_col := CollisionPolygon2D.new()
 	var button_vis := Polygon2D.new()
@@ -103,7 +103,7 @@ func build_button():
 		Vector2(0, -shaft_height)
 	])
 	button_vis.polygon = button_col.polygon
-	button_vis.color = Color8(150, 150, 150)
+	button_vis.color = ColorProfile.get_color_code_of_color(ColorProfile.ColorName.ORANGE_YELLOW)
 
 	# PRESS DETECTOR
 	var detector := Area2D.new()
@@ -170,10 +170,7 @@ func build_hatch(is_left: bool, y_offset: float) -> Node2D:
 	col.polygon = _build_hatch_polygon(is_left)
 	vis.polygon = col.polygon
 
-	if is_left:
-		vis.color = Color.WHITE
-	else:
-		vis.color = Color8(255, 122, 122, 255)
+	vis.color = ColorProfile.get_color_code_of_color(ColorProfile.ColorName.BLUE)
 
 	hatch.position = Vector2(0, y_offset)
 	return hatch
@@ -267,14 +264,9 @@ func create_scoring_zone() -> Area2D:
 	zone.set_script(load("res://src/entities/score_zone.gd"))
 
 	var colpoly := CollisionPolygon2D.new()
+	colpoly.name = "CollisionPolygon2D"
 	colpoly.polygon = _build_rect_polygon(platform_width * hatch_width_multiplier, 40.0)
 	zone.add_child(colpoly)
-
-	var debug_poly := Polygon2D.new()
-	debug_poly.color = Color(1, 0, 0, 0.3)
-	debug_poly.z_index = 999
-	debug_poly.polygon = _build_rect_polygon(platform_width * hatch_width_multiplier, 40.0)
-	zone.add_child(debug_poly)
 
 	zone.position = Vector2(0, hatch_height_delta + 40.0)
 	add_child(zone)
