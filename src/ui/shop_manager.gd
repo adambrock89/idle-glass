@@ -199,6 +199,21 @@ func refresh_list() -> void:
 
 		var is_max_level: bool = level >= int(this_upgrade.get("max_level", 0))
 		
+		#Check prerequisites
+		var prereq_list = this_upgrade.get("prereq",{})
+		var meets_prereq = true
+		if prereq_list.size() > 0:
+			print(prereq_list)
+		for prereq in prereq_list:
+			print(prereq)
+			var current_level: int = int(current_level.get(prereq,0))
+			var required_level: int = int(prereq_list[prereq])
+			if current_level < required_level:
+				meets_prereq = false
+				continue
+		if !meets_prereq:
+			continue
+			
 		#Calculate Effects
 		var effect_type = this_upgrade.get("effect", {}).get("type", "")
 		var this_level_effect: float

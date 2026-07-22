@@ -51,9 +51,9 @@
 			"multiplier":  1.05
 		},
 		"cost": {
-			"red":  100
+			"red":  50
 		},
-		"cost_multiplier": 2
+		"cost_multiplier": 2.5
 	},
 	{
 		"id":  "yellow_size",
@@ -65,9 +65,9 @@
 			"multiplier":  1.05
 		},
 		"cost": {
-			"yellow":  100
+			"yellow":  50
 		},
-		"cost_multiplier": 2
+		"cost_multiplier": 2.5
 	},
 	{
 		"id":  "blue_size",
@@ -79,9 +79,9 @@
 			"multiplier":  1.05
 		},
 		"cost": {
-			"blue":  100
+			"blue":  50
 		},
-		"cost_multiplier": 2
+		"cost_multiplier": 2.5
 	},
 	{
 		"id":  "spawn_speed",
@@ -168,5 +168,121 @@
 			"orange":  25
 		},
 		"cost_multiplier":8
+	},
+	{
+		"id":  "bucket_object",
+		"name":  "Bucket",
+		"description":  "A bucket that can be used to organize",
+		"max_level": 1,
+		"effect":  {
+			"type":  "mult",
+			"multiplier": 1
+		},
+		"cost": {
+			"orange":  10
+		},
+		"cost_multiplier":1.3
+	},
+	{
+		"id":  "plank_object",
+		"name":  "Plank",
+		"description":  "A plank that you can be moved by clicking it, and rotated using the scroll wheel.",
+		"max_level": 1,
+		"effect":  {
+			"type":  "mult",
+			"multiplier": 1
+		},
+		"cost": {
+			"orange":  25
+		},
+		"cost_multiplier":1
+	},
+	{
+		"id":  "plank_length",
+		"name":  "Plank Length",
+		"description":  "Extends the length of the plank",
+		"max_level": 5,
+		"effect":  {
+			"type":  "mult",
+			"multiplier": 1.15
+		},
+		"cost": {
+			"orange":  35
+		},
+		"cost_multiplier":1.3,
+		"prereq": {
+			"plank_object": 1
+		}
+	},
+	{
+		"id":  "plank_bounce",
+		"name":  "Plank Bounce",
+		"description":  "Adds bounce to your plank",
+		"max_level": 5,
+		"effect":  {
+			"type":  "mult",
+			"multiplier": 1.15
+		},
+		"cost": {
+			"orange":  175
+		},
+		"cost_multiplier":1.3,
+		"prereq": {
+			"plank_length": 5
+		}
+	},
+	{
+		"id":  "quantity_bonus",
+		"name":  "Quantity Bonus",
+		"description":  "Adds a small bonus for the quantity of shapes turned in simultaneously",
+		"max_level": 10,
+		"effect":  {
+			"type":  "mult",
+			"multiplier": 1.15
+		},
+		"cost": {
+			"green": 10
+		},
+		"cost_multiplier":1.3
+	},
+	{
+		"id":  "monochrome_bonus",
+		"name":  "Quantity Bonus",
+		"description":  "Adds a large bonus if all shapes are the same color",
+		"max_level": 10,
+		"effect":  {
+			"type":  "mult",
+			"multiplier": 1.15
+		},
+		"cost": {
+			"green": 10
+		},
+		"cost_multiplier":1.3
+	},
+	{
+		"id":  "border_quality_unlock",
+		"name":  "Unlock Borders",
+		"description":  "Unlocks rare metal borders that add significant value to shapes",
+		"max_level": 1,
+		"effect":  {
+			"type":  "set"
+		},
+		"cost": {
+			"purple": 10
+		}
+	},
+	{
+		"id":  "border_quality_chance",
+		"name":  "Border Quality",
+		"description":  "Increases the chance of spawning a shape with a rare border",
+		"max_level": 10,
+		"effect":  {
+			"type":  "mult",
+			"multiplier": 1.15
+		},
+		"cost": {
+			"purple": 15
+		},
+		"cost_multiplier":1.3
 	}
 ]
